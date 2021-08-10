@@ -81,7 +81,8 @@ autoscaling:
 # Local database for testing purpose
 postgres:
   enabled: true
-  postgresqlDatabase: ontrack
-  postgresqlPostgresPassword: postgres
-  postgresqlUsername: ontrack
-  postgresqlPassword: ontrack
+  global:
+    postgresql:
+      postgresqlDatabase: ontrack
+      postgresqlUsername: ontrack
+      postgresqlPassword: ontrack
