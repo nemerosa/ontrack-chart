@@ -77,3 +77,8 @@ autoscaling:
 # tolerations: []
 
 # affinity: {}
+
+# Local database for testing purpose
+postgres:
+  enabled: true
+  
