@@ -82,5 +82,6 @@ autoscaling:
 postgres:
   enabled: true
   postgresqlDatabase: ontrack
+  postgresqlPostgresPassword: postgres
   postgresqlUsername: ontrack
   postgresqlPassword: ontrack
