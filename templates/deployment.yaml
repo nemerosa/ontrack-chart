@@ -35,7 +35,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: SPRING_DATASOURCE_URL
-              value: jdbc:postgresql://postgresql:5432/ontrack
+              value: jdbc:postgresql://test-postgresql-headless:5432/ontrack
             - name: SPRING_DATASOURCE_USERNAME
               value: ontrack
             - name: SPRING_DATASOURCE_PASSWORD
