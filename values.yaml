@@ -78,6 +78,14 @@ autoscaling:
 
 # affinity: {}
 
+# General configuration of Ontrack
+ontrack:
+  elasticsearch:
+    # If using the local elasticsearch engine, align these credentials
+    # with those defined at elasticsearch.extraEnvs
+    username: elastic
+    password: elastic
+
 # Local database for testing purpose
 postgresql:
   enabled: true
@@ -93,3 +101,11 @@ elasticsearch:
   enabled: true
   replicas: 1
   masterService: ontrack-search
+  esConfig:
+    elasticsearch.yml: |
+      xpack.security.enabled: true
+  extraEnvs:
+    - name: ELASTIC_PASSWORD
+      value: elastic
+    - name: ELASTIC_USERNAME
+      value: elastic
