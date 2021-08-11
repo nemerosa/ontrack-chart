@@ -88,13 +88,14 @@ ontrack:
 
 # Local database for testing purpose
 postgresql:
-  enabled: true
-  # postgresqlUsername=ontrack,postgresqlPassword=ontrack,postgresqlDatabase=ontrack
+  local: true
+  # Name of the database to connect to
   postgresqlDatabase: ontrack
+  # Credentials to be used
   postgresqlUsername: ontrack
   postgresqlPassword: ontrack
-  image:
-    debug: true
+  # For external database
+  postgresqlUrl: ""
 
 # Local Elasticsearch engine for testing purpose
 elasticsearch:

@@ -35,19 +35,26 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             # Database configuration
+            {{- if .Values.postgresql.local }}
+            # For test service
             - name: SPRING_DATASOURCE_URL
-              value: jdbc:postgresql://{{ .Release.Name }}-postgresql-headless:5432/ontrack
+              value: "jdbc:postgresql://{{ .Release.Name }}-postgresql-headless:5432/ontrack"
+            {{- else }}
+            # For a managed database
+            - name: SPRING_DATASOURCE_URL
+              value: {{ required "When local Postgres service is disabled, the postgresql.postgresqlUrl value must be set" .Values.postgresql.postgresqlUrl | quote }}
+            {{- end }}
             - name: SPRING_DATASOURCE_USERNAME
-              value: ontrack
+              value: {{ .Values.postgresql.postgresqlUsername | quote }}
             - name: SPRING_DATASOURCE_PASSWORD
-              value: ontrack
+              value: {{ .Values.postgresql.postgresqlPassword | quote }}
             # Elasticsearch configuration
             - name: SPRING_ELASTICSEARCH_REST_URIS
-              value: http://{{ .Values.elasticsearch.masterService }}-headless:9200
+              value: "http://{{ .Values.elasticsearch.masterService }}-headless:9200"
             - name: SPRING_ELASTICSEARCH_REST_USERNAME
-              value: {{ .Values.ontrack.elasticsearch.username }}
+              value: {{ .Values.ontrack.elasticsearch.username | quote }}
             - name: SPRING_ELASTICSEARCH_REST_PASSWORD
-              value: {{ .Values.ontrack.elasticsearch.password }}
+              value: {{ .Values.ontrack.elasticsearch.password | quote }}
           ports:
             - name: http
               containerPort: 8080
