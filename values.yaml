@@ -79,10 +79,11 @@ autoscaling:
 # affinity: {}
 
 # Local database for testing purpose
-postgres:
+postgresql:
   enabled: true
-  global:
-    postgresql:
-      postgresqlDatabase: ontrack
-      postgresqlUsername: ontrack
-      postgresqlPassword: ontrack
+  # postgresqlUsername=ontrack,postgresqlPassword=ontrack,postgresqlDatabase=ontrack
+  postgresqlDatabase: ontrack
+  postgresqlUsername: ontrack
+  postgresqlPassword: ontrack
+  image:
+    debug: true
