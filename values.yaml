@@ -92,3 +92,4 @@ postgresql:
 elasticsearch:
   enabled: true
   replicas: 1
+  masterService: ontrack-search
