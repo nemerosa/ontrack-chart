@@ -34,12 +34,16 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
+            # Database configuration
             - name: SPRING_DATASOURCE_URL
               value: jdbc:postgresql://test-postgresql-headless:5432/ontrack
             - name: SPRING_DATASOURCE_USERNAME
               value: ontrack
             - name: SPRING_DATASOURCE_PASSWORD
               value: ontrack
+            # Elasticsearch configuration
+            - name: SPRING_ELASTICSEARCH_REST_URIS
+              value: http://elasticsearch-master-headless:9200
           ports:
             - name: http
               containerPort: 8080

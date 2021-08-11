@@ -87,3 +87,8 @@ postgresql:
   postgresqlPassword: ontrack
   image:
     debug: true
+
+# Local Elasticsearch engine for testing purpose
+elasticsearch:
+  enabled: true
+  replicas: 1
