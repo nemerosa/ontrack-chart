@@ -78,14 +78,6 @@ autoscaling:
 
 # affinity: {}
 
-# General configuration of Ontrack
-ontrack:
-  elasticsearch:
-    # If using the local elasticsearch engine, align these credentials
-    # with those defined at elasticsearch.extraEnvs
-    username: elastic
-    password: elastic
-
 # Local database for testing purpose
 postgresql:
   local: true
@@ -101,12 +93,25 @@ postgresql:
 elasticsearch:
   enabled: true
   replicas: 1
+  minimumMasterNodes: 1
+  antiAffinity: soft
   masterService: ontrack-search
+  esJavaOpts: -Xmx1g -Xms1g -XX:-HeapDumpOnOutOfMemoryError
   esConfig:
     elasticsearch.yml: |
-      xpack.security.enabled: true
-  extraEnvs:
-    - name: ELASTIC_PASSWORD
-      value: elastic
-    - name: ELASTIC_USERNAME
-      value: elastic
+      discovery.zen.minimum_master_nodes: 1
+      bootstrap.system_call_filter: "false"
+      node.max_local_storage_nodes: 8
+      cluster.routing.allocation.disk.threshold_enabled: "false"
+      action.auto_create_index: ".*"
+  resources:
+    requests:
+      cpu: 300m
+      memory: 1024M
+    limits:
+      memory: 2048M
+  volumeClaimTemplate:
+    accessModes: [ ReadWriteOnce ]
+    resources:
+      requests:
+        storage: 5Gi

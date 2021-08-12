@@ -51,10 +51,6 @@ spec:
             # Elasticsearch configuration
             - name: SPRING_ELASTICSEARCH_REST_URIS
               value: "http://{{ .Values.elasticsearch.masterService }}-headless:9200"
-            - name: SPRING_ELASTICSEARCH_REST_USERNAME
-              value: {{ .Values.ontrack.elasticsearch.username | quote }}
-            - name: SPRING_ELASTICSEARCH_REST_PASSWORD
-              value: {{ .Values.ontrack.elasticsearch.password | quote }}
           ports:
             - name: http
               containerPort: 8080
