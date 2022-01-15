@@ -28,6 +28,9 @@ dependencies:
     repository: https://charts.bitnami.com/bitnami
     version: 10.16.1
     condition: postgresql.local
+  - name: rabbitmq
+    repository: https://charts.bitnami.com/bitnami
+    version: 8.26.1
   - name: elasticsearch
     repository: https://helm.elastic.co
     version: 7.16.3
