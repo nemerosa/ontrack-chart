@@ -1,9 +1,6 @@
 dependencies:
 - name: postgresql
   repository: https://charts.bitnami.com/bitnami
-  version: 10.9.1
-- name: elasticsearch
-  repository: https://helm.elastic.co
-  version: 7.14.0
-digest: sha256:e17d4ea6b514db35411eb0135d2219438a38737bb78a3f255c106ddd4cf13be8
-generated: "2021-08-11T11:13:34.779421+02:00"
+  version: 10.16.1
+digest: sha256:209251aa5f8dc2ebbc28223653b37f9c6b95c45ba844a6bda2a27d8c51c91af5
+generated: "2022-01-15T17:47:12.806441+01:00"

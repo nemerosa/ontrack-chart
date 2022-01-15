@@ -21,13 +21,13 @@ version: 0.1.1
 # incremented each time you make changes to the application. Versions are not expected to
 # follow Semantic Versioning. They should reflect the version the application is using.
 # It is recommended to use it with quotes.
-appVersion: "4.0.21"
+appVersion: "4.1.9"
 
 dependencies:
   - name: postgresql
     repository: https://charts.bitnami.com/bitnami
-    version: 10.9.1
+    version: 10.16.1
     condition: postgresql.local
-  - name: elasticsearch
-    repository: https://helm.elastic.co
-    version: 7.14.0
+#  - name: elasticsearch
+#    repository: https://helm.elastic.co
+#    version: 7.14.0

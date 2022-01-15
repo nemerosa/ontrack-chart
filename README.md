@@ -15,6 +15,7 @@ This installs 3 services:
 * Ontrack itself
 * a Postgres 11 database
 * an Elasticsearch 7 single node
+* a RabbitMQ message broker
 
 To connect to Ontrack, enable the ingress or activate a port forward.
 
