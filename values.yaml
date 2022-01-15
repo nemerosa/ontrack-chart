@@ -96,7 +96,7 @@ elasticsearch:
   minimumMasterNodes: 1
   antiAffinity: soft
   masterService: ontrack-search
-  esJavaOpts: -Xmx1g -Xms1g -XX:-HeapDumpOnOutOfMemoryError
+  esJavaOpts: -Xmx512m -Xms512m -XX:-HeapDumpOnOutOfMemoryError
   esConfig:
     elasticsearch.yml: |
       discovery.zen.minimum_master_nodes: 1
@@ -109,7 +109,7 @@ elasticsearch:
       cpu: 300m
       memory: 1024M
     limits:
-      memory: 2048M
+      memory: 1024M
   volumeClaimTemplate:
     accessModes: [ ReadWriteOnce ]
     resources:
