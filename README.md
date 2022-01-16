@@ -11,7 +11,7 @@ Helm's [documentation](https://helm.sh/docs) to get started.
 Once Helm has been set up correctly, add the repo as follows:
 
 ```
-helm repo add ontrack https://ontrack-chart.github.io/helm-charts
+helm repo add ontrack https://nemerosa.github.io/ontrack-chart
 ```
 
 If you had already added this repo earlier, run `helm repo update` to retrieve
@@ -50,13 +50,13 @@ postgresql:
   local: false
   postgresqlUsername: ontrack
   postgresqlPassword: "*****"
-  postgresqlUrl: "jdbc:postgresql://db-postgresql-*****.b.db.ondigitalocean.com:25060/ontrack?sslmode=require"
+  postgresqlUrl: "jdbc:postgresql://<host>:<port>/ontrack?sslmode=require"
 ```
 
 Then, run the installation using this values file:
 
 ```bash
-helm install -f values.yaml my-ontrack ontrack/ontrack
+helm install -f values.yaml my-ontrack-release ontrack/ontrack
 ```
 
 The setup of the Postgres service will be skipped and Ontrack will be configured to use the remote database.
