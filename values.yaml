@@ -89,6 +89,12 @@ postgresql:
   # For external database
   postgresqlUrl: ""
 
+# Local RabbitMQ for message processing
+rabbitmq:
+  auth:
+    username: ontrack
+    password: ontrack
+
 # Local Elasticsearch engine for testing purpose
 elasticsearch:
   enabled: true

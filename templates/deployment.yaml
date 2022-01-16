@@ -34,7 +34,9 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
+            ########################################
             # Database configuration
+            ########################################
             {{- if .Values.postgresql.local }}
             # For test service
             - name: SPRING_DATASOURCE_URL
@@ -48,9 +50,20 @@ spec:
               value: {{ .Values.postgresql.postgresqlUsername | quote }}
             - name: SPRING_DATASOURCE_PASSWORD
               value: {{ .Values.postgresql.postgresqlPassword | quote }}
+            ########################################
             # Elasticsearch configuration
+            ########################################
             - name: SPRING_ELASTICSEARCH_REST_URIS
               value: "http://{{ .Values.elasticsearch.masterService }}-headless:9200"
+            ########################################
+            # RabbitMQ configuration
+            ########################################
+            - name: SPRING_RABBITMQ_HOST
+              value: "{{ .Release.Name }}-rabbitmq-headless"
+            - name: SPRING_RABBITMQ_USERNAME
+              value: ontrack
+            - name: SPRING_RABBITMQ_PASSWORD
+              value: ontrack
           ports:
             - name: http
               containerPort: 8080
