@@ -3,14 +3,34 @@ Ontrack Helm Chart
 
 This Helm chart is compatible with Helm 3 and allows the installation of Ontrack in a Kubernetes cluster.
 
-# Quick start
+# Usage
 
-```bash
-helm repo add nemerosa ...
-helm install my-ontrack nemerosa/ontrack
+[Helm](https://helm.sh) must be installed to use the charts.  Please refer to
+Helm's [documentation](https://helm.sh/docs) to get started.
+
+Once Helm has been set up correctly, add the repo as follows:
+
+```
+helm repo add ontrack https://ontrack-chart.github.io/helm-charts
 ```
 
-This installs 3 services:
+If you had already added this repo earlier, run `helm repo update` to retrieve
+the latest versions of the packages.  You can then run `helm search repo
+ontrack` to see the charts.
+
+To install the `ontrack` chart:
+
+```
+helm install my-ontrack-release ontrack/ontrack
+```
+
+To uninstall the chart:
+
+```
+helm delete my-ontrack-release
+```
+
+This installs 4 services:
 
 * Ontrack itself
 * a Postgres 11 database
@@ -21,9 +41,9 @@ To connect to Ontrack, enable the ingress or activate a port forward.
 
 # Using a managed database
 
-The Postgres service is suitable only for local tests and a production setup should use a managed database on the cloud provider.
+The default Postgres service is suitable only for local tests and a production setup should use a managed database on the cloud provider.
 
-In order to use a managed database, create a values file and fill the URL and credentials to access the database. For Digital Ocean, it looks like:
+In order to use a managed database, create a values file and fill the URL and credentials to access the database:
 
 ```yaml
 postgresql:
@@ -36,7 +56,7 @@ postgresql:
 Then, run the installation using this values file:
 
 ```bash
-helm install -f values.yaml my-ontrack nemerosa/ontrack
+helm install -f values.yaml my-ontrack ontrack/ontrack
 ```
 
 The setup of the Postgres service will be skipped and Ontrack will be configured to use the remote database.
