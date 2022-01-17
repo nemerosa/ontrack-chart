@@ -5,9 +5,7 @@ metadata:
   labels:
     {{- include "ontrack.labels" . | nindent 4 }}
 spec:
-  {{- if not .Values.autoscaling.enabled }}
-  replicas: {{ .Values.replicaCount }}
-  {{- end }}
+  replicas: 1
   selector:
     matchLabels:
       {{- include "ontrack.selectorLabels" . | nindent 6 }}
@@ -73,12 +71,18 @@ spec:
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: /manage/health
+              path: /manage/health/liveness
               port: mgt
+            failureThreshold: 3
+            periodSeconds: 60
+            initialDelaySeconds: 60
           readinessProbe:
             httpGet:
-              path: /manage/health
+              path: /manage/health/readiness
               port: mgt
+            failureThreshold: 3
+            periodSeconds: 60
+            initialDelaySeconds: 60
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
