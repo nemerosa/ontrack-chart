@@ -40,6 +40,11 @@ service:
   type: ClusterIP
   port: 8080
 
+management:
+  service:
+    type: ClusterIP
+    port: 8800
+
 ingress:
   enabled: false
 #  annotations: {}
