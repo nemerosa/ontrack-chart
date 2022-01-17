@@ -1,11 +1,11 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: {{ include "ontrack.fullname" . }}
   labels:
     {{- include "ontrack.labels" . | nindent 4 }}
 spec:
-  replicas: 1
+  serviceName: ontrack
   selector:
     matchLabels:
       {{- include "ontrack.selectorLabels" . | nindent 6 }}
