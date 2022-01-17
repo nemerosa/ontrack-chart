@@ -101,6 +101,7 @@ elasticsearch:
   antiAffinity: soft
   masterService: ontrack-search
   esJavaOpts: -Xmx512m -Xms512m -XX:-HeapDumpOnOutOfMemoryError
+  clusterHealthCheckParams: 'wait_for_status=yellow&timeout=1s'
   esConfig:
     elasticsearch.yml: |
       discovery.zen.minimum_master_nodes: 1
