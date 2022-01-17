@@ -89,6 +89,8 @@ postgresql:
 
 # Local RabbitMQ for message processing
 rabbitmq:
+  persistence:
+    enabled: false
   auth:
     username: ontrack
     password: ontrack
