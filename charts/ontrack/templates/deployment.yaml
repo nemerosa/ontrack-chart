@@ -59,9 +59,9 @@ spec:
             - name: SPRING_RABBITMQ_HOST
               value: "{{ .Release.Name }}-rabbitmq-headless"
             - name: SPRING_RABBITMQ_USERNAME
-              value: ontrack
+              value: {{ .Values.rabbitmq.auth.username | quote }}
             - name: SPRING_RABBITMQ_PASSWORD
-              value: ontrack
+              value: {{ .Values.rabbitmq.auth.password | quote }}
           ports:
             - name: http
               containerPort: 8080
