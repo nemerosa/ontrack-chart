@@ -15,5 +15,9 @@ spec:
       targetPort: 8080
       protocol: TCP
       name: http
+    - port: {{ .Values.management.service.port }}
+      targetPort: 8800
+      protocol: TCP
+      name: http
   selector:
     {{- include "ontrack.selectorLabels" . | nindent 4 }}
