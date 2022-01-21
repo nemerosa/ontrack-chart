@@ -18,6 +18,6 @@ spec:
     - port: {{ .Values.management.service.port }}
       targetPort: 8800
       protocol: TCP
-      name: http
+      name: mgt
   selector:
     {{- include "ontrack.selectorLabels" . | nindent 4 }}
