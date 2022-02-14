@@ -77,6 +77,15 @@ resources: {}
 
 # affinity: {}
 
+# Ontrack configuration
+ontrack:
+  management:
+    metrics:
+      # Tags to add to all exposed metrics
+      tags:
+        application: "ontrack"
+        instance: "ontrack"
+
 # Local database for testing purpose
 postgresql:
   local: true

@@ -62,6 +62,13 @@ spec:
               value: {{ .Values.rabbitmq.auth.username | quote }}
             - name: SPRING_RABBITMQ_PASSWORD
               value: {{ .Values.rabbitmq.auth.password | quote }}
+            ########################################
+            # Metrics tags
+            ########################################
+            - name: MANAGEMENT_METRICS_TAGS_APPLICATION
+              value: {{ .Values.ontrack.management.metrics.tags.application | quote }}
+            - name: MANAGEMENT_METRICS_TAGS_INSTANCE
+              value: {{ .Values.ontrack.management.metrics.tags.instance | quote }}
           ports:
             - name: http
               containerPort: 8080
