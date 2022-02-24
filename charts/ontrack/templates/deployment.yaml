@@ -33,6 +33,11 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             ########################################
+            # General configuration
+            ########################################
+            - name: PROFILE
+              value: {{ .Values.ontrack.profiles | quote }}
+            ########################################
             # Database configuration
             ########################################
             {{- if .Values.postgresql.local }}
@@ -67,7 +72,7 @@ spec:
             ########################################
             - name: MANAGEMENT_METRICS_TAGS_APPLICATION
               value: {{ .Values.ontrack.management.metrics.tags.application | quote }}
-            - name: MANAGEMENT_METRICS_TAGS_INSTANCE
+            - name: MANAGEMENT_METRICS_TAGS_APPLICATION_INSTANCE
               value: {{ .Values.ontrack.management.metrics.tags.instance | quote }}
           ports:
             - name: http

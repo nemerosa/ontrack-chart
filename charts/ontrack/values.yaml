@@ -79,12 +79,14 @@ resources: {}
 
 # Ontrack configuration
 ontrack:
+  # Comma-separated list of active Spring profiles
+  profiles: prod
   management:
     metrics:
       # Tags to add to all exposed metrics
       tags:
         application: "ontrack"
-        instance: "ontrack"
+        application_instance: "ontrack"
 
 # Local database for testing purpose
 postgresql:
