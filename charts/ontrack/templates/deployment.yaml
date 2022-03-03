@@ -84,6 +84,8 @@ spec:
             - name: mgt
               containerPort: 8800
               protocol: TCP
+          resources:
+            {{ toYaml .Values.ontrack.resources | indent 12 }}
           livenessProbe:
             httpGet:
               path: /manage/health/liveness
