@@ -1,0 +1,27 @@
+{{- if .Values.ontrack.persistence.enabled }}
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ include "ontrack.fullname" . }}
+  labels:
+    {{- include "ontrack.labels" . | nindent 4 }}
+{{ if .Values.ontrack.persistence.annotations}}
+  annotations:
+    {{- range $key, $value := .Values.ontrack.persistence.annotations }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
+{{- end }}
+spec:
+  accessModes:
+    - {{ .Values.ontrack.persistence.accessMode | quote }}
+  resources:
+    requests:
+      storage: {{ .Values.ontrack.persistence.size | quote }}
+{{- if .Values.ontrack.persistence.storageClass }}
+{{- if (eq "-" .Values.ontrack.persistence.storageClass) }}
+  storageClassName: ""
+{{- else }}
+  storageClassName: "{{ .Values.ontrack.persistence.storageClass }}"
+{{- end }}
+{{- end }}
+{{- end }}

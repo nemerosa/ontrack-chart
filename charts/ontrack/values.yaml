@@ -81,6 +81,24 @@ resources: {}
 ontrack:
   # Comma-separated list of active Spring profiles
   profiles: prod
+  # Persistence configuration
+  persistence:
+    # By default, not using a persistent storage
+    enabled: false
+    # Set annotations on pvc
+    annotations: {}
+    # PVC access mode
+    accessMode: ReadWriteOnce
+    # PVC initial size
+    size: 5Gi
+    # If defined, storageClassName: <storageClass>
+    # If set to "-", storageClassName: "", which disables dynamic provisioning
+    # If undefined (the default) or set to null, no storageClassName spec is
+    #   set, choosing the default provisioner.  (gp2 on AWS, standard on
+    #   GKE, AWS & OpenStack)
+    storageClass:
+
+  # Management configuration
   management:
     metrics:
       # Tags to add to all exposed metrics
@@ -133,3 +151,9 @@ elasticsearch:
     resources:
       requests:
         storage: 5Gi
+
+# In case you want to specify different resources for emptyDir than {}
+emptyDir: {}
+  # Example of resouces that might be used:
+  # medium: Memory
+  # sizeLimit: 16Mi

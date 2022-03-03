@@ -31,6 +31,9 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          volumeMounts:
+            - mountPath: /var/ontrack/data
+              name: ontrack
           env:
             ########################################
             # General configuration
@@ -101,11 +104,19 @@ spec:
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.affinity }}
+      {{- if .Values.affinity }}
       affinity:
-        {{- toYaml . | nindent 8 }}
+        {{- toYaml .Values.affinity | nindent 8 }}
       {{- end }}
-      {{- with .Values.tolerations }}
+      {{- if .Values.tolerations }}
       tolerations:
-        {{- toYaml . | nindent 8 }}
+        {{- toYaml .Values.tolerations | nindent 8 }}
       {{- end }}
+      volumes:
+        - name: ontrack
+          {{- if .Values.ontrack.persistence.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ include "ontrack.fullname" . }}
+          {{- else }}
+          emptyDir: {{- toYaml .Values.emptyDir | nindent 12 }}
+          {{- end  }}
