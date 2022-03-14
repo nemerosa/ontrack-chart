@@ -60,6 +60,11 @@ spec:
             - name: SPRING_DATASOURCE_PASSWORD
               value: {{ .Values.postgresql.postgresqlPassword | quote }}
             ########################################
+            # Key management
+            ########################################
+            - name: ONTRACK_CONFIG_KEY_STORE
+              value: {{ .Values.ontrack.config.key_store | quote }}
+            ########################################
             # Elasticsearch configuration
             ########################################
             - name: SPRING_ELASTICSEARCH_REST_URIS
@@ -73,11 +78,6 @@ spec:
               value: {{ .Values.rabbitmq.auth.username | quote }}
             - name: SPRING_RABBITMQ_PASSWORD
               value: {{ .Values.rabbitmq.auth.password | quote }}
-            ########################################
-            # Key management
-            ########################################
-            - name: ONTRACK_CONFIG_KEY_STORE
-              value: {{ .Values.ontrack.config.key_store | quote }}
             ########################################
             # Metrics tags
             ########################################
