@@ -95,6 +95,10 @@ ontrack:
     #   set, choosing the default provisioner.  (gp2 on AWS, standard on
     #   GKE, AWS & OpenStack)
     storageClass:
+  # Ontrack configuration properties
+  config:
+    # Using the database to store the key by default
+    key-store: jdbc
 
   # Management configuration
   management:

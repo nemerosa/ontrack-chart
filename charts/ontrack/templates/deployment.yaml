@@ -74,6 +74,11 @@ spec:
             - name: SPRING_RABBITMQ_PASSWORD
               value: {{ .Values.rabbitmq.auth.password | quote }}
             ########################################
+            # Key management
+            ########################################
+            - name:  ONTRACK_CONFIG_KEY_STORE
+              value: {{ .Values.ontrack.config.key-store | quote }}
+            ########################################
             # Metrics tags
             ########################################
             - name: MANAGEMENT_METRICS_TAGS_APPLICATION
