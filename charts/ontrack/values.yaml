@@ -98,7 +98,7 @@ ontrack:
   # Ontrack configuration properties
   config:
     # Using the database to store the key by default
-    key-store: jdbc
+    key_store: jdbc
 
   # Management configuration
   management:
