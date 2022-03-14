@@ -76,7 +76,7 @@ spec:
             ########################################
             # Key management
             ########################################
-            - name:  ONTRACK_CONFIG_KEY_STORE
+            - name: ONTRACK_CONFIG_KEY_STORE
               value: {{ .Values.ontrack.config.key_store | quote }}
             ########################################
             # Metrics tags
