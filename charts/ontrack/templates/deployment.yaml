@@ -96,7 +96,7 @@ spec:
             - name: ONTRACK_CONFIG_CASC_ENABLED
               value: "true"
             - name: ONTRACK_CONFIG_CASC_LOCATIONS
-              value: {{ .Values.ontrack.casc.directory | quote }}
+              value: "file://{{ .Values.ontrack.casc.directory }}"
             {{- if .Values.ontrack.casc.reloading.enabled }}
             - name: ONTRACK_CONFIG_CASC_RELOADING_ENABLED
               value: "true"
