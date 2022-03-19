@@ -111,6 +111,15 @@ ontrack:
   # Arbitrary environment variables
   env: [ ]
 
+  # Arbitrary secrets & config map sources
+  extraConfig:
+    secrets: [ ]
+    # secrets:
+    #   - secret-name
+    configmaps: [ ]
+    # configmaps:
+    #   - config-map-name
+
 # Local database for testing purpose
 postgresql:
   local: true

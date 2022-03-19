@@ -91,6 +91,15 @@ spec:
             {{- with .Values.ontrack.env }}
             {{- . | toYaml | trim | nindent 12 }}
             {{- end }}
+          envFrom:
+          {{- range .Values.ontrack.extraConfig.secrets }}
+            - secretRef:
+                name: {{ . }}
+          {{- end }}
+          {{- range .Values.ontrack.extraConfig.configmaps }}
+            - configMapRef:
+                name: {{ . }}
+          {{- end }}
           ports:
             - name: http
               containerPort: 8080
