@@ -37,9 +37,15 @@ spec:
           volumeMounts:
             - name: ontrack
               mountPath: /var/ontrack/data
+            {{- if .Values.ontrack.casc.enabled }}
             {{- if .Values.ontrack.casc.map }}
             - name: casc
-              mountPath: {{ .Values.ontrack.casc.directory | quote }}
+              mountPath: "{{ .Values.ontrack.casc.directory }}/map"
+            {{- end }}
+            {{- if .Values.ontrack.casc.secret }}
+            - name: casc-secret
+              mountPath: "{{ .Values.ontrack.casc.directory }}/secret"
+            {{- end }}
             {{- end }}
           env:
             ########################################
@@ -92,11 +98,17 @@ spec:
             ########################################
             # Casc
             ########################################
-            {{- if .Values.ontrack.casc.map }}
+            {{- if .Values.ontrack.casc.enabled }}
             - name: ONTRACK_CONFIG_CASC_ENABLED
               value: "true"
+            {{- if and .Values.ontrack.casc.map .Values.ontrack.casc.secret }}
             - name: ONTRACK_CONFIG_CASC_LOCATIONS
-              value: "file://{{ .Values.ontrack.casc.directory }}"
+              value: "file://{{ .Values.ontrack.casc.directory }}/map,file://{{ .Values.ontrack.casc.directory }}/secret"
+            {{- else if .Values.ontrack.casc.map }}
+              value: "file://{{ .Values.ontrack.casc.directory }}/map"
+            {{- else if .Values.ontrack.casc.secret }}
+              value: "file://{{ .Values.ontrack.casc.directory }}/secret"
+            {{- end }}
             {{- if .Values.ontrack.casc.reloading.enabled }}
             - name: ONTRACK_CONFIG_CASC_RELOADING_ENABLED
               value: "true"
@@ -161,9 +173,15 @@ spec:
           {{- else }}
           emptyDir: {{- toYaml .Values.emptyDir | nindent 12 }}
           {{- end  }}
-        {{- if .Values.ontrack.casc.map }}
+        {{- if and .Values.ontrack.casc.enabled .Values.ontrack.casc.map }}
         - name: casc
           configMap:
             name: {{ .Values.ontrack.casc.map | quote }}
+            optional: false
+        {{- end }}
+        {{- if and .Values.ontrack.casc.enabled .Values.ontrack.casc.secret }}
+        - name: casc-secret
+          secret:
+            secretName: {{ .Values.ontrack.casc.secret | quote }}
             optional: false
         {{- end }}

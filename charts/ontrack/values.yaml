@@ -122,10 +122,12 @@ ontrack:
 
   # CasC configuration
   casc:
+    # Is Casc enabled?
+    enabled: false
     # Config map containing all Casc files
-    # Leave empty to disable Casc
-    # If not empty, Casc is activated
     map: ""
+    # Secret map containing all secret Casc files
+    secret: ""
     # Path where to mount the Casc files
     directory: "/var/ontrack/casc"
     # Auto reload configuration
