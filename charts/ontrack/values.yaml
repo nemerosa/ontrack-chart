@@ -32,7 +32,7 @@ securityContext: { }
   # capabilities:
   #   drop:
   #   - ALL
-  # readOnlyRootFilesystem: true
+# readOnlyRootFilesystem: true
 # runAsNonRoot: true
 # runAsUser: 1000
 
@@ -48,7 +48,7 @@ management:
 
 ingress:
   enabled: false
-    #  annotations: {}
+  #  annotations: {}
   # kubernetes.io/ingress.class: nginx
   # kubernetes.io/tls-acme: "true"
   #  hosts:
@@ -120,6 +120,22 @@ ontrack:
     # configmaps:
     #   - config-map-name
 
+  # CasC configuration
+  casc:
+    # Config map containing all Casc files
+    # Leave empty to disable Casc
+    # If not empty, Casc is activated
+    map: ""
+    # Path where to mount the Casc files
+    directory: "/var/ontrack/casc"
+    # Auto reload configuration
+    reloading:
+      # Auto reload activation
+      enabled: false
+      # Auto reload cron schedule
+      # Leave empty to be a manual job only
+      cron: ""
+
 # Local database for testing purpose
 postgresql:
   local: true
@@ -170,7 +186,7 @@ elasticsearch:
 emptyDir: { }
   # Example of resouces that might be used:
   # medium: Memory
-  # sizeLimit: 16Mi
+# sizeLimit: 16Mi
 
 ## Array of extra containers to run alongside the Ontrack container
 ##

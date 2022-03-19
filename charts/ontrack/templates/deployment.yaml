@@ -35,8 +35,12 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           volumeMounts:
-            - mountPath: /var/ontrack/data
-              name: ontrack
+            - name: ontrack
+              mountPath: /var/ontrack/data
+            {{- if .Values.ontrack.casc.map }}
+            - name: casc
+              mountPath: {{ .Values.ontrack.casc.directory | quote }}
+            {{- end }}
           env:
             ########################################
             # General configuration
@@ -85,6 +89,21 @@ spec:
               value: {{ .Values.ontrack.management.metrics.tags.application | quote }}
             - name: MANAGEMENT_METRICS_TAGS_APPLICATION_INSTANCE
               value: {{ .Values.ontrack.management.metrics.tags.instance | quote }}
+            ########################################
+            # Casc
+            ########################################
+            {{- if .Values.ontrack.casc.map }}
+            - name: ONTRACK_CONFIG_CASC_ENABLED
+              value: "true"
+            - name: ONTRACK_CONFIG_CASC_LOCATIONS
+              value: {{ .Values.ontrack.casc.directory | quote }}
+            {{- if .Values.ontrack.casc.reloading.enabled }}
+            - name: ONTRACK_CONFIG_CASC_RELOADING_ENABLED
+              value: "true"
+            - name: ONTRACK_CONFIG_CASC_RELOADING_CRON
+              value: {{ .Values.ontrack.casc.reloading.cron | quote }}
+            {{- end }}
+            {{- end }}
             ########################################
             # Arbitrary environment variables
             ########################################
@@ -142,3 +161,8 @@ spec:
           {{- else }}
           emptyDir: {{- toYaml .Values.emptyDir | nindent 12 }}
           {{- end  }}
+        {{- if .Values.ontrack.casc.map }}
+        - name: casc
+          configMap:
+            name: {{ include "ontrack.fullname" . }}-casc
+        {{- end }}
