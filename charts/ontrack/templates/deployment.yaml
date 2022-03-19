@@ -85,6 +85,12 @@ spec:
               value: {{ .Values.ontrack.management.metrics.tags.application | quote }}
             - name: MANAGEMENT_METRICS_TAGS_APPLICATION_INSTANCE
               value: {{ .Values.ontrack.management.metrics.tags.instance | quote }}
+            ########################################
+            # Arbitrary environment variables
+            ########################################
+            {{- with .Values.ontrack.env }}
+            {{- . | toYaml | trim | nindent 12 }}
+            {{- end }}
           ports:
             - name: http
               containerPort: 8080

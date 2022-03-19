@@ -108,6 +108,9 @@ ontrack:
         application: "ontrack"
         application_instance: "ontrack"
 
+  # Arbitrary environment variables
+  env: [ ]
+
 # Local database for testing purpose
 postgresql:
   local: true
