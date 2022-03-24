@@ -60,3 +60,44 @@ helm install -f values.yaml my-ontrack-release ontrack/ontrack
 ```
 
 The setup of the Postgres service will be skipped and Ontrack will be configured to use the remote database.
+
+# Using a K8S secret for the encryption keys
+
+Ontrack encrypts the credentials used to connect to external systems, using an AES256 key.
+
+This key is by default stored into the database itself, which is OK to get started, but this has two issues:
+
+* it's not very secure since the key used to encrypts credentials in the database is stored in the database
+* when migrating an Ontrack installation from a file store, it's not easy to migrate
+
+When using the Ontrack Helm chart, you can use a K8S secret to store this encryption key.
+
+There are two scenarios.
+
+## Generating the secrets from scratch (new installation)
+
+````bash
+openssl rand 256 > net.nemerosa.ontrack.security.EncryptionServiceImpl.encryption
+````
+
+## Copying the secrets (existing installation)
+
+TBD - using the REST endpoint
+
+## Creating the secret in K8S
+
+Given the `net.nemerosa.ontrack.security.EncryptionServiceImpl.encryption` file, generate a secret in the same namespace as Ontrack:
+
+```bash
+kubectl create secret general <secret-name> --from-file=net.nemerosa.ontrack.security.EncryptionServiceImpl.encryption
+```
+
+Configure the Ontrack values to use this secret:
+
+```yaml
+ontrack:
+   config:
+     key_store: secret
+     secret_key_store:
+       secret_name: "<secret-name>"
+```

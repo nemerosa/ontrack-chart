@@ -47,6 +47,11 @@ spec:
               mountPath: "{{ .Values.ontrack.casc.directory }}/secret"
             {{- end }}
             {{- end }}
+            {{- if eq .Values.ontrack.config.key_store "secret" }}
+            - name: ontrack-key-store
+              mountPath: {{ .Values.ontrack.config.secret_key_store.directory | quote }}
+              readOnly: true
+            {{- end }}
           env:
             ########################################
             # General configuration
@@ -74,6 +79,10 @@ spec:
             ########################################
             - name: ONTRACK_CONFIG_KEY_STORE
               value: {{ .Values.ontrack.config.key_store | quote }}
+            {{- if eq .Values.ontrack.config.key_store "secret" }}
+            - name: ONTRACK_CONFIG_FILE_KEY_STORE_DIRECTORY
+              value: {{ .Values.ontrack.config.secret_key_store.directory | quote }}
+            {{- end }}
             ########################################
             # Elasticsearch configuration
             ########################################
@@ -173,6 +182,12 @@ spec:
           {{- else }}
           emptyDir: {{- toYaml .Values.emptyDir | nindent 12 }}
           {{- end  }}
+        {{- if eq .Values.ontrack.config.key_store "secret" }}
+        - name: ontrack-key-store
+          secret:
+            secretName: {{ .Values.ontrack.config.secret_key_store.secret_name | quote }}
+            optional: false
+        {{- end }}
         {{- if and .Values.ontrack.casc.enabled .Values.ontrack.casc.map }}
         - name: casc
           configMap:

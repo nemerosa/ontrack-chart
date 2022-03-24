@@ -99,6 +99,12 @@ ontrack:
   config:
     # Using the database to store the key by default
     key_store: jdbc
+    # If key_store == "secret"
+    secret_key_store:
+      # Name of the secret
+      secret_name: "ontrack-key-store"
+      # Directory to use inside the container
+      directory: "/var/ontrack/key_store"
 
   # Management configuration
   management:
