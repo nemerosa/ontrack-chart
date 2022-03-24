@@ -89,7 +89,7 @@ TBD - using the REST endpoint
 Given the `net.nemerosa.ontrack.security.EncryptionServiceImpl.encryption` file, generate a secret in the same namespace as Ontrack:
 
 ```bash
-kubectl create secret general <secret-name> --from-file=net.nemerosa.ontrack.security.EncryptionServiceImpl.encryption
+kubectl create secret general ontrack-key-store --from-file=net.nemerosa.ontrack.security.EncryptionServiceImpl.encryption
 ```
 
 Configure the Ontrack values to use this secret:
@@ -98,6 +98,7 @@ Configure the Ontrack values to use this secret:
 ontrack:
    config:
      key_store: secret
-     secret_key_store:
-       secret_name: "<secret-name>"
+     # If need be, the default secret name - ontrack-key-store - can be configured here
+     # secret_key_store:
+     #   secret_name: "ontrack-key-store"
 ```
