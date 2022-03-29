@@ -43,8 +43,16 @@ service:
 
 management:
   service:
-    type: ClusterIP
     port: 8800
+    # Set to true to have the management port exposed by another Service
+    # By default, using the same service and two different named ports
+    specific: false
+    # Annotations for the management service
+    # Only used when specific == true
+    annotations: { }
+    # Service type for the management
+    # Only used when specific == true
+    type: ClusterIP
 
 ingress:
   enabled: false
