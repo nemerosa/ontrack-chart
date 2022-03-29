@@ -112,7 +112,7 @@ In both cases (V3 & V4), the username MUST be `admin`. No other user, even one w
 Given the `net.nemerosa.ontrack.security.EncryptionServiceImpl.encryption` file, generate a secret in the same namespace as Ontrack:
 
 ```bash
-kubectl create secret general ontrack-key-store --from-file=net.nemerosa.ontrack.security.EncryptionServiceImpl.encryption
+kubectl create secret generic ontrack-key-store --from-file=net.nemerosa.ontrack.security.EncryptionServiceImpl.encryption
 ```
 
 Configure the Ontrack values to use this secret:
