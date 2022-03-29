@@ -96,7 +96,16 @@ openssl rand 256 > net.nemerosa.ontrack.security.EncryptionServiceImpl.encryptio
 
 ## Copying the secrets (existing installation)
 
-TBD - using the REST endpoint
+To get the existing key from Ontrack, use:
+
+```bash
+# For Ontrack V4
+curl --user admin https://<ontrack>/rest/admin/encryption | base64 -d > net.nemerosa.ontrack.security.EncryptionServiceImpl.encryption
+# For Ontrack V3
+curl --user admin https://<ontrack>/admin/encryption | base64 -d > net.nemerosa.ontrack.security.EncryptionServiceImpl.encryption
+```
+
+In both cases (V3 & V4), the username MUST be `admin`. No other user, even one with the `Administrators` role, will be accepted.
 
 ## Creating the secret in K8S
 
