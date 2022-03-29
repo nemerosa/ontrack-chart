@@ -117,8 +117,10 @@ spec:
             - name: ONTRACK_CONFIG_CASC_LOCATIONS
               value: "file://{{ .Values.ontrack.casc.directory }}/map,file://{{ .Values.ontrack.casc.directory }}/secret"
             {{- else if .Values.ontrack.casc.map }}
+            - name: ONTRACK_CONFIG_CASC_LOCATIONS
               value: "file://{{ .Values.ontrack.casc.directory }}/map"
             {{- else if .Values.ontrack.casc.secret }}
+            - name: ONTRACK_CONFIG_CASC_LOCATIONS
               value: "file://{{ .Values.ontrack.casc.directory }}/secret"
             {{- end }}
             {{- if .Values.ontrack.casc.reloading.enabled }}
