@@ -61,6 +61,20 @@ helm install -f values.yaml my-ontrack-release ontrack/ontrack
 
 The setup of the Postgres service will be skipped and Ontrack will be configured to use the remote database.
 
+Alternatively, if your connection parameters are in environment variables, you can skip this configuration altogether:
+
+```yaml
+postgresql:
+  local: false
+  postgresFromEnv: true
+```
+
+This requires the following environmment variables to be set:
+
+* `SPRING_DATASOURCE_URL` - complete JDBC URL, like `jdbc:postgresql://<host>:<port>/ontrack?sslmode=require`
+* `SPRING_DATASOURCE_USERNAME` - username for the connection
+* `SPRING_DATASOURCE_PASSWORD` - password for the connection
+
 # Using a K8S secret for the encryption keys
 
 Ontrack encrypts the credentials used to connect to external systems, using an AES256 key.

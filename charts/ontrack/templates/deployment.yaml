@@ -65,15 +65,18 @@ spec:
             # For test service
             - name: SPRING_DATASOURCE_URL
               value: "jdbc:postgresql://{{ .Release.Name }}-postgresql-headless:5432/ontrack"
+            # For a managed database, using external environment variables
+            {{- else if .Values.postgresql.postgresFromEnv }}
+            # Nothing to be declared here
             {{- else }}
-            # For a managed database
+            # For a managed database, using the URL
             - name: SPRING_DATASOURCE_URL
               value: {{ required "When local Postgres service is disabled, the postgresql.postgresqlUrl value must be set" .Values.postgresql.postgresqlUrl | quote }}
-            {{- end }}
             - name: SPRING_DATASOURCE_USERNAME
               value: {{ .Values.postgresql.postgresqlUsername | quote }}
             - name: SPRING_DATASOURCE_PASSWORD
               value: {{ .Values.postgresql.postgresqlPassword | quote }}
+            {{- end }}
             ########################################
             # Key management
             ########################################

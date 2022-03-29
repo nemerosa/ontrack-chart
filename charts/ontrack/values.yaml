@@ -154,6 +154,8 @@ postgresql:
   postgresqlPassword: ontrack
   # For external database
   postgresqlUrl: ""
+  # For external database, using environment variables
+  postgresFromEnv: false
 
 # Local RabbitMQ for message processing
 rabbitmq:
