@@ -52,6 +52,11 @@ spec:
               mountPath: {{ .Values.ontrack.config.secret_key_store.directory | quote }}
               readOnly: true
             {{- end }}
+            {{- range $secret := .Values.ontrack.casc.secrets.names }}
+            - name: {{ $secret | quote }}
+              mountPath: "{{ $.Values.ontrack.casc.secrets.directory }}/{{ $secret }}"
+              readOnly: true
+            {{- end }}
           env:
             ########################################
             # General configuration
@@ -130,6 +135,10 @@ spec:
               value: {{ .Values.ontrack.casc.reloading.cron | quote }}
             {{- end }}
             {{- end }}
+            - name: ONTRACK_CONFIG_CASC_SECRETS_TYPE
+              value: {{ .Values.ontrack.casc.secrets.mapping | quote }}
+            - name: ONTRACK_CONFIG_CASC_SECRETS_DIRECTORY
+              value: {{ .Values.ontrack.casc.secrets.directory | quote }}
             ########################################
             # Arbitrary environment variables
             ########################################
@@ -203,5 +212,11 @@ spec:
         - name: casc-secret
           secret:
             secretName: {{ .Values.ontrack.casc.secret | quote }}
+            optional: false
+        {{- end }}
+        {{- range .Values.ontrack.casc.secrets.names }}
+        - name: {{ . | quote }}
+          secret:
+            secretName: {{ . | quote }}
             optional: false
         {{- end }}

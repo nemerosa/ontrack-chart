@@ -144,6 +144,14 @@ ontrack:
     secret: ""
     # Path where to mount the Casc files
     directory: "/var/ontrack/casc"
+    # Mapping of secrets
+    secrets:
+      # Secret mapping mode
+      mapping: env
+      # Directory where to map the secrets (for mapping = env)
+      directory: "/var/ontrack/casc/mapping"
+      # List of secret names to mount
+      names: []
     # Auto reload configuration
     reloading:
       # Auto reload activation

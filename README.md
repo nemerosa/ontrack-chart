@@ -75,6 +75,89 @@ This requires the following environmment variables to be set:
 * `SPRING_DATASOURCE_USERNAME` - username for the connection
 * `SPRING_DATASOURCE_PASSWORD` - password for the connection
 
+# Configuration as code (CasC)
+
+Casc is not enabled by default in the chart. To enabled it, use the following values:
+
+```yaml
+ontrack:
+  casc:
+    enabled: true
+```
+
+Casc can take its values from a configuration map and/or a secret:
+
+```yaml
+ontrack:
+  casc:
+    enabled: true
+    map: some-config-map-name
+    secret: some-secret-name
+```
+
+Both must contain entries called `<any-name>.yaml` containing some YAML Casc code.
+
+## Secrets mappings
+
+Casc files can contain `{{ secret.name.property }}` which are extrapolated using environment variables or secret files.
+
+### Using environment variables
+
+The default behaviour is to use environment variables. The name of the environment variable to consider is: `SECRET_<NAME>_<PROPERTY>`.
+
+For example, if YAML Casc fragment contains:
+
+```yaml
+ontrack:
+  config:
+    github:
+      - name: github.com
+        token: {{ secret.github.token }}
+```
+
+Given a `ontrack-github` K8S secret containing the secret token in its `token` property, you can just set the following values for the chart:
+
+```yaml
+ontrack:
+  casc:
+    enabled: true
+    map: some-config-map-name
+  env:
+    - name: SECRET_GITHUB_TOKEN
+      valueFrom:
+        secretKeyRef:
+          name: "ontrack-github"
+          key: "token"
+```
+
+### Using secret files
+
+Instead of using environment variables, you can also map secrets to files and tell Ontrack to refer to the secrets in the files.
+
+Given the example above:
+
+```yaml
+ontrack:
+  config:
+    github:
+      - name: github.com
+        token: {{ secret.github.token }}
+```
+
+You can map the `ontrack-github` K8S secret onto a volume and tell Ontrack to use this volume:
+
+```yaml
+ontrack:
+  casc:
+    enabled: true
+    map: some-config-map-name
+    secrets:
+      type: file
+      names:
+        - ontrack-github
+# TODO Volumes & volume mounts
+```
+
 # Using a K8S secret for the encryption keys
 
 Ontrack encrypts the credentials used to connect to external systems, using an AES256 key.
