@@ -77,6 +77,8 @@ ingress:
 
 # Ontrack configuration
 ontrack:
+  # Ontrack root URL (used for links in notifications)
+  url: "http://localhost:8080"
   # Comma-separated list of active Spring profiles
   profiles: prod
   ## Adjust these values to your needs, but make sure that the memory limit is never under 4 GB

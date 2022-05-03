@@ -61,6 +61,8 @@ spec:
             ########################################
             # General configuration
             ########################################
+            - name: ONTRACK_CONFIG_URL
+              value: {{ .Values.ontrack.url | quote }}
             - name: PROFILE
               value: {{ .Values.ontrack.profiles | quote }}
             ########################################
