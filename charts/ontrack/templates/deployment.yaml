@@ -96,7 +96,7 @@ spec:
             ########################################
             # Elasticsearch configuration
             ########################################
-            - name: SPRING_ELASTICSEARCH_REST_URIS
+            - name: SPRING_ELASTICSEARCH_URIS
               value: "http://{{ .Values.elasticsearch.masterService }}-headless:9200"
             ########################################
             # RabbitMQ configuration
