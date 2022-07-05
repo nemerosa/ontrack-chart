@@ -198,6 +198,8 @@ elasticsearch:
       node.max_local_storage_nodes: 8
       cluster.routing.allocation.disk.threshold_enabled: "false"
       action.auto_create_index: ".*"
+      # Disabling security warnings
+      xpack.security.enabled: "false"
   resources:
     requests:
       cpu: 300m
