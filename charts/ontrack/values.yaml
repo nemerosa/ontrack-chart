@@ -115,7 +115,18 @@ ontrack:
       secret_name: "ontrack-key-store"
       # Directory to use inside the container
       directory: "/var/ontrack/key_store"
-
+    # License management
+    license:
+      # Type of license: none, stripe
+      type: none
+      # For Stripe based configuration
+      stripe:
+        # Name of the secret which contains the Stripe information
+        secret: ontrack-license-stripe
+        # Name of the secret key which contains the API key
+        token_key_name: token
+        # Name of the secret key which contains ID of the Stripe subscription
+        subscription_key_name: subscription
   # Management configuration
   management:
     metrics:

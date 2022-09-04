@@ -142,6 +142,23 @@ spec:
             - name: ONTRACK_CONFIG_CASC_SECRETS_DIRECTORY
               value: {{ .Values.ontrack.casc.secrets.directory | quote }}
             ########################################
+            # License management
+            ########################################
+            - name: ONTRACK_CONFIG_LICENSE_PROVIDER
+              value: {{ .Values.ontrack.config.license.type | quote }}
+            {{ if eq .Values.ontrack.config.license.type "stripe" }}
+            - name: ONTRACK_CONFIG_LICENSE_STRIPE_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.ontrack.config.license.stripe.secret | quote }}
+                  key: {{ .Values.ontrack.config.license.stripe.token_key_name | quote }}
+            - name: ONTRACK_CONFIG_LICENSE_STRIPE_SUBSCRIPTION
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.ontrack.config.license.stripe.secret | quote }}
+                  key: {{ .Values.ontrack.config.license.stripe.subscription_key_name | quote }}
+            {{- end }}
+            ########################################
             # Arbitrary environment variables
             ########################################
             {{- with .Values.ontrack.env }}
