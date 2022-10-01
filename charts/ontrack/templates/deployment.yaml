@@ -68,9 +68,15 @@ spec:
             ########################################
             # Command line arguments
             ########################################
-            {{- if .Values.ontrack.args }}
+            {{- if and .Values.ontrack.args .Values.ontrack.config_locations }}
+            - name: ONTRACK_ARGS
+              value: {{ cat (join .Values.ontrack.config_locations ",") .Values.ontrack.args | quote }}
+            {{- else if .Values.ontrack.args }}
             - name: ONTRACK_ARGS
               value: {{ .Values.ontrack.args | quote }}
+            {{- else if .Values.ontrack.config_locations }}
+            - name: ONTRACK_ARGS
+              value: {{ .Values.ontrack.config_locations | join "," | quote }}
             {{- end}}
             ########################################
             # Database configuration

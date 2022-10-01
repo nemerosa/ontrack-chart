@@ -84,6 +84,9 @@ ontrack:
   # Additional arguments to pass on the command line to the Ontrack application
   # Uses the ONTRACK_ARGS environment variable of the Ontrack container
   args: ""
+  # List of Spring Boot application properties
+  # See https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#features.external-config.files
+  config_locations: []
   ## Adjust these values to your needs, but make sure that the memory limit is never under 4 GB
   resources:
     limits:
