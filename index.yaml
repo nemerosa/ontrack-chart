@@ -3,6 +3,27 @@ entries:
   ontrack:
   - apiVersion: v2
     appVersion: 4.3.0
+    created: "2022-10-01T09:25:45.445277504Z"
+    dependencies:
+    - condition: postgresql.local
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 10.16.1
+    - name: rabbitmq
+      repository: https://charts.bitnami.com/bitnami
+      version: 8.26.1
+    - name: elasticsearch
+      repository: https://helm.elastic.co
+      version: 7.16.3
+    description: A Helm chart for Kubernetes
+    digest: 8b7abab0f6790617d63ca0e052401bfd0a4e0d04e947659c28d30cd5fda1ac56
+    name: ontrack
+    type: application
+    urls:
+    - https://github.com/nemerosa/ontrack-chart/releases/download/ontrack-0.7.3/ontrack-0.7.3.tgz
+    version: 0.7.3
+  - apiVersion: v2
+    appVersion: 4.3.0
     created: "2022-10-01T08:17:40.077257807Z"
     dependencies:
     - condition: postgresql.local
@@ -841,4 +862,4 @@ entries:
     urls:
     - https://github.com/nemerosa/ontrack-chart/releases/download/ontrack-0.1.1/ontrack-0.1.1.tgz
     version: 0.1.1
-generated: "2022-10-01T08:17:40.077598641Z"
+generated: "2022-10-01T09:25:45.445562407Z"
