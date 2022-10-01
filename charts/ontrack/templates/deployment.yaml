@@ -96,7 +96,7 @@ spec:
             ########################################
             {{- if .Values.ontrack.application_yaml }}
             - name: ONTRACK_ARGS_CONFIG
-              value: "--spring.config.location=/var/ontrack/config/application.yaml"
+              value: "--spring.config.location=classpath:/config/application.yml,/var/ontrack/config/application.yaml"
             {{- else }}
             - name: ONTRACK_ARGS_CONFIG
               value: ""
