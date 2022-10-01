@@ -85,7 +85,8 @@ spec:
             ########################################
             {{- if .Values.ontrack.config_locations }}
             - name: ONTRACK_ARGS_LOCATIONS
-              value: "--spring.config.location={{ .Values.ontrack.config_locations | join "," }}"
+              # The default Ontrack configuration must be taken into account
+              value: "--spring.config.location=classpath:/config/application.yml,{{ .Values.ontrack.config_locations | join "," }}"
             {{- else }}
             - name: ONTRACK_ARGS_LOCATIONS
               value: ""
