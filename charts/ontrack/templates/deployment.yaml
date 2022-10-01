@@ -66,6 +66,13 @@ spec:
             - name: PROFILE
               value: {{ .Values.ontrack.profiles | quote }}
             ########################################
+            # Command line arguments
+            ########################################
+            {{- if .Values.ontrack.args }}
+            - name: ONTRACK_ARGS
+              value: {{ .Values.ontrack.args | quote }}
+            {{- end}}
+            ########################################
             # Database configuration
             ########################################
             {{- if .Values.postgresql.local }}
