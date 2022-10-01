@@ -57,6 +57,11 @@ spec:
               mountPath: "{{ $.Values.ontrack.casc.secrets.directory }}/{{ $secret }}"
               readOnly: true
             {{- end }}
+            {{- if .Values.ontrack.application_yaml }}
+            - name: application-yaml
+              mountPath: /var/ontrack/config
+              readOnly: true
+            {{- end }}
           env:
             ########################################
             # General configuration
@@ -68,16 +73,38 @@ spec:
             ########################################
             # Command line arguments
             ########################################
-            {{- if and .Values.ontrack.args .Values.ontrack.config_locations }}
-            - name: ONTRACK_ARGS
-              value: {{ cat (join .Values.ontrack.config_locations ",") .Values.ontrack.args | quote }}
-            {{- else if .Values.ontrack.args }}
-            - name: ONTRACK_ARGS
+            {{- if .Values.ontrack.args }}
+            - name: ONTRACK_ARGS_GENERIC
               value: {{ .Values.ontrack.args | quote }}
-            {{- else if .Values.ontrack.config_locations }}
-            - name: ONTRACK_ARGS
-              value: {{ .Values.ontrack.config_locations | join "," | quote }}
+            {{- else }}
+            - name: ONTRACK_ARGS_GENERIC
+              value: ""
+            {{- end }}
+            ########################################
+            # List of config files locations
+            ########################################
+            {{- if .Values.ontrack.config_locations }}
+            - name: ONTRACK_ARGS_LOCATIONS
+              value: "--spring.config.location={{ .Values.ontrack.config_locations | join "," }}"
+            {{- else }}
+            - name: ONTRACK_ARGS_LOCATIONS
+              value: ""
             {{- end}}
+            ########################################
+            # Application properties
+            ########################################
+            {{- if .Values.ontrack.application_yaml }}
+            - name: ONTRACK_ARGS_CONFIG
+              value: "--spring.config.location=/var/ontrack/config/application.yaml"
+            {{- else }}
+            - name: ONTRACK_ARGS_CONFIG
+              value: ""
+            {{- end }}
+            ########################################
+            # All command line argument
+            ########################################
+            - name: ONTRACK_ARGS
+              value: "$(ONTRACK_ARGS_GENERIC) $(ONTRACK_ARGS_LOCATIONS) $(ONTRACK_ARGS_CONFIG)"
             ########################################
             # Database configuration
             ########################################
@@ -250,5 +277,11 @@ spec:
         - name: {{ . | quote }}
           secret:
             secretName: {{ . | quote }}
+            optional: false
+        {{- end }}
+        {{- if .Values.ontrack.application_yaml }}
+        - name: application-yaml
+          configMap:
+            name: {{ include "ontrack.fullname" . }}-application
             optional: false
         {{- end }}
