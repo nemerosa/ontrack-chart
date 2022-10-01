@@ -5,5 +5,5 @@ metadata:
   name: {{ include "ontrack.fullname" . }}-application
 data:
   application.yaml: |-
-    {{- toYaml .Values.ontrack.application_yaml | nindent 4 }}
+    {{ .Values.ontrack.application_yaml | indent 4 }}
 {{- end }}
