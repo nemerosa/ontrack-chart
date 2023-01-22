@@ -180,6 +180,10 @@ ontrack:
       # Auto reload cron schedule
       # Leave empty to be a manual job only
       cron: ""
+    # Uploading the Casc
+    upload:
+      # Enabled
+      enabled: false
 
 # Local database for testing purpose
 postgresql:

@@ -177,6 +177,8 @@ spec:
             - name: ONTRACK_CONFIG_CASC_RELOADING_CRON
               value: {{ .Values.ontrack.casc.reloading.cron | quote }}
             {{- end }}
+            - name: ONTRACK_CONFIG_CASC_UPLOAD_ENABLED
+              value: {{ .Values.ontrack.casc.upload.enabled | quote }}
             {{- end }}
             - name: ONTRACK_CONFIG_CASC_SECRETS_TYPE
               value: {{ .Values.ontrack.casc.secrets.mapping | quote }}
