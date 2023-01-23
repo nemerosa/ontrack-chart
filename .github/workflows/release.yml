@@ -32,7 +32,7 @@ jobs:
           helm package charts/ontrack --destination .cr-release-packages
 
       - name: Run chart-releaser
-        uses: dcoraboeuf/chart-releaser-action@main
+        uses: helm/chart-releaser-action@v1.5.0
         with:
           skip_packaging: "yes"
         env:
