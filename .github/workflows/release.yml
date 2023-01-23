@@ -33,6 +33,7 @@ jobs:
 
       - name: Run chart-releaser
         uses: dcoraboeuf/chart-releaser-action@main
-        env:
+        with:
           skip_packaging: "yes"
+        env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
