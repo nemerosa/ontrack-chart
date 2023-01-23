@@ -27,6 +27,10 @@ jobs:
           helm repo add bitnami https://charts.bitnami.com/bitnami
           helm repo add elastic https://helm.elastic.co
 
+      - name: Packaging
+        run: |
+          helm package charts/ontrack
+
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.5.0
         env:
