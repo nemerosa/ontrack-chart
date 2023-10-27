@@ -188,11 +188,17 @@ ontrack:
 # Local database for testing purpose
 postgresql:
   local: true
-  # Name of the database to connect to
-  postgresqlDatabase: ontrack
-  # Credentials to be used
-  postgresqlUsername: ontrack
-  postgresqlPassword: ontrack
+  # Authentication parameters
+  auth:
+    # Name of the database to create
+    database: ontrack
+    # Credentials to be used
+    username: ontrack
+    password: ontrack
+  # Configuration for the container database
+#  primary:
+#    pgHbaConfiguration: |-
+#      host all all 0.0.0.0/0 trust
   # For external database
   postgresqlUrl: ""
   # For external database, using environment variables

@@ -112,7 +112,7 @@ spec:
             {{- if .Values.postgresql.local }}
             # For test service
             - name: SPRING_DATASOURCE_URL
-              value: "jdbc:postgresql://{{ .Release.Name }}-postgresql-headless:5432/ontrack"
+              value: "jdbc:postgresql://{{ .Release.Name }}-postgresql-hl:5432/{{ .Values.postgresql.auth.database }}"
             # For a managed database, using external environment variables
             {{- else if .Values.postgresql.postgresFromEnv }}
             # Nothing to be declared here
@@ -121,9 +121,9 @@ spec:
             - name: SPRING_DATASOURCE_URL
               value: {{ required "When local Postgres service is disabled, the postgresql.postgresqlUrl value must be set" .Values.postgresql.postgresqlUrl | quote }}
             - name: SPRING_DATASOURCE_USERNAME
-              value: {{ .Values.postgresql.postgresqlUsername | quote }}
+              value: {{ .Values.postgresql.auth.username | quote }}
             - name: SPRING_DATASOURCE_PASSWORD
-              value: {{ .Values.postgresql.postgresqlPassword | quote }}
+              value: {{ .Values.postgresql.auth.password | quote }}
             {{- end }}
             ########################################
             # Key management

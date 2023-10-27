@@ -33,7 +33,7 @@ helm delete my-ontrack-release
 This installs 4 services:
 
 * Ontrack itself
-* a Postgres 11 database
+* a Postgres 15 database
 * an Elasticsearch 7 single node
 * a RabbitMQ message broker
 
@@ -48,8 +48,9 @@ In order to use a managed database, create a values file and fill the URL and cr
 ```yaml
 postgresql:
   local: false
-  postgresqlUsername: ontrack
-  postgresqlPassword: "*****"
+  auth:
+    username: ontrack
+    password: "*****"
   postgresqlUrl: "jdbc:postgresql://<host>:<port>/ontrack?sslmode=require"
 ```
 
@@ -208,3 +209,10 @@ ontrack:
      # secret_key_store:
      #   secret_name: "ontrack-key-store"
 ```
+
+# Change log
+
+| Version | Postgres | Elasticsearch | Kubernetes | Minimal Ontrack version | Notes |
+|---------|----------|---------------|------------|-------------------------|-------|
+| 0.8.x   | 11       | 7             | 1.24       | 4.7.13                  | -     |
+| 0.9.x   | 15       | 7             | 1.24       | 4.7.20                  | -     |
