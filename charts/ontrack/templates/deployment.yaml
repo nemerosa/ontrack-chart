@@ -71,6 +71,15 @@ spec:
             - name: PROFILE
               value: {{ .Values.ontrack.profiles | quote }}
             ########################################
+            # Next UI configuration
+            ########################################
+            {{- if .Values.ontrack.ui.enabled }}
+            - name: ONTRACK_CONFIG_UI_ENABLED
+              value: "true"
+            - name: ONTRACK_CONFIG_UI_URI
+              value: "{{ .Values.ontrack.url }}/ui"
+            {{- end }}
+            ########################################
             # Command line arguments
             ########################################
             {{- if .Values.ontrack.args }}

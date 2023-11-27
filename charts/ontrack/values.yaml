@@ -89,6 +89,20 @@ ontrack:
   config_locations: []
   # Application configuration file as a YAML content
   application_yaml: ""
+  ## Next UI setup (experimental)
+  ui:
+    # Enabling Next UI
+    enabled: false
+    # Image to use
+    image: nemerosa/ontrack-ui
+    # Next UI resources
+    resources:
+      limits:
+        cpu: 800m
+        memory: 1Gi
+      requests:
+        cpu: 800m
+        memory: 1Gi
   ## Adjust these values to your needs, but make sure that the memory limit is never under 4 GB
   resources:
     limits:
