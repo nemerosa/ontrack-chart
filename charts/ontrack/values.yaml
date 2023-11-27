@@ -95,6 +95,10 @@ ontrack:
     enabled: false
     # Image to use
     image: nemerosa/ontrack-ui
+    # Service
+    service:
+      # Port to expose
+      port: 3000
     # Next UI resources
     resources:
       limits:
