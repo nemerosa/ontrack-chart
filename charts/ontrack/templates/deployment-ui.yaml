@@ -1,13 +1,13 @@
 # Deployment of the Next UI service
 {{- if .Values.ontrack.ui.enabled }}
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
   name: {{ include "ontrack.fullname" . }}-ui
   labels:
     {{- include "ontrack.labels" . | nindent 4 }}
 spec:
-  serviceName: ontrack-ui
+  replicas: {{ .Values.ontrack.ui.replicas }}
   selector:
     matchLabels:
       {{- include "ontrack.selectorLabels" . | nindent 6 }}
@@ -36,7 +36,13 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.ontrack.ui.image }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          # env:
+          env:
+            - name: NEXT_PUBLIC_ONTRACK_URL
+              value: {{ .Values.ontrack.url | quote }}
+            - name: NEXT_PUBLIC_ONTRACK_UI_URL
+              value: "{{ .Values.ontrack.url }}{{ .Values.ontrack.ui.service.path }}"
+            - name: NEXT_PUBLIC_ONTRACK_CONNECTION_LOGGING
+              value: "{{ .Values.ontrack.ui.logging }}"
           # envFrom:
           ports:
             - name: http

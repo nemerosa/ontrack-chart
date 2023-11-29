@@ -93,12 +93,18 @@ ontrack:
   ui:
     # Enabling Next UI
     enabled: false
+    # Number of replicas
+    replicas: 2
+    # Logging
+    logging: false
     # Image to use
     image: nemerosa/ontrack-ui
     # Service
     service:
       # Port to expose
       port: 3000
+      # Path to use
+      path: "/ui"
     # Next UI resources
     resources:
       limits:
