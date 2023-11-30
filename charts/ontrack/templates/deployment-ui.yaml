@@ -49,20 +49,21 @@ spec:
               containerPort: 3000
               protocol: TCP
           resources: {{ toYaml .Values.ontrack.ui.resources | nindent 12 }}
-{{/*          livenessProbe:*/}}
-{{/*            httpGet:*/}}
-{{/*              path: /manage/health/liveness*/}}
-{{/*              port: mgt*/}}
-{{/*            failureThreshold: 3*/}}
-{{/*            periodSeconds: 60*/}}
-{{/*            initialDelaySeconds: 60*/}}
-{{/*          readinessProbe:*/}}
-{{/*            httpGet:*/}}
-{{/*              path: /manage/health/readiness*/}}
-{{/*              port: mgt*/}}
-{{/*            failureThreshold: 3*/}}
-{{/*            periodSeconds: 60*/}}
-{{/*            initialDelaySeconds: 60*/}}
+          # Probes
+          livenessProbe:
+            httpGet:
+              path: "{{ .Values.ontrack.ui.service.path }}/api/health"
+              port: 3000
+            failureThreshold: 6
+            periodSeconds: 20
+            initialDelaySeconds: 5
+          readinessProbe:
+            httpGet:
+              path: "{{ .Values.ontrack.ui.service.path }}/api/health"
+              port: 3000
+            failureThreshold: 6
+            periodSeconds: 20
+            initialDelaySeconds: 5
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
