@@ -37,13 +37,13 @@ spec:
           image: "{{ .Values.ontrack.ui.image }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
-            - name: NEXT_PUBLIC_ONTRACK_URL
+            - name: ONTRACK_URL
               value: {{ .Values.ontrack.url | quote }}
-            - name: NEXT_PUBLIC_ONTRACK_UI_URL
+            - name: ONTRACK_UI_URL
               value: "{{ .Values.ontrack.url }}{{ .Values.ontrack.ui.service.path }}"
-            - name: NEXT_PUBLIC_ONTRACK_CONNECTION_LOGGING
+            - name: ONTRACK_CONNECTION_LOGGING
               value: "{{ .Values.ontrack.ui.logging }}"
-            - name: NEXT_PUBLIC_ONTRACK_CONNECTION_TRACING
+            - name: ONTRACK_CONNECTION_TRACING
               value: "{{ .Values.ontrack.ui.tracing }}"
           # envFrom:
           ports:
