@@ -11,10 +11,6 @@ metadata:
   labels:
     {{- include "ontrack.labels" . | nindent 4 }}
   annotations:
-    {{- if $uiEnabled }}
-    nginx.ingress.kubernetes.io/use-regex: "true"
-    nginx.ingress.kubernetes.io/rewrite-target: /$2
-    {{- end }}
   {{- with .Values.ingress.annotations }}
     {{- toYaml . | nindent 4 }}
   {{- end }}
@@ -36,8 +32,8 @@ spec:
         paths:
           # Next UI
           {{- if $uiEnabled }}
-          - path: {{ $uiPath }}(/|$)(.*)
-            pathType: ImplementationSpecific
+          - path: {{ $uiPath }}
+            pathType: Prefix
             backend:
               service:
                 name: {{ $fullName }}-ui

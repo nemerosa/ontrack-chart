@@ -43,6 +43,8 @@ spec:
               value: "{{ .Values.ontrack.url }}{{ .Values.ontrack.ui.service.path }}"
             - name: NEXT_PUBLIC_ONTRACK_CONNECTION_LOGGING
               value: "{{ .Values.ontrack.ui.logging }}"
+            - name: NEXT_PUBLIC_ONTRACK_CONNECTION_TRACING
+              value: "{{ .Values.ontrack.ui.tracing }}"
           # envFrom:
           ports:
             - name: http
@@ -52,14 +54,14 @@ spec:
           # Probes
           livenessProbe:
             httpGet:
-              path: "/api/health"
+              path: "{{ .Values.ontrack.ui.service.path }}/api/health"
               port: 3000
             failureThreshold: 6
             periodSeconds: 20
             initialDelaySeconds: 5
           readinessProbe:
             httpGet:
-              path: "/api/health"
+              path: "{{ .Values.ontrack.ui.service.path }}/api/health"
               port: 3000
             failureThreshold: 6
             periodSeconds: 20
