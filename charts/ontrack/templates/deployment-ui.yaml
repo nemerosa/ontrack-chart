@@ -5,12 +5,12 @@ kind: Deployment
 metadata:
   name: {{ include "ontrack.fullname" . }}-ui
   labels:
-    {{- include "ontrack.labels" . | nindent 4 }}
+    {{- include "ontrack.labels.ui" . | nindent 4 }}
 spec:
   replicas: {{ .Values.ontrack.ui.replicas }}
   selector:
     matchLabels:
-      {{- include "ontrack.selectorLabels" . | nindent 6 }}
+      {{- include "ontrack.selectorLabels.ui" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -18,7 +18,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "ontrack.selectorLabels" . | nindent 8 }}
+        {{- include "ontrack.selectorLabels.ui" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
