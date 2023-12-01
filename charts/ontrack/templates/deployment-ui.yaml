@@ -52,14 +52,14 @@ spec:
           # Probes
           livenessProbe:
             httpGet:
-              path: "{{ .Values.ontrack.ui.service.path }}/api/health"
+              path: "/api/health"
               port: 3000
             failureThreshold: 6
             periodSeconds: 20
             initialDelaySeconds: 5
           readinessProbe:
             httpGet:
-              path: "{{ .Values.ontrack.ui.service.path }}/api/health"
+              path: "/api/health"
               port: 3000
             failureThreshold: 6
             periodSeconds: 20
