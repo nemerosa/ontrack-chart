@@ -39,6 +39,44 @@ This installs 4 services:
 
 To connect to Ontrack, enable the ingress or activate a port forward.
 
+# Enabling Next UI
+
+Next UI is an experimental new UI of Ontrack starting from version 4.8. It'll become the default UI in version 5.0.
+
+> By default, Next UI is not active and must be enabled explicitly into the Helm chart values.
+
+> IMPORTANT: Next UI and its interaction with the Ontrack backend, works through _external URLs_ and therefore,
+> Next UI can be enabled only if an ingress is made available.
+
+To enable the Next UI:
+
+```yaml
+ontrack:
+  url: "https://<host>"
+  ui:
+    enabled: true
+    logging: true
+    tracing: true
+```
+
+Properties:
+
+| Property             | Default    | Description                                                                        |
+|----------------------|------------|------------------------------------------------------------------------------------|
+| `ontrack.url`        | _Required_ | Base URL of Ontrack                                                                |
+| `ontrack.ui.enabled` | `false`    | Set to `true` to enable Next UI                                                    |
+| `ontrack.ui.logging` | `false`    | Set to `true` to enable some logging at Next UI level (browser & server)           |
+| `ontrack.ui.tracing` | `false`    | Set to `true` to enable some low level tracing at Next UI level (browser & server) |
+
+When Next UI is enabled:
+
+* you can access the classic Ontrack UI and API at https://<host>
+* you can access the Next UI https://<host>/ui
+* some menus & commands allow to go from one to the other
+
+> When accessing the Next UI directly, you'll be redirected to the classic login page to authenticate. This will change
+> in version 5.0.
+
 # Using a managed database
 
 The default Postgres service is suitable only for local tests and a production setup should use a managed database on the cloud provider.
@@ -212,7 +250,49 @@ ontrack:
 
 # Change log
 
-| Version | Postgres | Elasticsearch | Kubernetes | Minimal Ontrack version | Notes |
-|---------|----------|---------------|------------|-------------------------|-------|
-| 0.8.x   | 11       | 7             | 1.24       | 4.7.13                  | -     |
-| 0.9.x   | 15       | 7             | 1.24       | 4.7.20                  | -     |
+| Version         | Postgres | Elasticsearch | Kubernetes | Minimal Ontrack version |
+|-----------------|----------|---------------|------------|-------------------------|
+| 0.8.x           | 11       | 7             | 1.24       | 4.7.13                  |
+| 0.9.x           | 15       | 7             | 1.24       | 4.7.20                  |
+| [0.10.x](#0-10) | 15       | 7             | 1.24       | 4.8.1                   |
+
+## 0.10
+
+* Support for [Next UI](#enabling-next-ui)
+
+* **BREAKING** Ingress setup has been simplified, only the `ontrack.url` value is needed; no `path` must be provided any longer. Hosts and TLS setup must be provided as usual
+
+Before:
+
+```yaml
+ingress:
+  enabled: true
+  annotations:
+    # ...
+  hosts:
+    - host: ${host}
+      paths:
+        - path: "/"
+  tls:
+    - secretName: ${host}-tls
+      hosts:
+        - ${host}
+```
+
+Now:
+
+```yaml
+ontrack:
+  url: https://${host}
+ingress:
+  enabled: true
+  annotations:
+    # ...
+  hosts:
+    - host: ${host}
+  tls:
+    - secretName: ${host}-tls
+      hosts:
+        - ${host}
+```
+
