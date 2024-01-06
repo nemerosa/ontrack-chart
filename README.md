@@ -250,11 +250,29 @@ ontrack:
 
 # Change log
 
-| Version         | Postgres | Elasticsearch | Kubernetes | Minimal Ontrack version |
-|-----------------|----------|---------------|------------|-------------------------|
-| 0.8.x           | 11       | 7             | 1.24       | 4.7.13                  |
-| 0.9.x           | 15       | 7             | 1.24       | 4.7.20                  |
+| Version        | Postgres | Elasticsearch | Kubernetes | Minimal Ontrack version |
+|----------------|----------|---------------|------------|-------------------------|
+| 0.8.x          | 11       | 7             | 1.24       | 4.7.13                  |
+| 0.9.x          | 15       | 7             | 1.24       | 4.7.20                  |
 | [0.10.x](#010) | 15       | 7             | 1.24       | 4.8.1                   |
+| [0.11.x](#011) | 15       | 7             | 1.24       | 4.8.12                  |
+
+## 0.11
+
+* Support for the `fixed` license:
+
+```yaml
+ontrack:
+  config:
+    license:
+        type: fixed
+        fixed:
+          name: Premium
+          assignee: Nemerosa
+          active: true
+          validUntil: 2024-12-31T12:00:00
+          maxProjects: 0
+```
 
 ## 0.10
 

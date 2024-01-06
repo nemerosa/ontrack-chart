@@ -210,6 +210,18 @@ spec:
                   name: {{ .Values.ontrack.config.license.stripe.secret | quote }}
                   key: {{ .Values.ontrack.config.license.stripe.subscription_key_name | quote }}
             {{- end }}
+            {{ if eq .Values.ontrack.config.license.type "fixed" }}
+            - name: ONTRACK_CONFIG_LICENSE_FIXED_NAME
+              value: {{ .Values.ontrack.config.license.fixed.name | quote }}
+            - name: ONTRACK_CONFIG_LICENSE_FIXED_ASSIGNEE
+              value: {{ .Values.ontrack.config.license.fixed.assignee | quote }}
+            - name: ONTRACK_CONFIG_LICENSE_FIXED_VALIDUNTIL
+              value: {{ .Values.ontrack.config.license.fixed.validUntil | quote }}
+            - name: ONTRACK_CONFIG_LICENSE_FIXED_MAXPROJECTS
+              value: {{ .Values.ontrack.config.license.fixed.maxProjects | quote }}
+            - name: ONTRACK_CONFIG_LICENSE_FIXED_ACTIVE
+              value: {{ .Values.ontrack.config.license.fixed.active | quote }}
+            {{- end }}
             ########################################
             # Arbitrary environment variables
             ########################################

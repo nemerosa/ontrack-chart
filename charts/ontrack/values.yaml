@@ -153,8 +153,20 @@ ontrack:
       directory: "/var/ontrack/key_store"
     # License management
     license:
-      # Type of license: none, stripe
+      # Type of license: none, stripe, fixed
       type: none
+      # For Fixed based configuration
+      fixed:
+        # Type of license, display name, description, etc.
+        name:
+        # Name of the assignee
+        assignee:
+        # Is the license active?
+        active: false
+        # End of validity for this license (null for unlimited)
+        validUntil:
+        # Maximum number of projects which can be created (0 for unlimited)
+        maxProjects: 0
       # For Stripe based configuration
       stripe:
         # Name of the secret which contains the Stripe information
