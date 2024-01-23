@@ -70,8 +70,8 @@ Properties:
 
 When Next UI is enabled:
 
-* you can access the classic Ontrack UI and API at https://<host>
-* you can access the Next UI https://<host>/ui
+* you can access the classic Ontrack UI and API at https:/host
+* you can access the Next UI https://host/ui
 * some menus & commands allow to go from one to the other
 
 > When accessing the Next UI directly, you'll be redirected to the classic login page to authenticate. This will change
