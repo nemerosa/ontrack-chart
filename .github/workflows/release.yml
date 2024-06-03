@@ -27,6 +27,10 @@ jobs:
           helm repo add bitnami https://charts.bitnami.com/bitnami
           helm repo add elastic https://helm.elastic.co
 
+      - name: Linting
+        run: |
+          helm link charts/ontrack
+
       - name: Packaging
         run: |
           helm package charts/ontrack --destination .cr-release-packages
