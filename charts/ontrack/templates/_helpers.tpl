@@ -43,6 +43,18 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end }}
 
 {{/*
+Common labels for mgt server
+*/}}
+{{- define "ontrack.labels.ui" -}}
+helm.sh/chart: {{ include "ontrack.chart" . }}
+{{ include "ontrack.selectorLabels.mgt" . }}
+{{- if .Chart.AppVersion }}
+app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+{{- end }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- end }}
+
+{{/*
 Common labels for UI
 */}}
 {{- define "ontrack.labels.ui" -}}
@@ -59,6 +71,14 @@ Selector labels
 */}}
 {{- define "ontrack.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "ontrack.name" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}
+
+{{/*
+Selector labels for the mgt server
+*/}}
+{{- define "ontrack.selectorLabels.mgt" -}}
+app.kubernetes.io/name: {{ include "ontrack.name" . }}-mgt
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 

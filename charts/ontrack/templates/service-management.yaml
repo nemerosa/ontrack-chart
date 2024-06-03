@@ -4,7 +4,7 @@ kind: Service
 metadata:
   name: {{ include "ontrack.fullname" . }}-management
   labels:
-    {{- include "ontrack.labels" . | nindent 4 }}
+    {{- include "ontrack.labels.mgt" . | nindent 4 }}
   {{- with .Values.management.service.annotations }}
   annotations:
     {{- toYaml . | nindent 8 }}
