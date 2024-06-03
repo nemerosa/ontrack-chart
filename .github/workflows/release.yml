@@ -29,7 +29,7 @@ jobs:
 
       - name: Linting
         run: |
-          helm link charts/ontrack
+          helm lint charts/ontrack
 
       - name: Packaging
         run: |
