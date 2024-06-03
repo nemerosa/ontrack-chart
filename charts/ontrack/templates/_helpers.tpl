@@ -45,7 +45,7 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Common labels for mgt server
 */}}
-{{- define "ontrack.labels.ui" -}}
+{{- define "ontrack.labels.mgt" -}}
 helm.sh/chart: {{ include "ontrack.chart" . }}
 {{ include "ontrack.selectorLabels.mgt" . }}
 {{- if .Chart.AppVersion }}
