@@ -175,6 +175,10 @@ ontrack:
         token_key_name: token
         # Name of the secret key which contains ID of the Stripe subscription
         subscription_key_name: subscription
+      # For embedded license key
+      embedded:
+        # Provided license key
+        key: ""
   # Management configuration
   management:
     metrics:

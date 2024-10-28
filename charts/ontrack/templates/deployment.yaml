@@ -222,6 +222,10 @@ spec:
             - name: ONTRACK_CONFIG_LICENSE_FIXED_ACTIVE
               value: {{ .Values.ontrack.config.license.fixed.active | quote }}
             {{- end }}
+            {{ if eq .Values.ontrack.config.license.type "embedded" }}
+            - name: ONTRACK_CONFIG_LICENSE_EMBEDDED_KEY
+              value: {{ .Values.ontrack.config.license.embedded.key | quote }}
+            {{- end }}
             ########################################
             # Arbitrary environment variables
             ########################################
