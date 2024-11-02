@@ -46,6 +46,10 @@ spec:
             - name: casc-secret
               mountPath: "{{ .Values.ontrack.casc.directory }}/secret"
             {{- end }}
+            {{- if .Values.casc }}
+            - name: casc-values
+              mountPath: "{{ .Values.ontrack.casc.directory }}/values"
+            {{- end }}
             {{- end }}
             {{- if eq .Values.ontrack.config.key_store "secret" }}
             - name: ontrack-key-store
@@ -170,16 +174,19 @@ spec:
             {{- if .Values.ontrack.casc.enabled }}
             - name: ONTRACK_CONFIG_CASC_ENABLED
               value: "true"
-            {{- if and .Values.ontrack.casc.map .Values.ontrack.casc.secret }}
+            {{- $locations := list -}}
+            {{- if .Values.ontrack.casc.map -}}
+              {{- $locations = append $locations (printf "file://%s/map" .Values.ontrack.casc.directory) -}}
+            {{- end -}}
+            {{- if .Values.ontrack.casc.secret -}}
+              {{- $locations = append $locations (printf "file://%s/secret" .Values.ontrack.casc.directory) -}}
+            {{- end -}}
+            {{- if .Values.casc -}}
+              {{- $locations = append $locations (printf "file://%s/values" .Values.ontrack.casc.directory) -}}
+            {{- end -}}
+            {{- $locationsValue := join "," $locations }}
             - name: ONTRACK_CONFIG_CASC_LOCATIONS
-              value: "file://{{ .Values.ontrack.casc.directory }}/map,file://{{ .Values.ontrack.casc.directory }}/secret"
-            {{- else if .Values.ontrack.casc.map }}
-            - name: ONTRACK_CONFIG_CASC_LOCATIONS
-              value: "file://{{ .Values.ontrack.casc.directory }}/map"
-            {{- else if .Values.ontrack.casc.secret }}
-            - name: ONTRACK_CONFIG_CASC_LOCATIONS
-              value: "file://{{ .Values.ontrack.casc.directory }}/secret"
-            {{- end }}
+              value: {{ $locationsValue | quote }}
             {{- if .Values.ontrack.casc.reloading.enabled }}
             - name: ONTRACK_CONFIG_CASC_RELOADING_ENABLED
               value: "true"
@@ -299,6 +306,12 @@ spec:
         - name: casc-secret
           secret:
             secretName: {{ .Values.ontrack.casc.secret | quote }}
+            optional: false
+        {{- end }}
+        {{- if and .Values.ontrack.casc.enabled .Values.casc }}
+        - name: casc-values
+          configMap:
+            name: {{ include "ontrack.fullname" . }}-casc
             optional: false
         {{- end }}
         {{- range .Values.ontrack.casc.secrets.names }}

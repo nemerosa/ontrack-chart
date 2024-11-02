@@ -3,3 +3,4 @@
 local/
 /.cr-release-packages
 /values.yaml
+/casc.yaml

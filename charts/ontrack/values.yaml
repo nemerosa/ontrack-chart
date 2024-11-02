@@ -228,6 +228,15 @@ ontrack:
     upload:
       # Enabled
       enabled: false
+    # Casc from values
+    mapValues:
+      # Enabling the creating & mapping of a config map holding Casc values
+      # Casc values are expected to be under the root `casc` object, for example
+      # casc:
+      #   ontrack:
+      #     # ...
+      # Name of the entry to hold the values
+      mapEntryName: "casc.yaml"
 
 # Local database for testing purpose
 postgresql:
