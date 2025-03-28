@@ -4,9 +4,9 @@ dependencies:
   version: 12.12.10
 - name: rabbitmq
   repository: https://charts.bitnami.com/bitnami
-  version: 12.3.0
+  version: 14.7.0
 - name: elasticsearch
   repository: https://helm.elastic.co
-  version: 7.16.3
-digest: sha256:c348b416ec75bc11f6d1415d427a1fff9772865aa7d4a5ecd8d2eb67bc4f0e96
-generated: "2023-10-27T16:10:33.984326+02:00"
+  version: 7.17.3
+digest: sha256:f813a15a69aa48d8b64acb7870f43fdc183a1fc6dcb8262c5a378fcb53f96636
+generated: "2025-03-28T11:59:11.56434+01:00"
