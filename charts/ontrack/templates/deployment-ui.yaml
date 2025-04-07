@@ -1,5 +1,4 @@
 # Deployment of the Next UI service
-{{- if .Values.ontrack.ui.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -78,4 +77,3 @@ spec:
       tolerations:
         {{- toYaml .Values.tolerations | nindent 8 }}
       {{- end }}
-{{- end }}

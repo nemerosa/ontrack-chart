@@ -1,7 +1,5 @@
 {{- if .Values.ingress.enabled -}}
 {{- $fullName := include "ontrack.fullname" . -}}
-{{- $svcPort := .Values.service.port -}}
-{{- $uiEnabled := .Values.ontrack.ui.enabled -}}
 {{- $uiPort := .Values.ontrack.ui.service.port -}}
 {{- $uiPath := .Values.ontrack.ui.service.path -}}
 apiVersion: networking.k8s.io/v1
@@ -15,38 +13,22 @@ metadata:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-  {{- if .Values.ingress.tls }}
+  {{- if .Values.ingress.tls.enabled }}
   tls:
-    {{- range .Values.ingress.tls }}
     - hosts:
-        {{- range .hosts }}
-        - {{ . | quote }}
-        {{- end }}
-      secretName: {{ .secretName }}
-    {{- end }}
+        - {{ .Values.ingress.host }}
+      secretName: "{{ .Values.ingress.host }}-tls"
   {{- end }}
   rules:
-    {{- range .Values.ingress.hosts }}
-    - host: {{ .host | quote }}
+    - host: {{ .Values.ingress.host }}
       http:
         paths:
           # Next UI
-          {{- if $uiEnabled }}
-          - path: {{ $uiPath }}
+          - path: "/"
             pathType: Prefix
             backend:
               service:
                 name: {{ $fullName }}-ui
                 port:
                   number: {{ $uiPort }}
-          {{- end }}
-          # Main Ontrack service (Backend + legacy UI)
-          - path: "/"
-            pathType: Prefix
-            backend:
-              service:
-                name: {{ $fullName }}
-                port:
-                  number: {{ $svcPort }}
-    {{- end }}
-  {{- end }}
+{{- end }}
