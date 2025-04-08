@@ -67,6 +67,18 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end }}
 
 {{/*
+Common labels for Keycloak
+*/}}
+{{- define "ontrack.labels.keycloak" -}}
+helm.sh/chart: {{ include "ontrack.chart" . }}
+{{ include "ontrack.selectorLabels.keycloak" . }}
+{{- if .Chart.AppVersion }}
+app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+{{- end }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- end }}
+
+{{/*
 Selector labels
 */}}
 {{- define "ontrack.selectorLabels" -}}
@@ -87,6 +99,14 @@ Selector labels for UI
 */}}
 {{- define "ontrack.selectorLabels.ui" -}}
 app.kubernetes.io/name: {{ include "ontrack.name" . }}-ui
+app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}
+
+{{/*
+Selector labels for Keycloak
+*/}}
+{{- define "ontrack.selectorLabels.keycloak" -}}
+app.kubernetes.io/name: {{ include "ontrack.name" . }}-keycloak
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 

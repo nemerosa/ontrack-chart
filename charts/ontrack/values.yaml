@@ -218,11 +218,18 @@ ontrack:
 auth:
   keycloak:
     enabled: true
+    image: quay.io/keycloak/keycloak
+    tag: 26.1.4
+    bootstrap:
+      username: admin
+      password: admin
     external:
       enabled: false
       url: https://keycloak
     service:
       port: 8008
+      path: keycloak
+    resources: {}
     realm: ontrack
     secret:
       enabled: false
