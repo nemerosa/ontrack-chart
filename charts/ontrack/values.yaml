@@ -224,6 +224,13 @@ auth:
     service:
       port: 8008
     realm: ontrack
+    secret:
+      enabled: false
+      name: ontrack-keycloak
+    client:
+      id: ontrack-client
+      secret: ontrack-client-secret
+  secret: xxx
 
 # Local database for testing purpose
 postgresql:

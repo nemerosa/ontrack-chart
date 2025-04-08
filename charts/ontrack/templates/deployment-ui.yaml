@@ -1,4 +1,3 @@
-# Deployment of the Next UI service
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -38,7 +37,38 @@ spec:
           env:
             - name: ONTRACK_URL
               value: "http://ontrack:{{ .Values.service.port }}"
-          # envFrom:
+            - name: NEXTAUTH_URL
+              value: {{ .Values.ontrack.url | quote }}
+            {{- if .Values.auth.keycloak.enabled }}
+            {{- if .Values.auth.keycloak.external.enabled }}
+            - name: NEXTAUTH_ISSUER
+              value: {{ .Values.auth.keycloak.external.url | quote }}
+            {{- else }}
+            - name: NEXTAUTH_ISSUER
+              value: http://keycloak:{{ .Values.auth.keycloak.service.port }}/realms/{{ .Values.auth.keycloak.realm }}
+            {{- end }}
+            {{- if .Values.auth.keycloak.secret.enabled }}
+            - name: NEXTAUTH_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.auth.keycloak.secret.name }}
+                  key: "client-id"
+                  optional: false
+            - name: NEXTAUTH_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.auth.keycloak.secret.name }}
+                  key: "client-secret"
+                  optional: false
+            {{- else }}
+            - name: NEXTAUTH_CLIENT_ID
+              value: {{ .Values.auth.keycloak.client.id | quote }}
+            - name: NEXTAUTH_CLIENT_SECRET
+              value: {{ .Values.auth.keycloak.client.secret | quote }}
+            {{- end }}
+            {{- end }}
+            - name: NEXTAUTH_SECRET
+              value: {{ .Values.auth.secret | quote }}
           ports:
             - name: http
               containerPort: 3000
