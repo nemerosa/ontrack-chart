@@ -214,6 +214,17 @@ ontrack:
       # Name of the entry to hold the values
       mapEntryName: "casc.yaml"
 
+# Authentication
+auth:
+  keycloak:
+    enabled: true
+    external:
+      enabled: false
+      url: https://keycloak
+    service:
+      port: 8008
+    realm: ontrack
+
 # Local database for testing purpose
 postgresql:
   local: true

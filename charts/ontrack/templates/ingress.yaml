@@ -1,3 +1,7 @@
+{{- if and .Values.auth.keycloak.enabled (not .Values.ingress.enabled) -}}
+{{- fail "Ingress must be enabled when Keycloak is enabled." -}}
+{{- end }}
+
 {{- if .Values.ingress.enabled -}}
 {{- $fullName := include "ontrack.fullname" . -}}
 {{- $uiPort := .Values.ontrack.ui.service.port -}}

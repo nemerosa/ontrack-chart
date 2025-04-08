@@ -127,6 +127,17 @@ spec:
             - name: SPRING_RABBITMQ_PASSWORD
               value: {{ .Values.rabbitmq.auth.password | quote }}
             ########################################
+            # Authentication
+            ########################################
+            {{- if .Values.auth.keycloak.enabled }}
+            {{- if .Values.auth.keycloak.external.enabled }}
+            - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI
+              value: {{ .Values.auth.keycloak.external.url | quote }}
+            {{- else }}
+            - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI
+              value: http://keycloak:{{ .Values.auth.keycloak.service.port }}/realms/{{ .Values.auth.keycloak.realm }}
+            {{- end }}
+            ########################################
             # Metrics tags
             ########################################
             - name: MANAGEMENT_METRICS_TAGS_APPLICATION
