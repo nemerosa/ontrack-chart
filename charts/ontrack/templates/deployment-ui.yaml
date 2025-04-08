@@ -37,13 +37,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: ONTRACK_URL
-              value: {{ .Values.ontrack.url | quote }}
-            - name: ONTRACK_UI_URL
-              value: "{{ .Values.ontrack.url }}{{ .Values.ontrack.ui.service.path }}"
-            - name: ONTRACK_CONNECTION_LOGGING
-              value: "{{ .Values.ontrack.ui.logging }}"
-            - name: ONTRACK_CONNECTION_TRACING
-              value: "{{ .Values.ontrack.ui.tracing }}"
+              value: "http://ontrack:{{ .Values.service.port }}"
           # envFrom:
           ports:
             - name: http
@@ -53,14 +47,14 @@ spec:
           # Probes
           livenessProbe:
             httpGet:
-              path: "{{ .Values.ontrack.ui.service.path }}/api/health"
+              path: "/api/health"
               port: 3000
             failureThreshold: 6
             periodSeconds: 20
             initialDelaySeconds: 5
           readinessProbe:
             httpGet:
-              path: "{{ .Values.ontrack.ui.service.path }}/api/health"
+              path: "/api/health"
               port: 3000
             failureThreshold: 6
             periodSeconds: 20

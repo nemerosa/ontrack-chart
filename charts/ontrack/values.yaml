@@ -69,36 +69,22 @@ ingress:
 
 # Ontrack configuration
 ontrack:
-  # Ontrack root URL (used for links in notifications)
-  url: "http://localhost:8080"
+  # Ontrack root URL - must point to the UI service
+  url: "http://localhost:3000"
   # Comma-separated list of active Spring profiles
   profiles: prod
-  # Additional arguments to pass on the command line to the Ontrack application
-  # Uses the ONTRACK_ARGS environment variable of the Ontrack container
-  args: ""
-  # List of Spring Boot application properties
-  # See https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#features.external-config.files
-  config_locations: []
   # Application configuration file as a YAML content
   application_yaml: ""
   ## Next UI setup (experimental)
   ui:
-    # Enabling Next UI
-    enabled: false
     # Number of replicas
     replicas: 1
-    # Logging
-    logging: false
-    # Tracing
-    tracing: false
     # Image to use
     image: nemerosa/ontrack-ui
     # Service
     service:
       # Port to expose
       port: 3000
-      # Path to use
-      path: "/ui"
     # Next UI resources
     resources:
       limits:
