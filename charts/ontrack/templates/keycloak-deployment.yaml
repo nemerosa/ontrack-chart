@@ -35,6 +35,8 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.auth.keycloak.image }}:{{ .Values.auth.keycloak.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - start-dev
           env:
             - name: KC_BOOTSTRAP_ADMIN_USERNAME
               value: {{ .Values.auth.keycloak.bootstrap.username | quote }}
