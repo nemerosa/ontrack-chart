@@ -39,6 +39,14 @@ spec:
             - /opt/keycloak/bin/kc.sh
           args:
             - start-dev
+            {{- if .Values.auth.keycloak.settings.enabled }}
+            - --import-realm
+            {{- end }}
+          {{- if .Values.auth.keycloak.settings.enabled }}
+          volumeMounts:
+            - mountPath: /opt/keycloak/data/import
+              name: {{ include "ontrack.fullname" . }}-keycloak-settings
+          {{- end }}
           env:
             - name: KC_BOOTSTRAP_ADMIN_USERNAME
               value: {{ .Values.auth.keycloak.bootstrap.username | quote }}
@@ -52,6 +60,13 @@ spec:
               protocol: TCP
           resources: {{ toYaml .Values.auth.keycloak.resources | nindent 12 }}
           # TODO Probes
+      {{- if .Values.auth.keycloak.settings.enabled }}
+      volumes:
+        - name: {{ include "ontrack.fullname" . }}-keycloak-settings
+          configMap:
+            name: {{ include "ontrack.fullname" . }}-keycloak-cm
+            optional: false
+      {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

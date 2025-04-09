@@ -232,6 +232,7 @@ auth:
     resources: {}
     realm: ontrack
     settings:
+      enabled: true
       registrationAllowed: true
       resetPasswordAllowed: true
       admin:
