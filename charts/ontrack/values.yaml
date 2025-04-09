@@ -227,8 +227,9 @@ auth:
       enabled: false
       url: https://keycloak
     service:
-      port: 8008
+      port: 8080
       path: keycloak
+      debug: false
     resources: {}
     realm: ontrack
     settings:

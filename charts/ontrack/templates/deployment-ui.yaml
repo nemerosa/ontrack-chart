@@ -45,7 +45,7 @@ spec:
               value: {{ .Values.auth.keycloak.external.url | quote }}
             {{- else }}
             - name: NEXTAUTH_ISSUER
-              value: http://keycloak:{{ .Values.auth.keycloak.service.port }}/realms/{{ .Values.auth.keycloak.realm }}
+              value: {{ .Values.ontrack.url }}/{{ .Values.auth.keycloak.service.path }}/realms/{{ .Values.auth.keycloak.realm }}
             {{- end }}
             {{- if .Values.auth.keycloak.secret.enabled }}
             - name: NEXTAUTH_CLIENT_ID

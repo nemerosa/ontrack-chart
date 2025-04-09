@@ -4,7 +4,6 @@
 
 {{- if .Values.ingress.enabled -}}
 {{- $fullName := include "ontrack.fullname" . -}}
-{{- $uiPort := .Values.ontrack.ui.service.port -}}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -26,6 +25,16 @@ spec:
     - host: {{ .Values.ingress.host }}
       http:
         paths:
+          # Keycloak
+          {{- if and .Values.auth.keycloak.enabled (not .Values.auth.keycloak.external.enabled) }}
+          - path: "/{{ .Values.auth.keycloak.service.path }}"
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ $fullName }}-keycloak
+                port:
+                  number: {{ .Values.auth.keycloak.service.port }}
+          {{- end }}
           # Next UI
           - path: "/"
             pathType: Prefix
@@ -33,5 +42,5 @@ spec:
               service:
                 name: {{ $fullName }}-ui
                 port:
-                  number: {{ $uiPort }}
+                  number: {{ .Values.ontrack.ui.service.port }}
 {{- end }}

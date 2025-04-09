@@ -135,7 +135,7 @@ spec:
               value: {{ .Values.auth.keycloak.external.url | quote }}
             {{- else }}
             - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI
-              value: http://keycloak:{{ .Values.auth.keycloak.service.port }}/realms/{{ .Values.auth.keycloak.realm }}
+              value: {{ .Values.ontrack.url }}/{{ .Values.auth.keycloak.service.path }}/realms/{{ .Values.auth.keycloak.realm }}
             {{- end }}
             {{- end }}
             ########################################
