@@ -216,6 +216,8 @@ ontrack:
 
 # Authentication
 auth:
+  # Display name for the authentication - used in the login page ("Sign in with ...")
+  name: Ontrack
   keycloak:
     enabled: true
     image: quay.io/keycloak/keycloak
