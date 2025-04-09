@@ -36,7 +36,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: ONTRACK_URL
-              value: "http://ontrack:{{ .Values.service.port }}"
+              value: "http://{{ include "ontrack.fullname" . }}:{{ .Values.service.port }}"
             - name: NEXTAUTH_URL
               value: {{ .Values.ontrack.url | quote }}
             {{- if .Values.auth.keycloak.enabled }}
