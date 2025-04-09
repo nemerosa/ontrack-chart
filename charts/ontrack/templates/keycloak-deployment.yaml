@@ -54,6 +54,8 @@ spec:
               value: {{ .Values.auth.keycloak.bootstrap.password | quote }}
             - name: KC_HOSTNAME
               value: "{{ .Values.ontrack.url }}/{{ .Values.auth.keycloak.service.path }}"
+            - name: KC_HTTP_RELATIVE_PATH
+              value: "/{{ .Values.auth.keycloak.service.path }}"
             - name: KC_HOSTNAME_DEBUG
               value: "{{ .Values.auth.keycloak.service.debug }}"
           ports:
