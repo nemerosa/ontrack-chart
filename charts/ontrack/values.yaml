@@ -231,6 +231,15 @@ auth:
       path: keycloak
     resources: {}
     realm: ontrack
+    settings:
+      registrationAllowed: true
+      resetPasswordAllowed: true
+      admin:
+        username: "admin"
+        email: "admin@ontrack.local"
+        firstName: "Admin"
+        lastName: "User"
+        password: "admin"
     secret:
       enabled: false
       name: ontrack-keycloak

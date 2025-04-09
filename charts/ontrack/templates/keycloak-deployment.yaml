@@ -36,6 +36,8 @@ spec:
           image: "{{ .Values.auth.keycloak.image }}:{{ .Values.auth.keycloak.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command:
+            - /opt/keycloak/bin/kc.sh
+          args:
             - start-dev
           env:
             - name: KC_BOOTSTRAP_ADMIN_USERNAME
