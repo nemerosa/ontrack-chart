@@ -250,6 +250,8 @@ auth:
     client:
       id: ontrack-client
       secret: ontrack-client-secret
+    account:
+      url: http://localhost:8008/realms/ontrack/account
   secret: xxx
 
 # Local database for testing purpose
