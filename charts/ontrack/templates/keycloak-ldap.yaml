@@ -1,8 +1,8 @@
-{{- if and .Values.auth.keycloak.enabled (not .Values.auth.keycloak.external.enabled) .Values.auth.keycloak.settings.enabled }}
+{{- if and .Values.auth.keycloak.enabled (not .Values.auth.keycloak.external.enabled) .Values.auth.keycloak.ldap.enabled }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "ontrack.fullname" . }}-keycloak-cm
+  name: {{ include "ontrack.fullname" . }}-keycloak-ldap
 data:
   ontrack.json: |-
     {
@@ -48,6 +48,38 @@ data:
           "clientAuthenticatorType": "client-secret",
           "secret": "{{ .Values.auth.keycloak.client.secret }}"
         }
-      ]
+      ],
+      "components": {
+        "org.keycloak.storage.UserStorageProvider": [
+          {
+            "id": "{{ .Values.auth.keycloak.ldap.id }}",
+            "name": "{{ .Values.auth.keycloak.ldap.name }}",
+            "providerId": "ldap",
+            "config": {
+              "enabled": ["true"],
+              "priority": ["0"],
+              "editMode": ["READ_ONLY"],
+              "importEnabled": ["false"],
+              "syncRegistrations": ["false"],
+              "vendor": ["other"],
+              "connectionUrl": ["{{ .Values.auth.keycloak.ldap.url }}"],
+              "usersDn": ["{{ .Values.auth.keycloak.ldap.usersDn }}"],
+              "bindDn": ["{{ .Values.auth.keycloak.ldap.bindDn }}"],
+              "bindCredential": ["{{ .Values.auth.keycloak.ldap.bindCredential }}"],
+              "useTruststoreSpi": ["ldapsOnly"],
+              "connectionPooling": ["true"],
+              "pagination": ["true"],
+              "batchSizeForSync": ["1000"],
+              "usernameLDAPAttribute": ["{{ .Values.auth.keycloak.ldap.usernameLDAPAttribute }}"],
+              "rdnLDAPAttribute": ["{{ .Values.auth.keycloak.ldap.rdnLDAPAttribute }}"],
+              "uuidLDAPAttribute": ["{{ .Values.auth.keycloak.ldap.uuidLDAPAttribute }}"],
+              "userObjectClasses": ["{{ .Values.auth.keycloak.ldap.userObjectClasses }}"],
+              "searchScope": ["1"],
+              "validatePasswordPolicy": ["false"],
+              "trustEmail": ["true"]
+            }
+          }
+        ]
+      }
     }
 {{- end }}

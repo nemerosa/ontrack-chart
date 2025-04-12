@@ -1,4 +1,7 @@
 {{- if and .Values.auth.keycloak.enabled (not .Values.auth.keycloak.external.enabled) }}
+{{- if and .Values.auth.keycloak.settings .Values.auth.keycloak.ldap.enabled -}}
+{{- fail "For Keycloak, either the settings or the LDAP must be enabled, not both." -}}
+{{- end }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -39,13 +42,18 @@ spec:
             - /opt/keycloak/bin/kc.sh
           args:
             - start-dev
-            {{- if .Values.auth.keycloak.settings.enabled }}
+            {{- if or .Values.auth.keycloak.settings.enabled .Values.auth.keycloak.ldap.enabled }}
             - --import-realm
             {{- end }}
           {{- if .Values.auth.keycloak.settings.enabled }}
           volumeMounts:
             - mountPath: /opt/keycloak/data/import
               name: {{ include "ontrack.fullname" . }}-keycloak-settings
+          {{- end }}
+          {{- if .Values.auth.keycloak.ldap.enabled }}
+          volumeMounts:
+            - mountPath: /opt/keycloak/data/import
+              name: {{ include "ontrack.fullname" . }}-keycloak-ldap
           {{- end }}
           env:
             - name: KC_BOOTSTRAP_ADMIN_USERNAME
@@ -86,7 +94,14 @@ spec:
       volumes:
         - name: {{ include "ontrack.fullname" . }}-keycloak-settings
           configMap:
-            name: {{ include "ontrack.fullname" . }}-keycloak-cm
+            name: {{ include "ontrack.fullname" . }}-keycloak-settings
+            optional: false
+      {{- end }}
+      {{- if .Values.auth.keycloak.ldap.enabled }}
+      volumes:
+        - name: {{ include "ontrack.fullname" . }}-keycloak-ldap
+          configMap:
+            name: {{ include "ontrack.fullname" . }}-keycloak-ldap
             optional: false
       {{- end }}
       {{- with .Values.nodeSelector }}

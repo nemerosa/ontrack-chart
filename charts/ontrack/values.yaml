@@ -283,6 +283,27 @@ auth:
     account:
       # If set to not blank, URL to allow users to manage their own account
       url: http://localhost:8008/realms/ontrack/account
+    # Configuration of Keycloak to use a LDAP for user federation
+    ldap:
+      # Using a LDAP
+      enabled: false
+      # ID of the LDAP federation in Keycloak
+      id: ldap-users
+      # Name of the LDAP federation in Keycloak
+      name: ldap-users
+      # URL to the ldap
+      url: ldap://ldap:389
+      # Users DN
+      usersDn: ou=users,dc=example,dc=com
+      # Bind DN
+      bindDn: cn=admin,dc=example,dc=com
+      # Bind credentials
+      bindCredential: admin
+      # LDAP attributes
+      usernameLDAPAttribute: uid
+      rdnLDAPAttribute: uid
+      uuidLDAPAttribute: entryUUID
+      userObjectClasses: inetOrgPerson
   # Unique secret used by Next Auth in Ontrack to create session cookies
   secret: xxx
 

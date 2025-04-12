@@ -94,7 +94,47 @@ By default,
 
 ## LDAP
 
-## Management of the default admin user
+The local Keycloak instance can be configured to use an external LDAP for the management of the Ontrack users:
+
+* Keycloak acts as a proxy
+* Keycloak is in read-only mode for the target LDAP (users can be accessed and used for authentication, but not updated)
+
+Use the following values, at a minimum:
+
+```yaml
+auth:
+  keycloak:
+    settings:
+      enabled: false
+    ldap:
+      enabled: true
+      url: <url to the LDAP>
+      usersDn: ou=users,dc=example,dc=com
+      bindDn: cn=admin,dc=example,dc=com
+      bindCredential: admin
+```
+
+> See the [chart values](charts/ontrack/values.yaml) for the other options.
+
+> Ontrack uses Keycloak as a relay to the LDAP so attention must be given to the [settings](#default-local-keycloak-instance)
+> of Keycloak as well.
+
+## Management of users in Ontrack
+
+For any user connecting to Ontrack through any authentication provider, upon login,
+an account is created in Ontrack to hold their authorizations and relationships
+to objects in Ontrack. Are stored:
+
+* their username
+* their email
+* their full name (if available, defaults to the email)
+
+If the `auth.provisioning` is set to `true` (that's the default), a default group
+is created with the name "Administrators", with all the rights to administrate Ontrack.
+
+For any user logging with the email defined at `auth.admin.email` (defaults to `admin@ontrack.local`
+but should be changed), the account created for this user will be linked automatically
+to the "Administrators" group.
 
 # Using a managed database
 
