@@ -30,56 +30,73 @@ To uninstall the chart:
 helm delete my-ontrack-release
 ```
 
-This installs 4 services:
+This installs the following services:
 
 * Ontrack itself
-* a Postgres 15 database
+* a Postgres 17 database
 * an Elasticsearch 7 single node
 * a RabbitMQ message broker
 
-To connect to Ontrack, enable the ingress or activate a port forward.
+The default authentication mechanism, if no other configuration is provided, relies on Keycloak
+and its own database and two additional services are installed:
 
-# Enabling Next UI
+* a Keycloak instance configured for storing users
+* a Postgres 17 database for Keycloak
 
-Next UI is an experimental new UI of Ontrack starting from version 4.8. It'll become the default UI in version 5.0.
+> Other authentication options are available. See [authentication](#authentication) below.
 
-> By default, Next UI is not active and must be enabled explicitly into the Helm chart values.
+# Ingress configuration
 
-> IMPORTANT: Next UI and its interaction with the Ontrack backend, works through _external URLs_ and therefore,
-> Next UI can be enabled only if an ingress is made available.
+> The ingress configuration is _required_ if using the default Keycloak setup.
 
-To enable the Next UI:
+The minimal setup looks like:
 
 ```yaml
 ontrack:
-  url: "https://<host>"
-  ui:
-    enabled: true
-    logging: true
-    tracing: true
+  url: "https://<host>>"
+ingress:
+  enabled: true
+  annotations:
+    # kubernetes.io/ingress.class: nginx
+    # cert-manager.io/cluster-issuer: letsencrypt-prod
+  host: <host>
 ```
 
-Properties:
+The following URLs are available:
 
-| Property             | Default    | Description                                                                        |
-|----------------------|------------|------------------------------------------------------------------------------------|
-| `ontrack.url`        | _Required_ | Base URL of Ontrack                                                                |
-| `ontrack.ui.enabled` | `false`    | Set to `true` to enable Next UI                                                    |
-| `ontrack.ui.logging` | `false`    | Set to `true` to enable some logging at Next UI level (browser & server)           |
-| `ontrack.ui.tracing` | `false`    | Set to `true` to enable some low level tracing at Next UI level (browser & server) |
+* `<host>` - the main Ontrack URL to access its UI
+* `<host>/graphql` - access to the Ontrack GraphQL API
+* `<host>/keycloak` - if the default Keycloak setup is enabled, access to the admin console of Keycloak
 
-When Next UI is enabled:
+# Authentication
 
-* you can access the classic Ontrack UI and API at https:/host
-* you can access the Next UI https://host/ui
-* some menus & commands allow to go from one to the other
+By default, the Ontrack Helm chart sets up an instance of Keycloak, configured to store users for Ontrack.
 
-> When accessing the Next UI directly, you'll be redirected to the classic login page to authenticate. This will change
-> in version 5.0.
+## Default local Keycloak instance
+
+Given the values provided for the [ingress](#ingress-configuration), you just run:
+
+```bash
+helm upgrade --install --values values.yaml ontrack ontrack/ontrack
+```
+
+By default,
+
+* the Keycloak admin user is set to `admin` / `admin`
+* one user is provisioned in the `ontrack` realm of Keycloak:
+  * name: `admin`
+  * email: `admin@ontrack.local`
+  * password: `admin`
+
+## OIDC for Okta
+
+## OIDC for Auth0
+
+## LDAP
+
+## Management of the default admin user
 
 # Using a managed database
-
-The default Postgres service is suitable only for local tests and a production setup should use a managed database on the cloud provider.
 
 In order to use a managed database, create a values file and fill the URL and credentials to access the database:
 
@@ -252,12 +269,18 @@ ontrack:
 
 | Version        | Postgres | Elasticsearch | Kubernetes | Minimal Ontrack version |
 |----------------|----------|---------------|------------|-------------------------|
+| [1.0.x](#10)   | 17       | 8             | 1.24       | 5                       |
 | [0.13.x](#013) | 15       | 7             | 1.24       | 4.12.3                  |
 | [0.12.x](#012) | 15       | 7             | 1.24       | 4.11.0                  |
 | [0.11.x](#011) | 15       | 7             | 1.24       | 4.8.12                  |
 | [0.10.x](#010) | 15       | 7             | 1.24       | 4.8.1                   |
 | 0.9.x          | 15       | 7             | 1.24       | 4.7.20                  |
 | 0.8.x          | 11       | 7             | 1.24       | 4.7.13                  |
+
+## 1.0
+
+* Support for Ontrack V5
+* Support for the different [authentication options](#authentication)
 
 ## 0.13
 

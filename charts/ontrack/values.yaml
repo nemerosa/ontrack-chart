@@ -218,40 +218,72 @@ ontrack:
 auth:
   # Display name for the authentication - used in the login page ("Sign in with ...")
   name: Ontrack
+  # Configuration of the local Keycloak instance
   keycloak:
+    # By default, Keycloak is installed.
+    # Set to false to use an external authentication source
     enabled: true
+    # Image of Keycloak to deploy
     image: quay.io/keycloak/keycloak
+    # Version this image of Keycloak to deploy
     tag: 26.1.4
+    # Admin user for the admin console of Keycloak
     bootstrap:
       username: admin
+      # Password (would need to be changed)
       password: admin
+    # If using an external Keycloak instance
     external:
+      # Enabling an external Keycloak instance
       enabled: false
+      # URL to the external Keycloak instance
       url: https://keycloak
+    # Service setup for the local Keycloak instance
     service:
+      # Port of the service for the local Keycloak instance
       port: 8080
+      # Relative path for the local Keycloak instance (relatively to the Ontrack main URL)
       path: keycloak
-      debug: false
+    # Resources to allocate to the local Keycloak instance
     resources: {}
+    # Name of the realm to create in Keycloak to serve the Ontrack users
     realm: ontrack
+    # Provisioning settings
     settings:
+      # Provisioning of Keycloak is enabled
       enabled: true
+      # Enabling users to register in the local instance of Keycloak
       registrationAllowed: true
+      # Enabling users to reset their passwords
       resetPasswordAllowed: true
+      # Initial Ontrack user to create
       admin:
+        # Username
         username: "admin"
+        # Email
         email: "admin@ontrack.local"
+        # First name
         firstName: "Admin"
+        # Last name
         lastName: "User"
+        # Password (would need to be changed)
         password: "admin"
+    # TODO Connection parameters to Keycloak stored in a secret
     secret:
       enabled: false
       name: ontrack-keycloak
+    # Connection parameters to Keycloak when not stored in a secret
+    # Should not be used in production
     client:
+      # Client ID
       id: ontrack-client
+      # Client secret
       secret: ontrack-client-secret
+    # Account management from Ontrack
     account:
+      # If set to not blank, URL to allow users to manage their own account
       url: http://localhost:8008/realms/ontrack/account
+  # Unique secret used by Next Auth in Ontrack to create session cookies
   secret: xxx
 
 # Local database for testing purpose
