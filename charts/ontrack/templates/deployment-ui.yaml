@@ -51,7 +51,7 @@ spec:
               value: {{ .Values.auth.oidc.name | quote }}
             - name: NEXTAUTH_ISSUER
               value: {{ .Values.auth.oidc.issuer | quote }}
-            {{- if .Values.auth.oidc.credentials.secret.enabled }}
+              {{- if .Values.auth.oidc.credentials.secret.enabled }}
             - name: NEXTAUTH_CLIENT_ID
               valueFrom:
                 secretKeyRef:
@@ -64,26 +64,26 @@ spec:
                   name: {{ .Values.auth.oidc.credentials.secret.secretName }}
                   key: "clientSecret"
                   optional: false
-            {{- else }}
+              {{- else }}
             - name: NEXTAUTH_CLIENT_ID
               value: {{ .Values.auth.oidc.credentials.clientId }}
             - name: NEXTAUTH_CLIENT_SECRET
               value: {{ .Values.auth.oidc.credentials.clientSecret }}
-            {{- end }}
+              {{- end }}
             {{- end }}
             {{- if .Values.auth.keycloak.enabled }}
-            {{- if .Values.auth.keycloak.external.enabled }}
+              {{- if .Values.auth.keycloak.external.enabled }}
             - name: NEXTAUTH_ISSUER
               value: {{ .Values.auth.keycloak.external.url | quote }}
-            {{- else }}
+              {{- else }}
             - name: NEXTAUTH_ISSUER
               value: {{ .Values.ontrack.url }}/{{ .Values.auth.keycloak.service.path }}/realms/{{ .Values.auth.keycloak.realm }}
-            {{- end }}
-            {{- if .Values.auth.keycloak.account.url }}
+              {{- end }}
+              {{- if .Values.auth.keycloak.account.url }}
             - name: NEXTAUTH_ACCOUNT_URL
               value: {{ .Values.auth.keycloak.account.url }}
-            {{- end }}
-            {{- if .Values.auth.keycloak.secret.enabled }}
+              {{- end }}
+              {{- if .Values.auth.keycloak.secret.enabled }}
             - name: NEXTAUTH_CLIENT_ID
               valueFrom:
                 secretKeyRef:
@@ -96,15 +96,19 @@ spec:
                   name: {{ .Values.auth.keycloak.secret.name }}
                   key: "client-secret"
                   optional: false
-            {{- else }}
+              {{- else }}
             - name: NEXTAUTH_CLIENT_ID
               value: {{ .Values.auth.keycloak.client.id | quote }}
             - name: NEXTAUTH_CLIENT_SECRET
               value: {{ .Values.auth.keycloak.client.secret | quote }}
-            {{- end }}
+              {{- end }}
             {{- end }}
             - name: NEXTAUTH_SECRET
               value: {{ .Values.auth.secret | quote }}
+            {{- if and .Values.auth.jwt .Values.auth.jwt.audience }}
+            - name: NEXTAUTH_AUDIENCE
+              value: {{ .Values.auth.jwt.audience | quote }}
+            {{- end }}
           ports:
             - name: http
               containerPort: 3000

@@ -155,6 +155,10 @@ auth:
 
 ## OIDC for Auth0
 
+If you're using Auth0 as an OIDC provider, the setup is slightly more complex.
+
+See the dedicated documentation at [`auth0`](docs/auth0.md).
+
 ## LDAP
 
 The local Keycloak instance can be configured to use an external LDAP for the management of the Ontrack users:

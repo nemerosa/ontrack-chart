@@ -140,8 +140,13 @@ spec:
               value: {{ .Values.auth.admin.groupName | quote }}
             {{- end }}
             {{- if .Values.auth.oidc.enabled }}
+              {{- if .Values.auth.oidc.trailingSlash }}
             - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI
-              value: {{ .Values.auth.oidc.issuer | quote }}
+              value: "{{ .Values.auth.oidc.issuer }}/"
+              {{- else }}
+            - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI
+              value: "{{ .Values.auth.oidc.issuer }}"
+              {{- end }}
             {{- end }}
             {{- if .Values.auth.keycloak.enabled }}
             {{- if .Values.auth.keycloak.external.enabled }}
@@ -154,6 +159,10 @@ spec:
             {{- end }}
             # JWT specifics
             {{- if .Values.auth.jwt }}
+              {{- if .Values.auth.jwt.audience }}
+            - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_AUDIENCES
+              value: {{ .Values.auth.jwt.audience | quote }}
+              {{- end }}
               {{- if .Values.auth.jwt.typ }}
             - name: ONTRACK_CONFIG_SECURITY_AUTHORIZATION_JWT_TYP
               value: {{ .Values.auth.jwt.typ | quote }}
