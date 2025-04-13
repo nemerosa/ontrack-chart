@@ -129,6 +129,10 @@ spec:
             ########################################
             # Authentication
             ########################################
+            {{- if .Values.auth.oidc.enabled }}
+            - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI
+              value: {{ .Values.auth.oidc.issuer | quote }}
+            {{- end }}
             {{- if .Values.auth.keycloak.enabled }}
             {{- if .Values.auth.keycloak.external.enabled }}
             - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI
@@ -137,6 +141,19 @@ spec:
             - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI
               value: {{ .Values.ontrack.url }}/{{ .Values.auth.keycloak.service.path }}/realms/{{ .Values.auth.keycloak.realm }}
             {{- end }}
+            {{- end }}
+            # JWT specifics
+            {{- if .Values.auth.jwt }}
+              {{- if .Values.auth.jwt.typ }}
+            - name: ONTRACK_CONFIG_AUTHORIZATION_JWT_TYP
+              value: {{ .Values.auth.jwt.typ | quote }}
+              {{- end }}
+              {{- if .Values.auth.jwt.claims }}
+                {{- if .Values.auth.jwt.claims.email }}
+            - name: ONTRACK_CONFIG_AUTHORIZATION_JWT_CLAIMS_EMAIL
+              value: {{ .Values.auth.jwt.claims.email | quote }}
+                {{- end }}
+              {{- end }}
             {{- end }}
             ########################################
             # Metrics tags

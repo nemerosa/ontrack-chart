@@ -218,10 +218,49 @@ ontrack:
 auth:
   # Display name for the authentication - used in the login page ("Sign in with ...")
   name: Ontrack
+  # OIDC configuration (disabled by default)
+  oidc:
+    # Enabling OIDC authentication
+    enabled: false
+    # Display name for your IdP (used for the login page)
+    name: OIDC
+    # OIDC issuer URL
+    issuer: ""
+    # Credentials used to contact the OIDC provider
+    credentials:
+      # Either stored in a secret (recommended)
+      secret:
+        # Enabling the secret
+        enabled: true
+        # The secret is expected to have the following keys: clientId & clientSecret
+        secretName: ontrack-oidc
+        # Depending on your setup, you can also just create an external secret
+        # definition, pointing to the actual secret in a secret provided like
+        # Vault or your cloud secret manager
+        # If not using an external secret, Ontrack expects you to create the
+        # secret manually.
+        # externalSecret:
+          # Enabling the creation of the external secret
+          # enabled: false
+          # Refresh interval
+          # refreshInterval: 6h
+          # Location of the secret to bind to
+          # store:
+            # Name of the secret store
+            # name: vault-backend
+            # Scope of the secret store
+            # kind: ClusterSecretStore
+            # Path to the secret in the store.
+            # The entry is expected to have the following keys: clientId & clientSecret
+            # path: ontrack/oidc
+      # ... or provided directly in the values (ok for testing)
+      # If a secret (or external secret) is provided, these values are not used
+      clientId: <client id>
+      clientSecret: <client secret>
   # Configuration of the local Keycloak instance
   keycloak:
     # By default, Keycloak is installed.
-    # Set to false to use an external authentication source
+    # Set to false to use an external authentication source like OIDC
     enabled: true
     # Image of Keycloak to deploy
     image: quay.io/keycloak/keycloak
@@ -305,7 +344,16 @@ auth:
       uuidLDAPAttribute: entryUUID
       userObjectClasses: inetOrgPerson
   # Unique secret used by Next Auth in Ontrack to create session cookies
+  # You can generate it using `openssl rand -hex 32`
   secret: xxx
+  # Specific setup for parsing the JWT access tokens
+  # jwt:
+    # If the `typ` claim is different than "JWT"
+    # type: JWT
+    # List of mappings for the claims
+    # claims:
+      # Claim that contains the email
+      # email: email
 
 # Local database for testing purpose
 postgresql:

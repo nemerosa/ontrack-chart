@@ -90,6 +90,69 @@ By default,
 
 ## OIDC for Okta
 
+Ontrack can bypass the Keycloak component altogether and use your own OIDC IdP.
+
+The configuration below works for Okta, but a setup of [Auth0](#oidc-for-auth0) is provided after.
+
+The following values are needed:
+
+```yaml
+ontrack:
+  # Ontrack root URL
+  url: https://****
+auth:
+  # Key used for the generation of cookies by the Next Auth frontend
+  secret: <openssl rand -hex 32>
+  oidc:
+    # Enabling OIDC authentication
+    enabled: true
+    # Display name for your IdP (used for the login page)
+    name: <display name for the provider>
+    # OIDC issuer URL
+    issuer: https://****.okta.com
+    # Credentials used to contact the OIDC provider
+    credentials:
+      # Either stored in a secret (recommended)
+      secret:
+        # Using a secret
+        enabled: true
+        # The secret is expected to have the following keys: clientId & clientSecret
+        secretName: <secret name>
+        # Depending on your setup, you can also just create an external secret
+        # definition, pointing to the actual secret in a secret provided like
+        # Vault or your cloud secret manager
+        # If not using an external secret, Ontrack expects you to create the 
+        # secret manually.
+        # externalSecret:
+          # Enabling the creation of the external secret 
+          # enabled: false
+          # Refresh interval
+          # refreshInterval: 6h
+          # Location of the secret to bind to
+          # store:
+            # Name of the secret store
+            # name: vault-backend
+            # Scope of the secret store
+            # kind: ClusterSecretStore
+            # Path to the secret in the store.
+            # The entry is expected to have the following keys: clientId & clientSecret
+            # path: ontrack/oidc
+      # ... or provided directly in the values (ok for testing)
+      # If a secret (or external secret) is provided, these values are not used
+      # clientId: <client id>
+      # clientSecret: <client secret>
+  keycloak:
+    # Disabling Keycloak altogether
+    enabled: false
+  # Okta specifics: the JWT emitted by this IdP is not fully OIDC compliant
+  jwt:
+    # The `typ` attribute emitted by Okta does is not the expected "JWT" value
+    typ: application/okta-internal-at+jwt
+    # The email in the access token is contained in the `sub` claim
+    claims:
+      email: sub
+```
+
 ## OIDC for Auth0
 
 ## LDAP
