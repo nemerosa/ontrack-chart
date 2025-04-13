@@ -15,7 +15,7 @@ data:
         {
           "username": "{{ .Values.auth.keycloak.settings.admin.username }}",
           "enabled": true,
-          "email": "{{ .Values.auth.keycloak.settings.admin.email }}",
+          "email": "{{ .Values.auth.keycloak.settings.admin.email | default .Values.auth.admin.email }}",
           "firstName": "{{ .Values.auth.keycloak.settings.admin.firstName }}",
           "lastName": "{{ .Values.auth.keycloak.settings.admin.lastName }}",
           "emailVerified": true,

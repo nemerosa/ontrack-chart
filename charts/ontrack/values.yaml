@@ -218,6 +218,16 @@ ontrack:
 auth:
   # Display name for the authentication - used in the login page ("Sign in with ...")
   name: Ontrack
+  # Provisioning of groups & initial administrator
+  provisioning: true
+  # Configuration of the initial administrator
+  admin:
+    # Their email
+    email: "admin@ontrack.local"
+    # Their full name (if not provided)
+    fullName: "Administrator"
+    # Group of administrators
+    groupName: "Administrators"
   # OIDC configuration (disabled by default)
   oidc:
     # Enabling OIDC authentication
@@ -300,7 +310,8 @@ auth:
         # Username
         username: "admin"
         # Email
-        email: "admin@ontrack.local"
+        # If not set, `auth.admin.email` is used
+        email: ""
         # First name
         firstName: "Admin"
         # Last name
