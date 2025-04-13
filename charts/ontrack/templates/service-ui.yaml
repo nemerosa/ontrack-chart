@@ -1,5 +1,4 @@
 # Deployment of the Next UI service
-{{- if .Values.ontrack.ui.enabled }}
 apiVersion: v1
 kind: Service
 metadata:
@@ -19,4 +18,3 @@ spec:
       name: http
   selector:
     {{- include "ontrack.selectorLabels.ui" . | nindent 4 }}
-{{- end }}
