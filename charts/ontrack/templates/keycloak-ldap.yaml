@@ -11,22 +11,6 @@ data:
       "enabled": true,
       "registrationAllowed": {{ .Values.auth.keycloak.settings.registrationAllowed }},
       "resetPasswordAllowed": {{ .Values.auth.keycloak.settings.resetPasswordAllowed }},
-      "users": [
-        {
-          "username": "{{ .Values.auth.keycloak.settings.admin.username }}",
-          "enabled": true,
-          "email": "{{ .Values.auth.keycloak.settings.admin.email | default .Values.auth.admin.email }}",
-          "firstName": "{{ .Values.auth.keycloak.settings.admin.firstName }}",
-          "lastName": "{{ .Values.auth.keycloak.settings.admin.lastName }}",
-          "emailVerified": true,
-          "credentials": [
-            {
-              "type": "password",
-              "value": "{{ .Values.auth.keycloak.settings.admin.password }}"
-            }
-          ]
-        }
-      ],
       "clients": [
         {
           "clientId": "{{ .Values.auth.keycloak.client.id }}",
