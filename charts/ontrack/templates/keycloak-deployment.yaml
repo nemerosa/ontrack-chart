@@ -1,5 +1,5 @@
 {{- if and .Values.auth.keycloak.enabled (not .Values.auth.keycloak.external.enabled) }}
-{{- if and .Values.auth.keycloak.settings .Values.auth.keycloak.ldap.enabled -}}
+{{- if and .Values.auth.keycloak.settings.enabled .Values.auth.keycloak.ldap.enabled -}}
 {{- fail "For Keycloak, either the settings or the LDAP must be enabled, not both." -}}
 {{- end }}
 apiVersion: apps/v1
@@ -64,8 +64,6 @@ spec:
               value: "{{ .Values.ontrack.url }}/{{ .Values.auth.keycloak.service.path }}"
             - name: KC_HTTP_RELATIVE_PATH
               value: "/{{ .Values.auth.keycloak.service.path }}"
-            - name: KC_HOSTNAME_DEBUG
-              value: "{{ .Values.auth.keycloak.service.debug }}"
             - name: KC_HEALTH_ENABLED
               value: "true"
           ports:

@@ -1,0 +1,25 @@
+{{- if and .Values.auth.keycloak.enabled .Values.auth.keycloak.ldap.enabled .Values.auth.keycloak.ldap.testing.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "ontrack.fullname" . }}-ldap
+  labels:
+    {{- include "ontrack.labels.ldap" . | nindent 4 }}
+  {{- with .Values.service.annotations }}
+  annotations:
+    {{- toYaml . | nindent 8 }}
+  {{- end }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: 389
+      targetPort: 389
+      protocol: TCP
+      name: ldap
+    - port: 636
+      targetPort: 636
+      protocol: TCP
+      name: ldaps
+  selector:
+    {{- include "ontrack.selectorLabels.ldap" . | nindent 4 }}
+{{- end }}

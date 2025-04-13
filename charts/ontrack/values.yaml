@@ -356,6 +356,34 @@ auth:
       rdnLDAPAttribute: uid
       uuidLDAPAttribute: entryUUID
       userObjectClasses: inetOrgPerson
+      # Creating a testing LDAP instance
+      testing:
+        # Enabling the creation of the LDAP test instance
+        enabled: false
+        # Image to be used for the LDAP service
+        image: osixia/openldap
+        # Tag to be used for the LDAP service
+        tag: 1.5.0
+        # Admin user
+        admin:
+          # Its password
+          password: admin
+        # Resources to allocate
+        resources: {}
+        # Provisioning of the LDAP
+        provisioning:
+          # Is it enabled?
+          enabled: true
+          # Organization name
+          organisation: Ontrack
+          # Domain name
+          domain:
+            extension: com
+            name: nemerosa
+          # Admin user
+          admin:
+            # SSHA admin password
+            sshaPassword: "{SSHA}KTo9V1wBebjK0O8I53Zu5U3kACvXHFiY"
   # Unique secret used by Next Auth in Ontrack to create session cookies
   # You can generate it using `openssl rand -hex 32`
   secret: xxx
