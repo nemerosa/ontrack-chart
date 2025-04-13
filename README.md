@@ -212,6 +212,19 @@ auth:
     email: <email of the super user>
 ```
 
+## Logging authentication
+
+If you face troubles with the authentication, you can add some logging instructions:
+
+```yaml
+ontrack:
+  config:
+    security:
+      authorization:
+        jwt:
+          debug:true
+```
+
 # Using a managed database
 
 In order to use a managed database, create a values file and fill the URL and credentials to access the database:

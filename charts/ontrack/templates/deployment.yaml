@@ -159,6 +159,12 @@ spec:
             {{- end }}
             # JWT specifics
             {{- if .Values.auth.jwt }}
+              {{- if .Values.auth.jwt.debug }}
+            - name: ONTRACK_CONFIG_SECURITY_AUTHORIZATION_JWT_DEBUG
+              value: "true"
+            - name: LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY
+              value: DEBUG
+              {{- end }}
               {{- if .Values.auth.jwt.audience }}
             - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_AUDIENCES
               value: {{ .Values.auth.jwt.audience | quote }}

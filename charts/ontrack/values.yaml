@@ -389,6 +389,8 @@ auth:
   secret: xxx
   # Specific setup for parsing the JWT access tokens
   # jwt:
+    # Enabling debugging in Ontrack
+    # debug: false
     # Audience
     # audience: ""
     # If the `typ` claim is different than "JWT"
