@@ -177,10 +177,11 @@ auth:
       bindCredential: admin
 ```
 
-> See the [chart values](charts/ontrack/values.yaml) for the other options.
+There are other [options](charts/ontrack/values.yaml) to configure the mapping of the user fields
+in the LDAP to the ones that Keycloak expects. The default mappings are suitable for OpenLDAP.
 
-> Ontrack uses Keycloak as a relay to the LDAP so attention must be given to the [settings](#default-local-keycloak-instance)
-> of Keycloak as well.
+Ontrack uses Keycloak as a relay to the LDAP, so attention must be given to the settings of 
+Keycloak as well, in terms of security.
 
 ## Management of users in Ontrack
 
@@ -198,6 +199,14 @@ is created with the name "Administrators", with all the rights to administrate O
 For any user logging with the email defined at `auth.admin.email` (defaults to `admin@ontrack.local`
 but should be changed), the account created for this user will be linked automatically
 to the "Administrators" group.
+
+In short, to designate which user is the super admin, set the following values:
+
+```yaml
+auth:
+  admin:
+    email: <email of the super user>
+```
 
 # Using a managed database
 
