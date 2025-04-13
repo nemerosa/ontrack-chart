@@ -145,12 +145,12 @@ spec:
             # JWT specifics
             {{- if .Values.auth.jwt }}
               {{- if .Values.auth.jwt.typ }}
-            - name: ONTRACK_CONFIG_AUTHORIZATION_JWT_TYP
+            - name: ONTRACK_CONFIG_SECURITY_AUTHORIZATION_JWT_TYP
               value: {{ .Values.auth.jwt.typ | quote }}
               {{- end }}
               {{- if .Values.auth.jwt.claims }}
                 {{- if .Values.auth.jwt.claims.email }}
-            - name: ONTRACK_CONFIG_AUTHORIZATION_JWT_CLAIMS_EMAIL
+            - name: ONTRACK_CONFIG_SECURITY_AUTHORIZATION_JWT_CLAIMS_EMAIL
               value: {{ .Values.auth.jwt.claims.email | quote }}
                 {{- end }}
               {{- end }}
