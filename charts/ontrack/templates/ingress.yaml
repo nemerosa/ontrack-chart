@@ -35,6 +35,14 @@ spec:
                 port:
                   number: {{ .Values.auth.keycloak.service.port }}
           {{- end }}
+          # GraphQL API
+          - path: "/graphql"
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ $fullName }}
+                port:
+                  number: {{ .Values.service.port }}
           # Next UI
           - path: "/"
             pathType: Prefix
