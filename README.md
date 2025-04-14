@@ -88,6 +88,97 @@ By default,
   * email: `admin@ontrack.local`
   * password: `admin`
 
+### Configuration of the access to Keycloak
+
+By default, the Keycloak instance is accessible on `<ontrack>/keycloak`.
+
+If this is not wished for, you can disable its exposure using:
+
+```yaml
+auth:
+  keycloak:
+    service:
+      ingressEnabled: false
+```
+
+### Configuration of the Keycloak bootstrap administrator
+
+The default admin credentials of Keycloak are set to `admin/admin`.
+
+Several options are available to secure these credentials.
+
+#### Changing the credentials in the values
+
+> While OK for testing, this is not secure in a real environment.
+
+You can change the credentials:
+
+```yaml
+auth:
+  keycloak:
+    bootstrap:
+      username: admin
+      password: admin
+```
+
+#### Setting the credentials in a secret
+
+You can create a secret with two keys: `username` and `password`.
+
+The name of the secret is configurable:
+
+```yaml
+auth:
+  keycloak:
+    bootstrap:
+      bootstrapSecret:
+        enabled: true
+        secretName: ontrack-keycloak-bootstrap
+```
+
+#### Generation of a secret
+
+You can tell the chart  generate the secret:
+
+```yaml
+auth:
+  keycloak:
+    bootstrap:
+      bootstrapSecret:
+        enabled: true
+        generate: true
+        secretName: ontrack-keycloak-bootstrap
+```
+
+In this case, you don't have to provide the secret yourself. It'll be generated upon the installation
+of the Helm release and will contain the credentials in the `username` and `password` keys.
+
+> Note that the `username` is not generated and taken from `auth.keycloak.bootstrap.username`, which
+> defaults to `admin`.
+
+> You'll need to read the secret in Kubernetes to know the credentials to use to connect to Bootstrap.
+
+#### Using an external secret
+
+A more secure option, if your cluster supports this, is to use an external secret.
+
+You can then tell the chart to create an `ExternalSecret` and the actual secret will be generated. For example:
+
+```yaml
+auth:
+  keycloak:
+    bootstrap:
+      bootstrapSecret:
+        enabled: true
+        secretName: your-secret
+        externalSecret:
+          enabled: true
+          store:
+            name: vault-backend
+            kind: ClusterSecretStore
+            path: ontrack/test/v5/keycloak
+```
+
 ## OIDC for Okta
 
 Ontrack can bypass the Keycloak component altogether and use your own OIDC IdP.
