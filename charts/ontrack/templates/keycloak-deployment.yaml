@@ -103,10 +103,25 @@ spec:
               name: {{ include "ontrack.fullname" . }}-keycloak-ldap-json
           {{- end }}
           env:
+            {{- if .Values.auth.keycloak.bootstrap.bootstrapSecret.enabled }}
+            - name: KC_BOOTSTRAP_ADMIN_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.auth.keycloak.bootstrap.bootstrapSecret.secretName | quote }}
+                  key: username
+                  optional: false
+            - name: KC_BOOTSTRAP_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.auth.keycloak.bootstrap.bootstrapSecret.secretName | quote }}
+                  key: password
+                  optional: false
+            {{- else }}
             - name: KC_BOOTSTRAP_ADMIN_USERNAME
               value: {{ .Values.auth.keycloak.bootstrap.username | quote }}
             - name: KC_BOOTSTRAP_ADMIN_PASSWORD
               value: {{ .Values.auth.keycloak.bootstrap.password | quote }}
+            {{- end }}
             - name: KC_HOSTNAME
               value: "{{ .Values.ontrack.url }}/{{ .Values.auth.keycloak.service.path }}"
             - name: KC_HTTP_RELATIVE_PATH

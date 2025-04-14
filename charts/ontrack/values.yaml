@@ -283,6 +283,27 @@ auth:
       username: admin
       # Password (would need to be changed)
       password: admin
+      # Secret for the bootstrapping
+      bootstrapSecret:
+        # Enabling using a secret
+        enabled: false
+        # Secret name
+        secretName: ontrack-keycloak-bootstrap
+        # Using an external secret
+        externalSecret:
+          # Creating the external secret definition
+          enabled: false
+          # Refresh interval
+          refreshInterval: 6h
+          # Location of the secret to bind to
+          store:
+            # Name of the secret store
+            name: vault-backend
+            # Scope of the secret store
+            kind: ClusterSecretStore
+            # Path to the secret in the store.
+            # The entry is expected to have the following keys: bindDn & bindCredential
+            path: ontrack/keycloak/bootstrap
     # If using an external Keycloak instance
     external:
       # Enabling an external Keycloak instance
