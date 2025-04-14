@@ -295,6 +295,8 @@ auth:
       port: 8080
       # Relative path for the local Keycloak instance (relatively to the Ontrack main URL)
       path: keycloak
+      # Enabling Keycloak on the Ingress
+      ingressEnabled: true
     # Resources to allocate to the local Keycloak instance
     resources: {}
     # Name of the realm to create in Keycloak to serve the Ontrack users
