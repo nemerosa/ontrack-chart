@@ -140,3 +140,24 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+{{/*
+Creating a password or reusing it if already existing in the given secret
+
+Parameters:
+  - secretName: (string, required) The name of the secret
+  - secretKey: (string, required) The name of the key in the secret
+  - context: (object, required) The evalutation context
+
+Usage:
+  {{- template "ontrack.secretPassword" (dict "secretName" "my-secret" "secretKey" "password" "context" .) -}}
+
+*/}}
+{{- define "ontrack.secretPassword" -}}
+{{- $existing := (lookup "v1" "Secret" .context.Release.Namespace .secretName) }}
+{{- if $existing }}
+  {{- index $existing.data .secretKey | b64dec }}
+{{- else }}
+  {{- randAlphaNum 32 }}
+{{- end }}
+{{- end }}
