@@ -29,6 +29,33 @@ spec:
       serviceAccountName: {{ include "ontrack.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- if .Values.auth.keycloak.ldap.enabled }}
+      initContainers:
+        - name: {{ .Chart.Name }}-keycloak-init
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: busybox:1.37.0
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: [ "/bin/sh", "-c" ]
+          env:
+            # TODO Use secret
+            - name: BIND_DN
+              value: {{ .Values.auth.keycloak.ldap.bindDn | quote }}
+            - name: BIND_CREDENTIAL
+              value: {{ .Values.auth.keycloak.ldap.bindCredential | quote }}
+          args:
+            - >
+              cat /config/ontrack.json.tpl &&
+              cp /config/ontrack.json.tpl /tmp/ontrack.json &&
+              sed "s|\${BIND_DN}|$BIND_DN|g" /tmp/ontrack.json> /tmp/ontrack-dn.json &&
+              sed "s|\${BIND_CREDENTIAL}|$BIND_CREDENTIAL|g" /tmp/ontrack-dn.json > /output/ontrack.json &&
+              cat /output/ontrack.json
+          volumeMounts:
+            - name: {{ include "ontrack.fullname" . }}-keycloak-ldap-template
+              mountPath: /config
+            - name: {{ include "ontrack.fullname" . }}-keycloak-ldap-json
+              mountPath: /output
+      {{- end }}
       containers:
       {{- if .Values.extraContainers }}
         {{- toYaml .Values.extraContainers | nindent 8 }}
@@ -53,7 +80,7 @@ spec:
           {{- if .Values.auth.keycloak.ldap.enabled }}
           volumeMounts:
             - mountPath: /opt/keycloak/data/import
-              name: {{ include "ontrack.fullname" . }}-keycloak-ldap
+              name: {{ include "ontrack.fullname" . }}-keycloak-ldap-json
           {{- end }}
           env:
             - name: KC_BOOTSTRAP_ADMIN_USERNAME
@@ -97,10 +124,12 @@ spec:
       {{- end }}
       {{- if .Values.auth.keycloak.ldap.enabled }}
       volumes:
-        - name: {{ include "ontrack.fullname" . }}-keycloak-ldap
+        - name: {{ include "ontrack.fullname" . }}-keycloak-ldap-template
           configMap:
-            name: {{ include "ontrack.fullname" . }}-keycloak-ldap
+            name: {{ include "ontrack.fullname" . }}-keycloak-ldap-template
             optional: false
+        - name: {{ include "ontrack.fullname" . }}-keycloak-ldap-json
+          emptyDir: {}
       {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:

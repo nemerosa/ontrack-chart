@@ -2,9 +2,9 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "ontrack.fullname" . }}-keycloak-ldap
+  name: {{ include "ontrack.fullname" . }}-keycloak-ldap-template
 data:
-  ontrack.json: |-
+  ontrack.json.tpl: |-
     {
       "id": "{{ .Values.auth.keycloak.realm }}",
       "realm": "{{ .Values.auth.keycloak.realm }}",
@@ -94,8 +94,8 @@ data:
               "vendor": ["other"],
               "connectionUrl": ["{{ .Values.auth.keycloak.ldap.url }}"],
               "usersDn": ["{{ .Values.auth.keycloak.ldap.usersDn }}"],
-              "bindDn": ["{{ .Values.auth.keycloak.ldap.bindDn }}"],
-              "bindCredential": ["{{ .Values.auth.keycloak.ldap.bindCredential }}"],
+              "bindDn": ["${BIND_DN}"],
+              "bindCredential": ["${BIND_CREDENTIAL}"],
               "useTruststoreSpi": ["ldapsOnly"],
               "connectionPooling": ["true"],
               "pagination": ["true"],
