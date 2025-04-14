@@ -103,8 +103,8 @@ ontrack:
       memory: 1Gi
   # Persistence configuration
   persistence:
-    # By default, not using a persistent storage
-    enabled: false
+    # Enabling the persistent storage
+    enabled: true
     # Set annotations on pvc
     annotations: { }
     # PVC access mode
