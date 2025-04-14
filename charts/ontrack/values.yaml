@@ -383,7 +383,8 @@ auth:
           # Admin user
           admin:
             # SSHA admin password
-            sshaPassword: "{SSHA}KTo9V1wBebjK0O8I53Zu5U3kACvXHFiY"
+            # slappasswd -h {SSHA} -s admin
+            sshaPassword: "{SSHA}cqhYu0IJNPgwklQuoENm6PtzGJLpPkgt"
   # Unique secret used by Next Auth in Ontrack to create session cookies
   # You can generate it using `openssl rand -hex 32`
   secret: xxx
