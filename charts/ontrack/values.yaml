@@ -360,8 +360,23 @@ auth:
         # Name of the secret
         # This secret is expected to have the following keys:
         # * bindDn
-        # * bindCredentials
+        # * bindCredential
         secretName: ontrack-ldap-credentials
+        # Using an external secret
+        externalSecret:
+          # Creating the external secret definition
+          enabled: false
+          # Refresh interval
+          refreshInterval: 6h
+          # Location of the secret to bind to
+          store:
+            # Name of the secret store
+            name: vault-backend
+            # Scope of the secret store
+            kind: ClusterSecretStore
+            # Path to the secret in the store.
+            # The entry is expected to have the following keys: bindDn & bindCredential
+            path: ontrack/keycloak/ldap
       # LDAP attributes
       usernameLDAPAttribute: uid
       rdnLDAPAttribute: uid

@@ -187,6 +187,39 @@ in the LDAP to the ones that Keycloak expects. The default mappings are suitable
 Ontrack uses Keycloak as a relay to the LDAP, so attention must be given to the settings of 
 Keycloak as well, in terms of security.
 
+### Using a secret for the LDAP credentials
+
+Using the `bindDn` and `bindCredential` value is not recommended to store the credentials to connect
+to the LDAP.
+
+You can use an existing secret by using:
+
+```yaml
+auth:
+  keycloak:
+    ldap:
+      bindCredentialSecret:
+        enabled: true
+        secretName: ontrack-ldap-credentials
+```
+
+You can also create an external secret definition to point to your secret store:
+
+```yaml
+auth:
+  keycloak:
+    ldap:
+      bindCredentialSecret:
+        enabled: true
+        externalSecret:
+          enabled: true
+          refreshInterval: 6h
+          store:
+            name: vault-backend
+            kind: ClusterSecretStore
+            path: ontrack/test/v5/ldap
+```
+
 ## Management of users in Ontrack
 
 For any user connecting to Ontrack through any authentication provider, upon login,
