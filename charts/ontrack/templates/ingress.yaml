@@ -43,6 +43,14 @@ spec:
                 name: {{ $fullName }}
                 port:
                   number: {{ .Values.service.port }}
+          # Hook API
+          - path: "/hook"
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ $fullName }}
+                port:
+                  number: {{ .Values.service.port }}
           # Next UI
           - path: "/"
             pathType: Prefix
