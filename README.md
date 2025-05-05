@@ -101,6 +101,62 @@ auth:
       ingressEnabled: false
 ```
 
+### Configuration of the Keycloak client ID and secret
+
+When using Keycloak as the authentication source, the OIDC client ID
+and secret can be defined in different ways.
+
+#### Client ID and secret in values
+
+The default way is to store the OIDC client ID and secret directly
+into the values:
+
+```yaml
+auth:
+  keycloak:
+    client:
+      id: ontrack-client
+      secret: ontrack-client-secret
+```
+
+> Do not use this in production since it would expose your client
+> credentials through the Helm values.
+
+#### Client ID and secret in a secret
+
+You can store the client ID and secret into a K8S secret:
+
+```yaml
+auth:
+  keycloak:
+    secret:
+      enabled: true
+      name: ontrack-keycloak
+```
+
+The secret must:
+
+* exist so that Keycloak can start
+* have two keys: `id` and `secret` to respectively store the client ID and secret
+
+#### Client ID and secret generation
+
+Like before, but you tell the chart to _generate_ the secret before hand.
+
+```yaml
+auth:
+  keycloak:
+    secret:
+      enabled: true
+      name: ontrack-keycloak
+      generate: true
+```
+
+The client ID and secrets are automatically generated and used by the 
+Ontrack UI client.
+
+If need be, their values can be accessed by reading the secret.
+
 ### Configuration of the Keycloak bootstrap administrator
 
 The default admin credentials of Keycloak are set to `admin/admin`.

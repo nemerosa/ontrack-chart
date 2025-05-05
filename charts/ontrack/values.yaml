@@ -345,10 +345,14 @@ auth:
         lastName: "User"
         # Password (would need to be changed)
         password: "admin"
-    # TODO Connection parameters to Keycloak stored in a secret
+    # Connection parameters to Keycloak stored in a secret
     secret:
+      # Using a secret to store the client ID & secret
       enabled: false
+      # Name of the secret to use
       name: ontrack-keycloak
+      # Generating the client ID & secret
+      generate: true
     # Connection parameters to Keycloak when not stored in a secret
     # Should not be used in production
     client:
