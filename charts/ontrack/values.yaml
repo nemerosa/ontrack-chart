@@ -441,8 +441,14 @@ auth:
             # slappasswd -h {SSHA} -s admin
             sshaPassword: "{SSHA}cqhYu0IJNPgwklQuoENm6PtzGJLpPkgt"
   # Unique secret used by Next Auth in Ontrack to create session cookies
-  # You can generate it using `openssl rand -hex 32`
-  secret: xxx
+  next:
+    # Secret definition
+    secret:
+      # Name of the secret
+      # The secret must have an `secret` entry
+      name: ontrack-next-auth
+      # Generating the secret
+      generate: true
   # Specific setup for parsing the JWT access tokens
   # jwt:
     # Enabling debugging in Ontrack

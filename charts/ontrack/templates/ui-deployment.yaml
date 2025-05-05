@@ -104,7 +104,11 @@ spec:
               {{- end }}
             {{- end }}
             - name: NEXTAUTH_SECRET
-              value: {{ .Values.auth.secret | quote }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.auth.next.secret.name | quote }}
+                  key: "secret"
+                  optional: false
             {{- if and .Values.auth.jwt .Values.auth.jwt.audience }}
             - name: NEXTAUTH_AUDIENCE
               value: {{ .Values.auth.jwt.audience | quote }}

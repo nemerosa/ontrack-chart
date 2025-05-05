@@ -405,6 +405,22 @@ ontrack:
           debug:true
 ```
 
+## Next Auth secret
+
+The Next Auth secret used to generate cookies on the client side
+is automatically generated.
+
+In case more control is needed (like reusing an existing secret),
+you can tune its configuration using:
+
+```yaml
+auth:
+  next:
+    secret:
+      name: ontrack-next-auth
+      generate: true
+```
+
 # Using a managed database
 
 In order to use a managed database, create a values file and fill the URL and credentials to access the database:
