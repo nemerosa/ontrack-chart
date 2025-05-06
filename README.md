@@ -45,6 +45,11 @@ and its own database and two additional services are installed:
 
 > Other authentication options are available. See [authentication](#authentication) below.
 
+# References
+
+See [`charts/ontrack/README.md`](charts/ontrack/README.md) for
+the list of all values.
+
 # Ingress configuration
 
 > The ingress configuration is _required_ if using the default Keycloak setup.
@@ -680,3 +685,24 @@ ingress:
         - ${host}
 ```
 
+# Development
+
+## Documentation generation
+
+The list of values for the chart are documented into this `README`
+file automatically by running [`helm-docs`](https://github.com/norwoodj/helm-docs).
+
+> Follow its documentation for the installation of the tool.
+
+To generate the documentation, just run:
+
+```bash
+helm-docs
+```
+
+The [`charts/ontrack/README.md`](charts/ontrack/README.md) is generated
+and referred to from the main `README`.
+
+In the [`charts/ontrack/values.yaml`](charts/ontrack/values.yaml) file,
+documentation of the values must be introduced using comments 
+prefixed by `# --`.

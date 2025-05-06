@@ -5,29 +5,35 @@
 replicaCount: 1
 
 image:
+  # -- Image to use for Ontrack (backend)
   repository: nemerosa/ontrack
+  # -- Pull policy
   pullPolicy: IfNotPresent
-  # Overrides the image tag whose default is the chart appVersion.
-  # tag: ""
+  # -- Overrides the image tag whose default is the chart appVersion.
+  tag: ""
 
+# -- List of secrets used to pull images
 imagePullSecrets: [ ]
+# -- Name to use instead of the chart name
 nameOverride: ""
+# -- If defined, uses this name for the resource names instead of the using the chart name
 fullnameOverride: ""
 
 serviceAccount:
-  # Specifies whether a service account should be created
+  # -- Specifies whether a service account should be created
   create: true
-  # Annotations to add to the service account
+  # -- Annotations to add to the service account
   annotations: { }
-  # The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template
+  # -- The name of the service account to use. If not set and create is true, a name is generated using the fullname template
   name: ""
 
+# -- Annotations for all pods
 podAnnotations: { }
 
+# -- Security context for all pods
 podSecurityContext: { }
-# fsGroup: 2000
 
+# -- Security context for the containers
 securityContext: { }
   # capabilities:
   #   drop:
@@ -37,81 +43,97 @@ securityContext: { }
 # runAsUser: 1000
 
 service:
+  # -- Service type for the Ontrack service
   type: ClusterIP
+  # -- Exposed port for the Ontrack service
   port: 8080
+  # -- Annotations for the Ontrack service
   annotations: { }
 
 management:
   service:
+    # -- Exposed port for the Ontrack management service
     port: 8800
-    # Set to true to have the management port exposed by another Service
-    # By default, using the same service and two different named ports
+    # -- Set to true to have the management port exposed by another Service. By default, using the same service and two different named ports
     specific: false
-    # Annotations for the management service
-    # Only used when specific == true
+    # -- Annotations for the management service. Only used when specific == true
     annotations: { }
-    # Service type for the management
-    # Only used when specific == true
+    # -- Service type for the management. Only used when specific == true
     type: ClusterIP
 
 ingress:
+  # -- Creating an Ingress for the Ontrack different services
   enabled: false
+  # -- Annotations for the Ingress
   annotations: {}
+  # -- Host for Ontrack
   host: "ontrack.local"
   tls:
+    # -- Using TLS for Ontrack
     enabled: true
 
-# nodeSelector: {}
+# -- Node selectors for the Ontrack resources
+nodeSelector: {}
 
-# tolerations: []
+# -- Node tolerations for the Ontrack resources
+tolerations: []
 
-# affinity: {}
+# -- Node affinity for the Ontrack resources
+affinity: {}
 
 # Ontrack configuration
 ontrack:
-  # Ontrack root URL - must point to the UI service
+  # -- Ontrack root URL - must point to the UI service
   url: "http://localhost:3000"
-  # Comma-separated list of active Spring profiles
+  # -- Comma-separated list of active Spring profiles
   profiles: prod
-  # Application configuration file as a YAML content
+  # -- Application configuration file as a YAML content
   application_yaml: ""
-  ## Next UI setup (experimental)
+  # Next UI setup
   ui:
-    # Number of replicas
+    # -- Number of replicas for the UI (experimental)
     replicas: 1
-    # Image to use
+    # -- Image to use for the UI
     image: nemerosa/ontrack-ui
     # Service
     service:
-      # Port to expose
+      # -- Exposed port for the Ontrack IO
       port: 3000
-    # Next UI resources
+    # -- Next UI resources
     resources:
       limits:
+        # -- Next UI resources
         cpu: 800m
+        # -- Next UI resources
         memory: 1Gi
       requests:
+        # -- Next UI resources
         cpu: 800m
+        # -- Next UI resources
         memory: 1Gi
   ## Adjust these values to your needs, but make sure that the memory limit is never under 4 GB
   resources:
     limits:
+      # -- Ontrack resources
       cpu: 800m
+      # -- Ontrack resources
       memory: 2Gi
     requests:
+      # -- Ontrack resources
       cpu: 800m
+      # -- Ontrack resources
       memory: 1Gi
   # Persistence configuration
   persistence:
-    # Enabling the persistent storage
+    # -- Enabling the persistent storage
     enabled: true
-    # Set annotations on pvc
+    # -- Set annotations on pvc
     annotations: { }
-    # PVC access mode
+    # -- PVC access mode
     accessMode: ReadWriteOnce
-    # PVC initial size
+    # -- PVC initial size
     size: 5Gi
-    # If defined, storageClassName: <storageClass>
+    # -- If defined, storageClassName: <storageClass>
     # If set to "-", storageClassName: "", which disables dynamic provisioning
     # If undefined (the default) or set to null, no storageClassName spec is
     #   set, choosing the default provisioner.  (gp2 on AWS, standard on
@@ -119,335 +141,346 @@ ontrack:
     storageClass:
   # Ontrack configuration properties
   config:
-    # Using the database to store the key by default
+    # -- Using the database to store the key by default
     key_store: jdbc
     # If key_store == "secret"
     secret_key_store:
-      # Name of the secret
+      # -- Name of the secret
       secret_name: "ontrack-key-store"
-      # Directory to use inside the container
+      # -- Directory to use inside the container
       directory: "/var/ontrack/key_store"
     # License management
     license:
-      # Type of license: none, stripe, fixed
+      # -- Type of license: none, stripe, fixed
       type: none
       # For Fixed based configuration
       fixed:
-        # Type of license, display name, description, etc.
+        # -- Type of license, display name, description, etc.
         name:
-        # Name of the assignee
+        # -- Name of the assignee
         assignee:
-        # Is the license active?
+        # -- Is the license active?
         active: false
-        # End of validity for this license (null for unlimited)
+        # -- End of validity for this license (null for unlimited)
         validUntil:
-        # Maximum number of projects which can be created (0 for unlimited)
+        # -- Maximum number of projects which can be created (0 for unlimited)
         maxProjects: 0
       # For Stripe based configuration
       stripe:
-        # Name of the secret which contains the Stripe information
+        # -- Name of the secret which contains the Stripe information
         secret: ontrack-license-stripe
-        # Name of the secret key which contains the API key
+        # -- Name of the secret key which contains the API key
         token_key_name: token
-        # Name of the secret key which contains ID of the Stripe subscription
+        # -- Name of the secret key which contains ID of the Stripe subscription
         subscription_key_name: subscription
       # For embedded license key
       embedded:
-        # Provided license key
+        # -- Provided license key
         key: ""
   # Management configuration
   management:
     metrics:
       # Tags to add to all exposed metrics
       tags:
+        # -- Application tag to add to all exposed metrics
         application: "ontrack"
+        # -- Application instance tag to add to all exposed metrics
         application_instance: "ontrack"
 
-  # Arbitrary environment variables
+  # -- Arbitrary environment variables
   env: [ ]
 
   # Arbitrary secrets & config map sources
   extraConfig:
+    # -- Arbitrary secrets map sources
     secrets: [ ]
     # secrets:
     #   - secret-name
+    # -- Arbitrary config map sources
     configmaps: [ ]
     # configmaps:
     #   - config-map-name
 
-  # CasC configuration
+  # -- CasC configuration
   casc:
-    # Is Casc enabled?
+    # -- Is Casc enabled?
     enabled: false
-    # Config map containing all Casc files
+    # -- Config map containing all Casc files
     map: ""
-    # Secret map containing all secret Casc files
+    # -- Secret map containing all secret Casc files
     secret: ""
-    # Path where to mount the Casc files
+    # -- Path where to mount the Casc files
     directory: "/var/ontrack/casc"
-    # Mapping of secrets
+    # -- Mapping of secrets
     secrets:
-      # Secret mapping mode
+      # -- Secret mapping mode
       mapping: env
-      # Directory where to map the secrets (for mapping = env)
+      # -- Directory where to map the secrets (for mapping = env)
       directory: "/var/ontrack/casc/mapping"
-      # List of secret names to mount
+      # -- List of secret names to mount
       names: []
-    # Auto reload configuration
+    # -- Auto reload configuration
     reloading:
-      # Auto reload activation
+      # -- Auto reload activation
       enabled: false
-      # Auto reload cron schedule
+      # -- Auto reload cron schedule
       # Leave empty to be a manual job only
       cron: ""
-    # Uploading the Casc
+    # -- Uploading the Casc
     upload:
-      # Enabled
+      # -- Casc upload activation
       enabled: false
-    # Casc from values
+    # -- Casc from values
     mapValues:
-      # Enabling the creating & mapping of a config map holding Casc values
+      # -- Enabling the creating & mapping of a config map holding Casc values
       # Casc values are expected to be under the root `casc` object, for example
       # casc:
       #   ontrack:
       #     # ...
-      # Name of the entry to hold the values
+      # -- Name of the entry to hold the values
       mapEntryName: "casc.yaml"
 
-# Authentication
+# -- Authentication
 auth:
-  # Display name for the authentication - used in the login page ("Sign in with ...")
+  # -- Display name for the authentication - used in the login page ("Sign in with ...")
   name: Ontrack
-  # Provisioning of groups & initial administrator
+  # -- Provisioning of groups & initial administrator
   provisioning: true
-  # Configuration of the initial administrator
+  # -- Configuration of the initial administrator
   admin:
-    # Their email
+    # -- Their email
     email: "admin@ontrack.local"
-    # Their full name (if not provided)
+    # -- Their full name (if not provided)
     fullName: "Administrator"
-    # Group of administrators
+    # -- Group of administrators
     groupName: "Administrators"
-  # OIDC configuration (disabled by default)
+  # -- OIDC configuration (disabled by default)
   oidc:
-    # Enabling OIDC authentication
+    # -- Enabling OIDC authentication
     enabled: false
-    # Display name for your IdP (used for the login page)
+    # -- Display name for your IdP (used for the login page)
     name: OIDC
-    # OIDC issuer URL
+    # -- OIDC issuer URL
     issuer: ""
-    # Trailing slash for the issuer URL (used for Auth0)
+    # -- Trailing slash for the issuer URL (used for Auth0)
     trailingSlash: false
-    # Credentials used to contact the OIDC provider
+    # -- Credentials used to contact the OIDC provider
     credentials:
-      # Either stored in a secret (recommended)
+      # -- Either stored in a secret (recommended)
       secret:
-        # Enabling the secret
+        # -- Enabling the secret
         enabled: true
-        # The secret is expected to have the following keys: clientId & clientSecret
+        # -- The secret is expected to have the following keys: clientId & clientSecret
         secretName: ontrack-oidc
-        # Depending on your setup, you can also just create an external secret
+        # -- Depending on your setup, you can also just create an external secret
         # definition, pointing to the actual secret in a secret provided like
         # Vault or your cloud secret manager
         # If not using an external secret, Ontrack expects you to create the
         # secret manually.
         externalSecret:
-          # Enabling the creation of the external secret
+          # -- Enabling the creation of the external secret
           enabled: false
-          # Refresh interval
+          # -- Refresh interval
           refreshInterval: 6h
-          # Location of the secret to bind to
+          # -- Location of the secret to bind to
           store:
-            # Name of the secret store
+            # -- Name of the secret store
             name: vault-backend
-            # Scope of the secret store
+            # -- Scope of the secret store
             kind: ClusterSecretStore
-            # Path to the secret in the store.
+            # -- Path to the secret in the store.
             # The entry is expected to have the following keys: clientId & clientSecret
             path: ontrack/oidc
-      # ... or provided directly in the values (ok for testing)
+      # -- ... or provided directly in the values (ok for testing)
       # If a secret (or external secret) is provided, these values are not used
-      clientId: <client id>
-      clientSecret: <client secret>
-  # Configuration of the local Keycloak instance
+      client:
+        # -- OIDC Client ID
+        clientId: <client id>
+        # -- OIDC Client Secret
+        clientSecret: <client secret>
+  # -- Configuration of the local Keycloak instance
   keycloak:
-    # By default, Keycloak is installed.
+    # -- By default, Keycloak is installed.
     # Set to false to use an external authentication source like OIDC
     enabled: true
-    # Image of Keycloak to deploy
+    # -- Image of Keycloak to deploy
     image: quay.io/keycloak/keycloak
-    # Version this image of Keycloak to deploy
+    # -- Version this image of Keycloak to deploy
     tag: 26.1.4
-    # Admin user for the admin console of Keycloak
+    # -- Admin user for the admin console of Keycloak
     bootstrap:
+      # -- Username to connect to Bootstrap. Prefer using a secret.
       username: admin
-      # Password (would need to be changed)
+      # -- Password to connect to Bootstrap. Prefer using a secret.
       password: admin
-      # Secret for the bootstrapping
+      # -- Secret for the bootstrapping
       bootstrapSecret:
-        # Enabling using a secret
+        # -- Enabling using a secret
         enabled: false
-        # Secret name
+        # -- Secret name
         secretName: ontrack-keycloak-bootstrap
-        # Generating the secret (the password only, keeping the username)
+        # -- Generating the secret (the password only, keeping the username)
         generate: true
-        # Using an external secret
+        # -- Using an external secret
         externalSecret:
-          # Creating the external secret definition
+          # -- Creating the external secret definition
           enabled: false
-          # Refresh interval
+          # -- Refresh interval
           refreshInterval: 6h
-          # Location of the secret to bind to
+          # -- Location of the secret to bind to
           store:
-            # Name of the secret store
+            # -- Name of the secret store
             name: vault-backend
-            # Scope of the secret store
+            # -- Scope of the secret store
             kind: ClusterSecretStore
-            # Path to the secret in the store.
+            # -- Path to the secret in the store.
             # The entry is expected to have the following keys: bindDn & bindCredential
             path: ontrack/keycloak/bootstrap
-    # If using an external Keycloak instance
+    # -- If using an external Keycloak instance
     external:
-      # Enabling an external Keycloak instance
+      # -- Enabling an external Keycloak instance
       enabled: false
-      # URL to the external Keycloak instance
+      # -- URL to the external Keycloak instance
       url: https://keycloak
-    # Service setup for the local Keycloak instance
+    # -- Service setup for the local Keycloak instance
     service:
-      # Port of the service for the local Keycloak instance
+      # -- Port of the service for the local Keycloak instance
       port: 8080
-      # Relative path for the local Keycloak instance (relatively to the Ontrack main URL)
+      # -- Relative path for the local Keycloak instance (relatively to the Ontrack main URL)
       path: keycloak
-      # Enabling Keycloak on the Ingress
+      # -- Enabling Keycloak in the Ingress
       ingressEnabled: true
-    # Resources to allocate to the local Keycloak instance
+    # -- Resources to allocate to the local Keycloak instance
     resources: {}
-    # Name of the realm to create in Keycloak to serve the Ontrack users
+    # -- Name of the realm to create in Keycloak to serve the Ontrack users
     realm: ontrack
-    # Provisioning settings
+    # -- Provisioning settings
     settings:
-      # Provisioning of Keycloak is enabled
+      # -- Provisioning of Keycloak is enabled
       enabled: true
-      # Enabling users to register in the local instance of Keycloak
+      # -- Enabling users to register in the local instance of Keycloak
       registrationAllowed: true
-      # Enabling users to reset their passwords
+      # -- Enabling users to reset their passwords
       resetPasswordAllowed: true
-      # Initial Ontrack user to create
+      # -- Initial Ontrack user to create
       admin:
-        # Username
+        # -- Username
         username: "admin"
-        # Email
+        # -- Email
         # If not set, `auth.admin.email` is used
         email: ""
-        # First name
+        # -- First name
         firstName: "Admin"
-        # Last name
+        # -- Last name
         lastName: "User"
-        # Password (would need to be changed)
+        # -- Password (would need to be changed)
         password: "admin"
-    # Connection parameters to Keycloak stored in a secret
+    # -- Connection parameters to Keycloak stored in a secret
     secret:
-      # Using a secret to store the client ID & secret
+      # -- Using a secret to store the client ID & secret
       enabled: false
-      # Name of the secret to use
+      # -- Name of the secret to use
       name: ontrack-keycloak
-      # Generating the client ID & secret
+      # -- Generating the client ID & secret
       generate: true
-    # Connection parameters to Keycloak when not stored in a secret
+    # -- Connection parameters to Keycloak when not stored in a secret
     # Should not be used in production
     client:
-      # Client ID
+      # -- Client ID
       id: ontrack-client
-      # Client secret
+      # -- Client secret
       secret: ontrack-client-secret
-    # Account management from Ontrack
+    # -- Account management from Ontrack
     account:
-      # If set to not blank, URL to allow users to manage their own account
+      # -- If set to not blank, URL to allow users to manage their own account
       url: http://localhost:8008/realms/ontrack/account
-    # Configuration of Keycloak to use a LDAP for user federation
+    # -- Configuration of Keycloak to use a LDAP for user federation
     ldap:
-      # Using a LDAP
+      # -- Using a LDAP
       enabled: false
-      # ID of the LDAP federation in Keycloak
+      # -- ID of the LDAP federation in Keycloak
       id: ldap-users
-      # Name of the LDAP federation in Keycloak
+      # -- Name of the LDAP federation in Keycloak
       name: ldap-users
-      # URL to the ldap
+      # -- URL to the ldap
       url: ldap://ldap:389
-      # Users DN
+      # -- Users DN
       usersDn: ou=users,dc=example,dc=com
-      # Bind DN
+      # -- Bind DN
       # Prefer using a secret
       bindDn: cn=admin,dc=example,dc=com
-      # Bind credentials
+      # -- Bind credentials
       # Not recommended in production, better use a secret
       bindCredential: admin
-      # Bind credentials in a secret
+      # -- Bind credentials in a secret
       bindCredentialSecret:
-        # Using a secret to store the credentials
+        # -- Using a secret to store the credentials
         enabled: false
-        # Name of the secret
+        # -- Name of the secret
         # This secret is expected to have the following keys:
         # * bindDn
         # * bindCredential
         secretName: ontrack-ldap-credentials
-        # Using an external secret
+        # -- Using an external secret
         externalSecret:
-          # Creating the external secret definition
+          # -- Creating the external secret definition
           enabled: false
-          # Refresh interval
+          # -- Refresh interval
           refreshInterval: 6h
-          # Location of the secret to bind to
+          # -- Location of the secret to bind to
           store:
-            # Name of the secret store
+            # -- Name of the secret store
             name: vault-backend
-            # Scope of the secret store
+            # -- Scope of the secret store
             kind: ClusterSecretStore
-            # Path to the secret in the store.
+            # -- Path to the secret in the store.
             # The entry is expected to have the following keys: bindDn & bindCredential
             path: ontrack/keycloak/ldap
-      # LDAP attributes
+      # -- LDAP attributes: username
       usernameLDAPAttribute: uid
+      # -- LDAP attributes: DN
       rdnLDAPAttribute: uid
+      # -- LDAP attributes: unique ID
       uuidLDAPAttribute: entryUUID
+      # -- LDAP attributes: class for the user object
       userObjectClasses: inetOrgPerson
-      # Creating a testing LDAP instance
+      # -- Creating a testing LDAP instance
       testing:
-        # Enabling the creation of the LDAP test instance
+        # -- Enabling the creation of the LDAP test instance
         enabled: false
-        # Image to be used for the LDAP service
+        # -- Image to be used for the LDAP service
         image: osixia/openldap
-        # Tag to be used for the LDAP service
+        # -- Tag to be used for the LDAP service
         tag: 1.5.0
-        # Admin user
+        # -- Admin user
         admin:
-          # Its password
+          # -- Its password
           password: admin
-        # Resources to allocate
+        # -- Resources to allocate
         resources: {}
-        # Provisioning of the LDAP
+        # -- Provisioning of the LDAP
         provisioning:
-          # Is it enabled?
+          # -- Is it enabled?
           enabled: true
-          # Organization name
+          # -- Organization name
           organisation: Ontrack
-          # Domain name
+          # -- Domain name
           domain:
             extension: com
             name: nemerosa
-          # Admin user
+          # -- Admin user
           admin:
-            # SSHA admin password
-            # slappasswd -h {SSHA} -s admin
+            # -- SSHA admin password
+            # `slappasswd -h {SSHA} -s admin`
             sshaPassword: "{SSHA}cqhYu0IJNPgwklQuoENm6PtzGJLpPkgt"
-  # Unique secret used by Next Auth in Ontrack to create session cookies
+  # -- Unique secret used by Next Auth in Ontrack to create session cookies
   next:
-    # Secret definition
+    # -- Secret definition
     secret:
-      # Name of the secret
+      # -- Name of the secret
       # The secret must have an `secret` entry
       name: ontrack-next-auth
-      # Generating the secret
+      # -- Generating the secret
       generate: true
   # Specific setup for parsing the JWT access tokens
   # jwt:
@@ -462,33 +495,35 @@ auth:
       # Claim that contains the email
       # email: email
 
-# Local database for testing purpose
+# -- Local database
 postgresql:
+  # -- Enabling the local database
   local: true
-  # Authentication parameters
+  # -- Authentication parameters
   auth:
-    # Name of the database to create
+    # -- Name of the database to create
     database: ontrack
-    # Credentials to be used
+    # -- Credentials to be used
     username: ontrack
+    # -- Credentials to be used
     password: ontrack
   # Configuration for the container database
 #  primary:
 #    pgHbaConfiguration: |-
 #      host all all 0.0.0.0/0 trust
-  # For external database
+  # -- For external database
   postgresqlUrl: ""
-  # For external database, using environment variables
+  # -- For external database, using environment variables
   postgresFromEnv: false
 
-# Local RabbitMQ for message processing
+# -- Local RabbitMQ for message processing
 rabbitmq:
   auth:
     username: ontrack
     password: ontrack
     erlangCookie: ontrack
 
-# Local Elasticsearch engine for testing purpose
+# -- Local Elasticsearch engine for testing purpose
 elasticsearch:
   enabled: true
   maxUnavailable: 0 # Even in K8S 1.25, the Pod Disruption budget is generated for policy/v1beta instead of policy/v1
@@ -519,17 +554,17 @@ elasticsearch:
       requests:
         storage: 5Gi
 
-# In case you want to specify different resources for emptyDir than {}
+# -- In case you want to specify different resources for emptyDir than {}
 emptyDir: { }
   # Example of resouces that might be used:
   # medium: Memory
 # sizeLimit: 16Mi
 
-## Array of extra containers to run alongside the Ontrack container
-##
-## Example:
-## - name: myapp-container
-##   image: busybox
-##   command: ['sh', '-c', 'echo Hello && sleep 3600']
-##
+# -- Array of extra containers to run alongside the Ontrack container
+#
+# Example:
+# - name: myapp-container
+#   image: busybox
+#   command: ['sh', '-c', 'echo Hello && sleep 3600']
+#
 extraContainers: [ ]
