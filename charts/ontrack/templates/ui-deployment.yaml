@@ -109,7 +109,7 @@ spec:
                   name: {{ .Values.auth.next.secret.name | quote }}
                   key: "secret"
                   optional: false
-            {{- if and .Values.auth.jwt .Values.auth.jwt.audience }}
+            {{- if and (hasKey .Values.auth "jwt") .Values.auth.jwt.audience }}
             - name: NEXTAUTH_AUDIENCE
               value: {{ .Values.auth.jwt.audience | quote }}
             {{- end }}
