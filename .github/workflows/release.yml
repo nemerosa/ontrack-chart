@@ -40,5 +40,6 @@ jobs:
       - name: Publishing
         run: |
           curl --data-binary "@$(ls ontrack-*.tgz)" \
+            --fail \
             --user "${{ secrets.CHARTMUSEUM_USERNAME }}:${{ secrets.CHARTMUSEUM_PASSWORD }}"\
             https://chartmuseum.nemerosa.net/api/charts
