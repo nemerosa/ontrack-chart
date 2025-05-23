@@ -1,6 +1,6 @@
 # ontrack
 
-![Version: 1.0.0+alpha-005](https://img.shields.io/badge/Version-1.0.0+alpha--005-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 5.0-alpha.0-60](https://img.shields.io/badge/AppVersion-5.0--alpha.0--60-informational?style=flat-square)
+![Version: 1.0.0+alpha-006](https://img.shields.io/badge/Version-1.0.0+alpha--006-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 5.0-alpha.0-82](https://img.shields.io/badge/AppVersion-5.0--alpha.0--82-informational?style=flat-square)
 
 A Helm chart for Kubernetes
 
