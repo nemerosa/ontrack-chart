@@ -362,6 +362,10 @@ auth:
       registrationAllowed: true
       # -- Enabling users to reset their passwords
       resetPasswordAllowed: true
+      # -- SSO idle time (in seconds)
+      ssoSessionIdleTimeout: 3600
+      # -- Access Token Lifespan (in seconds)
+      accessTokenLifespan: 3600
       # -- Initial Ontrack user to create
       admin:
         # -- Username

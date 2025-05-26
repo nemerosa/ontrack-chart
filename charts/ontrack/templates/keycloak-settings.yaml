@@ -11,6 +11,8 @@ data:
       "enabled": true,
       "registrationAllowed": {{ .Values.auth.keycloak.settings.registrationAllowed }},
       "resetPasswordAllowed": {{ .Values.auth.keycloak.settings.resetPasswordAllowed }},
+      "ssoSessionIdleTimeout": {{ .Values.auth.keycloak.settings.ssoSessionIdleTimeout }},
+      "accessTokenLifespan": {{ .Values.auth.keycloak.settings.accessTokenLifespan }},
       "users": [
         {
           "username": "{{ .Values.auth.keycloak.settings.admin.username }}",
