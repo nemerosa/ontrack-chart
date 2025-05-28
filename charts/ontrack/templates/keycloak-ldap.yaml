@@ -6,33 +6,7 @@ metadata:
 data:
   ontrack.json.tpl: |-
     {
-      "id": "{{ .Values.auth.keycloak.realm }}",
-      "realm": "{{ .Values.auth.keycloak.realm }}",
-      "enabled": true,
-      "registrationAllowed": {{ .Values.auth.keycloak.settings.registrationAllowed }},
-      "resetPasswordAllowed": {{ .Values.auth.keycloak.settings.resetPasswordAllowed }},
-      "clients": [
-        {
-          "clientId": "{{ .Values.auth.keycloak.client.id }}",
-          "enabled": true,
-          "protocol": "openid-connect",
-          "publicClient": false,
-          "baseUrl": "{{ .Values.ontrack.url }}",
-          "redirectUris": [
-            "{{ .Values.ontrack.url }}/api/auth/callback/keycloak"
-          ],
-          "webOrigins": [
-            "{{ .Values.ontrack.url }}"
-          ],
-          "directAccessGrantsEnabled": true,
-          "standardFlowEnabled": true,
-          "implicitFlowEnabled": false,
-          "serviceAccountsEnabled": false,
-          "authorizationServicesEnabled": false,
-          "clientAuthenticatorType": "client-secret",
-          "secret": "{{ .Values.auth.keycloak.client.secret }}"
-        }
-      ],
+      {{- tpl (.Files.Get "files/partials/keycloak/common.json.tpl") . | indent 6 }},
       "components": {
         "org.keycloak.storage.UserStorageProvider": [
           {

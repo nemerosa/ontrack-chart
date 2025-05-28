@@ -62,8 +62,8 @@ management:
     type: ClusterIP
 
 ingress:
-  # -- Creating an Ingress for the Ontrack different services
-  enabled: false
+  # -- Creating an Ingress for the Ontrack different services. This is required when using Keycloak.
+  enabled: true
   # -- Annotations for the Ingress
   annotations: {}
   # -- Host for Ontrack
