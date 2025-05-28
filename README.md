@@ -372,6 +372,37 @@ auth:
             path: ontrack/test/v5/ldap
 ```
 
+### Keycloak LDAP configuration
+
+Values under `auth.keycloak.ldap` can be used to configure the LDAP settings in Keycloak:
+
+```yaml
+auth:
+  keycloak:
+    ldap:
+      # -- LDAP attributes: username
+      usernameLDAPAttribute: uid
+      # -- LDAP attributes: DN
+      rdnLDAPAttribute: uid
+      # -- LDAP attributes: unique ID
+      uuidLDAPAttribute: entryUUID
+      # -- LDAP attributes: class for the user object
+      userObjectClasses: inetOrgPerson
+```
+
+If you need more control on the mapping attributes, you can override the `components` node
+of the Keycloak configuration:
+
+```yaml
+auth:
+  keycloak:
+    ldap:
+      components:
+         # Your config here
+```
+
+> See the [values](charts/ontrack/values.yaml) for more information.
+
 ## Management of users in Ontrack
 
 For any user connecting to Ontrack through any authentication provider, upon login,
@@ -425,6 +456,51 @@ auth:
       name: ontrack-next-auth
       generate: true
 ```
+
+## Configuration of groups
+
+If groups set in the IdP are passed in the `groups` claim of the JWT access token, Yontrack
+has access to them, and they can be mapped to actual Yontrack groups to grant authorisations
+to groups of people belonging to same group.
+
+The way to setup the groups depend on the IdP you are using.
+
+### Keycloak database
+
+You just need to configure the users and the groups directly in Keycloak.
+
+> The `groups` claim is automatically configured to be injected into the JWT access token.
+
+### LDAP in Keycloak
+
+When an external LDAP is enabled in Keycloak, you need to configure how the LDAP groups are detected
+by Keycloak.
+
+The mapping defaults to:
+
+```yaml
+auth:
+  keycloak:
+    ldap:
+      groups:
+        # -- Groups DN
+        groupsDn: "ou=groups,dc=example,dc=com"
+        membershipAttributeType: DN
+        membershipUserLdapAttribute: uid
+        membershipLdapAttribute: member
+        memberofLdapAttribute: memberOf
+        groupNameLdapAttribute: cn
+        groupObjectClasses: groupOfNames
+```
+
+> The `groups` claim is automatically configured to be injected into the JWT access token.
+
+### Okta
+
+If you want to use Okta groups in the group mappings in Yontrack, go to _Sign On_ section of
+the application and make sure to select a list of groups (using a filter):
+
+![Okta groups](docs/auth-okta-groups.png)
 
 # Using a managed database
 
