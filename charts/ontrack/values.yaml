@@ -450,6 +450,16 @@ auth:
       uuidLDAPAttribute: entryUUID
       # -- LDAP attributes: class for the user object
       userObjectClasses: inetOrgPerson
+      # -- Configuration of the LDAP groups
+      groups:
+        # -- Groups DN
+        groupsDn: "ou=groups,dc=example,dc=com"
+        membershipAttributeType: DN
+        membershipUserLdapAttribute: uid
+        membershipLdapAttribute: member
+        memberofLdapAttribute: memberOf
+        groupNameLdapAttribute: cn
+        groupObjectClasses: groupOfNames
       # -- Creating a testing LDAP instance
       testing:
         # -- Enabling the creation of the LDAP test instance

@@ -59,6 +59,51 @@ data:
                       "username"
                     ]
                   }
+                },
+                {
+                  "name": "groups",
+                  "providerId": "group-ldap-mapper",
+                  "config": {
+                    "mode": [
+                      "LDAP_ONLY"
+                    ],
+                    "membership.attribute.type": [
+                      "{{ .Values.auth.keycloak.ldap.groups.membershipAttributeType }}"
+                    ],
+                    "user.roles.retrieve.strategy": [
+                      "LOAD_GROUPS_BY_MEMBER_ATTRIBUTE"
+                    ],
+                    "group.name.ldap.attribute": [
+                      "{{ .Values.auth.keycloak.ldap.groups.groupNameLdapAttribute }}"
+                    ],
+                    "ignore.missing.groups": [
+                      "false"
+                    ],
+                    "membership.user.ldap.attribute": [
+                      "{{ .Values.auth.keycloak.ldap.groups.membershipUserLdapAttribute }}"
+                    ],
+                    "preserve.group.inheritance": [
+                      "true"
+                    ],
+                    "membership.ldap.attribute": [
+                      "{{ .Values.auth.keycloak.ldap.groups.membershipLdapAttribute }}"
+                    ],
+                    "group.object.classes": [
+                      "{{ .Values.auth.keycloak.ldap.groups.groupObjectClasses }}"
+                    ],
+                    "memberof.ldap.attribute": [
+                      "{{ .Values.auth.keycloak.ldap.groups.memberofLdapAttribute }}"
+                    ],
+                    "groups.dn": [
+                      "{{ .Values.auth.keycloak.ldap.groups.groupsDn }}"
+                    ],
+                    "drop.non.existing.groups.during.sync": [
+                      "false"
+                    ],
+                    "groups.path": [
+                      "/"
+                    ]
+                  }
                 }
               ]
             },
