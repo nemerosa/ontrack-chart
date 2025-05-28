@@ -402,6 +402,8 @@ auth:
     ldap:
       # -- Using a LDAP
       enabled: false
+      # -- If defined, provides the _whole_ LDAP configuration in Keycloak (under the `components` node)
+      components: {}
       # -- ID of the LDAP federation in Keycloak
       id: ldap-users
       # -- Name of the LDAP federation in Keycloak

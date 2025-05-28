@@ -7,6 +7,9 @@ data:
   ontrack.json.tpl: |-
     {
       {{- tpl (.Files.Get "files/partials/keycloak/common.json.tpl") . | indent 6 }},
+      {{- if .Values.auth.keycloak.ldap.components }}
+      "components": {{ .Values.auth.keycloak.ldap.components | toJson }}
+      {{- else }}
       "components": {
         "org.keycloak.storage.UserStorageProvider": [
           {
@@ -86,4 +89,5 @@ data:
         ]
       }
     }
+    {{- end }}
 {{- end }}
