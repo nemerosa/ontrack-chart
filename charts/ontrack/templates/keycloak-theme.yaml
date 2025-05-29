@@ -4,8 +4,9 @@ kind: ConfigMap
 metadata:
   name: {{ include "ontrack.fullname" . }}-keycloak-theme
 binaryData:
-{{- $files := .Files.Glob "files/themes/yontrack/**" }}
+{{- $prefix := "files/themes/yontrack/" }}
+{{- $files := .Files.Glob (printf "%s**" $prefix) }}
 {{- range $path, $_ := $files }}
-  {{ $path | base | quote }}: {{ $.Files.GetBytes $path | toString | b64enc | quote }}
+  {{ $path | trimPrefix $prefix | quote }}: {{ $.Files.GetBytes $path | toString | b64enc | quote }}
 {{- end }}
 {{- end }}
