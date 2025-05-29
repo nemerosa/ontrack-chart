@@ -29,8 +29,22 @@ spec:
       serviceAccountName: {{ include "ontrack.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
-      {{- if .Values.auth.keycloak.ldap.enabled }}
       initContainers:
+        - name: {{ .Chart.Name }}-keycloak-theme
+          image: busybox:1.37.0
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: [ "/bin/sh", "-c" ]
+          args:
+            - >
+              mkdir -p /theme &&
+              cp /config/yontrack.tar.gz /theme/ &&
+              cd /theme && tar vxzf yontrack.tar.gz
+          volumeMounts:
+            - name: {{ include "ontrack.fullname" . }}-keycloak-theme-archive
+              mountPath: /config
+            - name: {{ include "ontrack.fullname" . }}-keycloak-theme-dir
+              mountPath: /theme
+      {{- if .Values.auth.keycloak.ldap.enabled }}
         - name: {{ .Chart.Name }}-keycloak-init
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
@@ -94,7 +108,7 @@ spec:
             {{- end }}
           volumeMounts:
             - mountPath: /opt/keycloak/themes/yontrack
-              name: {{ include "ontrack.fullname" . }}-keycloak-theme
+              name: {{ include "ontrack.fullname" . }}-keycloak-theme-dir
           {{- if .Values.auth.keycloak.settings.enabled }}
             - mountPath: /opt/keycloak/data/import
               name: {{ include "ontrack.fullname" . }}-keycloak-settings
@@ -152,10 +166,12 @@ spec:
             periodSeconds: 10
             failureThreshold: 6
       volumes:
-        - name: {{ include "ontrack.fullname" . }}-keycloak-theme
+        - name: {{ include "ontrack.fullname" . }}-keycloak-theme-archive
           configMap:
             name: {{ include "ontrack.fullname" . }}-keycloak-theme
             optional: false
+        - name: {{ include "ontrack.fullname" . }}-keycloak-theme-dir
+          emptyDir: {}
       {{- if .Values.auth.keycloak.settings.enabled }}
         - name: {{ include "ontrack.fullname" . }}-keycloak-settings
           configMap:

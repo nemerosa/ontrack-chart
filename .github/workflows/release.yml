@@ -21,6 +21,11 @@ jobs:
           git config user.name "$GITHUB_ACTOR"
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
 
+      - name: Preparing theme
+        run: |
+          cd charts/ontrack/files/themes
+          tar vczf yontrack.tar.gz yontrack
+
       - name: Install Helm
         uses: azure/setup-helm@v3
 
