@@ -1,6 +1,8 @@
 "id": "{{ .Values.auth.keycloak.realm }}",
 "realm": "{{ .Values.auth.keycloak.realm }}",
 "enabled": true,
+"loginTheme": "yontrack",
+"internationalizationEnabled": false,
 "registrationAllowed": {{ .Values.auth.keycloak.settings.registrationAllowed }},
 "resetPasswordAllowed": {{ .Values.auth.keycloak.settings.resetPasswordAllowed }},
 "ssoSessionIdleTimeout": {{ .Values.auth.keycloak.settings.ssoSessionIdleTimeout }},

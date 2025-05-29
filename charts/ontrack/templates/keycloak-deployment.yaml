@@ -92,13 +92,14 @@ spec:
             {{- if or .Values.auth.keycloak.settings.enabled .Values.auth.keycloak.ldap.enabled }}
             - --import-realm
             {{- end }}
-          {{- if .Values.auth.keycloak.settings.enabled }}
           volumeMounts:
+            - mountPath: /opt/keycloak/themes/yontrack
+              name: {{ include "ontrack.fullname" . }}-keycloak-theme
+          {{- if .Values.auth.keycloak.settings.enabled }}
             - mountPath: /opt/keycloak/data/import
               name: {{ include "ontrack.fullname" . }}-keycloak-settings
           {{- end }}
           {{- if .Values.auth.keycloak.ldap.enabled }}
-          volumeMounts:
             - mountPath: /opt/keycloak/data/import
               name: {{ include "ontrack.fullname" . }}-keycloak-ldap-json
           {{- end }}
@@ -150,15 +151,18 @@ spec:
             initialDelaySeconds: 30
             periodSeconds: 10
             failureThreshold: 6
-      {{- if .Values.auth.keycloak.settings.enabled }}
       volumes:
+        - name: {{ include "ontrack.fullname" . }}-keycloak-theme
+          configMap:
+            name: {{ include "ontrack.fullname" . }}-keycloak-theme
+            optional: false
+      {{- if .Values.auth.keycloak.settings.enabled }}
         - name: {{ include "ontrack.fullname" . }}-keycloak-settings
           configMap:
             name: {{ include "ontrack.fullname" . }}-keycloak-settings
             optional: false
       {{- end }}
       {{- if .Values.auth.keycloak.ldap.enabled }}
-      volumes:
         - name: {{ include "ontrack.fullname" . }}-keycloak-ldap-template
           configMap:
             name: {{ include "ontrack.fullname" . }}-keycloak-ldap-template
