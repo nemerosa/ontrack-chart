@@ -307,6 +307,8 @@ auth:
     image: quay.io/keycloak/keycloak
     # -- Version this image of Keycloak to deploy
     tag: 26.1.4
+    # -- Starting the server in verbose mode
+    verbose: false
     # -- Admin user for the admin console of Keycloak
     bootstrap:
       # -- Username to connect to Bootstrap. Prefer using a secret.

@@ -106,6 +106,9 @@ spec:
             {{- if or .Values.auth.keycloak.settings.enabled .Values.auth.keycloak.ldap.enabled }}
             - --import-realm
             {{- end }}
+            {{- if .Values.auth.keycloak.verbose }}
+            - --verbose
+            {{- end }}
           volumeMounts:
             - mountPath: /opt/keycloak/themes/yontrack
               name: {{ include "ontrack.fullname" . }}-keycloak-theme-dir

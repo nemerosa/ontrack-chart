@@ -6,6 +6,6 @@ metadata:
 data:
   ontrack.json: |-
     {
-      {{- tpl (.Files.Get "files/partials/keycloak/common.json.tpl") . | indent 6 }},
+      {{- tpl (.Files.Get "files/partials/keycloak/common.json.tpl") . | indent 6 }}
     }
 {{- end }}
