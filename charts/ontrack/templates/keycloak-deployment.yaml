@@ -72,13 +72,6 @@ spec:
               cp /config/ontrack.json.tpl /tmp/ontrack.json &&
               sed "s|\${BIND_DN}|$BIND_DN|g" /tmp/ontrack.json> /tmp/ontrack-dn.json &&
               sed "s|\${BIND_CREDENTIAL}|$BIND_CREDENTIAL|g" /tmp/ontrack-dn.json > /output/ontrack.json
-          # args:
-          #   - >
-          #     cat /config/ontrack.json.tpl &&
-          #     cp /config/ontrack.json.tpl /tmp/ontrack.json &&
-          #     sed "s|\${BIND_DN}|$BIND_DN|g" /tmp/ontrack.json> /tmp/ontrack-dn.json &&
-          #     sed "s|\${BIND_CREDENTIAL}|$BIND_CREDENTIAL|g" /tmp/ontrack-dn.json > /output/ontrack.json &&
-          #     cat /output/ontrack.json
           {{- end }}
           volumeMounts:
             - name: {{ include "ontrack.fullname" . }}-keycloak-ldap-template
@@ -111,6 +104,7 @@ spec:
             {{- end }}
           volumeMounts:
             - mountPath: /opt/keycloak/themes/yontrack
+              subPath: yontrack
               name: {{ include "ontrack.fullname" . }}-keycloak-theme-dir
           {{- if .Values.auth.keycloak.settings.enabled }}
             - mountPath: /opt/keycloak/data/import
