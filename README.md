@@ -50,6 +50,19 @@ and its own database and two additional services are installed:
 See [`charts/ontrack/README.md`](charts/ontrack/README.md) for
 the list of all values.
 
+# License key
+
+By default, Yontrack comes with a limited license key, suitable only for evaluation purposes.
+
+When you buy a license key, you have to set it in your configuration:
+
+```yaml
+ontrack:
+  config:
+    license:
+      key: "your license key"
+```
+
 # Ingress configuration
 
 > The ingress configuration is _required_ if using the default Keycloak setup.
@@ -686,6 +699,7 @@ ontrack:
 ## 1.0
 
 * Support for Ontrack V5
+* Support for the license key has [changed](#license-key)
 * Support for the different [authentication options](#authentication)
 
 ## 0.13
