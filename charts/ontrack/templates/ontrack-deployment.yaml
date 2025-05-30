@@ -222,36 +222,8 @@ spec:
             ########################################
             # License management
             ########################################
-            - name: ONTRACK_CONFIG_LICENSE_PROVIDER
-              value: {{ .Values.ontrack.config.license.type | quote }}
-            {{ if eq .Values.ontrack.config.license.type "stripe" }}
-            - name: ONTRACK_CONFIG_LICENSE_STRIPE_TOKEN
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.ontrack.config.license.stripe.secret | quote }}
-                  key: {{ .Values.ontrack.config.license.stripe.token_key_name | quote }}
-            - name: ONTRACK_CONFIG_LICENSE_STRIPE_SUBSCRIPTION
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.ontrack.config.license.stripe.secret | quote }}
-                  key: {{ .Values.ontrack.config.license.stripe.subscription_key_name | quote }}
-            {{- end }}
-            {{ if eq .Values.ontrack.config.license.type "fixed" }}
-            - name: ONTRACK_CONFIG_LICENSE_FIXED_NAME
-              value: {{ .Values.ontrack.config.license.fixed.name | quote }}
-            - name: ONTRACK_CONFIG_LICENSE_FIXED_ASSIGNEE
-              value: {{ .Values.ontrack.config.license.fixed.assignee | quote }}
-            - name: ONTRACK_CONFIG_LICENSE_FIXED_VALIDUNTIL
-              value: {{ .Values.ontrack.config.license.fixed.validUntil | quote }}
-            - name: ONTRACK_CONFIG_LICENSE_FIXED_MAXPROJECTS
-              value: {{ .Values.ontrack.config.license.fixed.maxProjects | quote }}
-            - name: ONTRACK_CONFIG_LICENSE_FIXED_ACTIVE
-              value: {{ .Values.ontrack.config.license.fixed.active | quote }}
-            {{- end }}
-            {{ if eq .Values.ontrack.config.license.type "embedded" }}
-            - name: ONTRACK_CONFIG_LICENSE_EMBEDDED_KEY
-              value: {{ .Values.ontrack.config.license.embedded.key | quote }}
-            {{- end }}
+            - name: ONTRACK_CONFIG_LICENSE_KEY
+              value: {{ .Values.ontrack.config.license.key | quote }}
             ########################################
             # Arbitrary environment variables
             ########################################
