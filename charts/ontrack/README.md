@@ -1,6 +1,6 @@
-# ontrack
+# yontrack-chart
 
-![Version: 1.0.0+alpha-013](https://img.shields.io/badge/Version-1.0.0+alpha--013-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 5.0-alpha.0-103](https://img.shields.io/badge/AppVersion-5.0--alpha.0--103-informational?style=flat-square)
+![Version: 1.0.0+alpha-020](https://img.shields.io/badge/Version-1.0.0+alpha--020-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 5.0-alpha.0-110](https://img.shields.io/badge/AppVersion-5.0--alpha.0--110-informational?style=flat-square)
 
 A Helm chart for Kubernetes
 
@@ -170,7 +170,7 @@ A Helm chart for Kubernetes
 | ontrack.casc.upload | object | `{"enabled":false}` | Uploading the Casc |
 | ontrack.casc.upload.enabled | bool | `false` | Casc upload activation |
 | ontrack.config.key_store | string | `"jdbc"` | Using the database to store the key by default |
-| ontrack.config.license.key | string | `"eyJkYXRhIjoiZXlKdVlXMWxJam9pVXlJc0ltRnpjMmxuYm1WbElqb2lVSFZpYkdsaklpd2lkbUZzYVdSVmJuUnBiQ0k2SWpJd01qVXRNVEl0TXpFaUxDSnRZWGhRY205cVpXTjBjeUk2TVRBc0ltWmxZWFIxY21WeklqcGJleUpwWkNJNkltVjRkR1Z1YzJsdmJpNWxiblpwY205dWJXVnVkSE1pTENKbGJtRmliR1ZrSWpwbVlXeHpaU3dpWkdGMFlTSTZXM3NpYm1GdFpTSTZJbTFoZUVWdWRtbHliMjV0Wlc1MGN5SXNJblpoYkhWbElqb2lNQ0o5WFgxZGZRPT0iLCJzaWduYXR1cmUiOiJNRVVDSVFEZFRUWWFNY3ZLL081Z2xjK3FXMG9raU9NSVMxR3l2elJacXFzYktSZ3Nyd0lnUEZhd1JNMm9OUHpMMlFWWkhVOE95dExCcWZ1QndwQ1ZlT2lLemdDRmFBdz0ifQ=="` | Provided license key An evaluation key is provided by default (valid until 2025-12-31, up to 10 projects, no extra features) |
+| ontrack.config.license.key | string | `"eyJkYXRhIjoiZXlKdVlXMWxJam9pVXlJc0ltRnpjMmxuYm1WbElqb2lVSFZpYkdsaklpd2lkbUZzYVdSVmJuUnBiQ0k2SWpJd01qVXRNVEl0TXpFaUxDSnRZWGhRY205cVpXTjBjeUk2TVRBc0ltWmxZWFIxY21WeklqcGJleUpwWkNJNkltVjRkR1Z1YzJsdmJpNWxiblpwY205dWJXVnVkSE1pTENKbGJtRmliR1ZrSWpwbVlXeHpaU3dpWkdGMFlTSTZXM3NpYm1GdFpTSTZJbTFoZUVWdWRtbHliMjV0Wlc1MGN5SXNJblpoYkhWbElqb2lNQ0o5WFgxZExDSnRaWE56WVdkbElqb2lXVzkxSUdGeVpTQjFjMmx1WnlCaGJpQmxkbUZzZFdGMGFXOXVJR3hwWTJWdWMyVXVJbjA9Iiwic2lnbmF0dXJlIjoiTUVVQ0lFMWNjQWQxT25ZQXl2M3B4c3ZaQWc0eDE1Q3dmY3FjMFNNRm12ZUU5TVRDQWlFQTJJZHVsZEtxek5DU2Q2VHJNNGxsczhzVGlHWXQ3Nmw5bFRZQ3pFdDBKMjQ9In0="` | Provided license key An evaluation key is provided by default (valid until 2025-12-31, up to 10 projects, no extra features) |
 | ontrack.config.secret_key_store.directory | string | `"/var/ontrack/key_store"` | Directory to use inside the container |
 | ontrack.config.secret_key_store.secret_name | string | `"ontrack-key-store"` | Name of the secret |
 | ontrack.env | list | `[]` | Arbitrary environment variables |

@@ -11,13 +11,13 @@ Helm's [documentation](https://helm.sh/docs) to get started.
 The Yontrack Helm chart is available as an OCI Helm chart in Docker Hub.
 
 ```
-helm install my-ontrack-release helm install myrelease oci://registry-1.docker.io/nemerosa/ontrack-chart
+helm install my-yontrack-release helm install myrelease oci://registry-1.docker.io/nemerosa/yontrack-chart
 ```
 
 To uninstall the chart:
 
 ```
-helm delete my-ontrack-release
+helm delete my-yontrack-release
 ```
 
 This installs the following services:
