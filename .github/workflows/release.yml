@@ -42,9 +42,16 @@ jobs:
         run: |
           helm package charts/ontrack
 
-      - name: Publishing
+      - name: Publishing in Chart Museum
         run: |
           curl --data-binary "@$(ls ontrack-*.tgz)" \
             --fail \
             --user "${{ secrets.CHARTMUSEUM_USERNAME }}:${{ secrets.CHARTMUSEUM_PASSWORD }}"\
             https://chartmuseum.nemerosa.net/api/charts
+
+      - name: Publishing in Docker Hub (OCI)
+        run: |
+          helm registry login registry-1.docker.io \
+            --username "${{ secrets.DOCKER_USER }}" \
+            --password "${{ secrets.DOCKER_TOKEN }}"
+          helm push "$(ls ontrack-*.tgz)" oci://registry-1.docker.io/nemerosa/ontrack-chart
