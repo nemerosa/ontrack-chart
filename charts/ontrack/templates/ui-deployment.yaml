@@ -40,8 +40,6 @@ spec:
           env:
             - name: ONTRACK_URL
               value: "http://{{ include "ontrack.fullname" . }}:{{ .Values.service.port }}"
-            - name: NEXTAUTH_NAME
-              value: {{ .Values.auth.name }}
             - name: NEXTAUTH_URL
               value: {{ .Values.ontrack.url | quote }}
             {{- if .Values.auth.oidc.enabled }}
@@ -102,6 +100,9 @@ spec:
             - name: NEXTAUTH_CLIENT_SECRET
               value: {{ .Values.auth.keycloak.client.secret | quote }}
               {{- end }}
+            {{- else }}
+            - name: NEXTAUTH_PROVIDER_NAME
+              value: {{ .Values.auth.keycloak.name | quote }}
             {{- end }}
             - name: NEXTAUTH_SECRET
               valueFrom:

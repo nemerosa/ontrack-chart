@@ -219,8 +219,6 @@ ontrack:
 
 # -- Authentication
 auth:
-  # -- Display name for the authentication - used in the login page ("Sign in with ...")
-  name: Ontrack
   # -- Provisioning of groups & initial administrator
   provisioning: true
   # -- Configuration of the initial administrator
@@ -280,6 +278,8 @@ auth:
     # -- By default, Keycloak is installed.
     # Set to false to use an external authentication source like OIDC
     enabled: true
+    # -- Name to use on the Signin page
+    name: Yontrack
     # -- Image of Keycloak to deploy
     image: quay.io/keycloak/keycloak
     # -- Version this image of Keycloak to deploy
