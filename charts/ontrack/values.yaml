@@ -280,6 +280,8 @@ auth:
     enabled: true
     # -- Name to use on the Signin page
     name: Yontrack
+    # -- Name of the Keycloak client
+    clientName: yontrack-client
     # -- Image of Keycloak to deploy
     image: quay.io/keycloak/keycloak
     # -- Version this image of Keycloak to deploy

@@ -25,6 +25,7 @@
 ],
 "clients": [
     {
+      "name": {{ .Values.auth.keycloak.clientName | quote }},
       "clientId": "${KEYCLOAK_CLIENT_ID}",
       "secret": "${KEYCLOAK_CLIENT_SECRET}",
       "enabled": true,
