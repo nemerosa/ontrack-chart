@@ -138,13 +138,13 @@ spec:
             - name: KEYCLOAK_CLIENT_ID
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.auth.keycloak.secret.secretName | quote }}
+                  name: {{ .Values.auth.keycloak.secret.name | quote }}
                   key: client-id
                   optional: false
             - name: KEYCLOAK_CLIENT_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.auth.keycloak.secret.secretName | quote }}
+                  name: {{ .Values.auth.keycloak.secret.name | quote }}
                   key: client-secret
                   optional: false
             {{- end }}
