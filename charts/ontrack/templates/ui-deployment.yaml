@@ -77,8 +77,8 @@ spec:
             - name: NEXTAUTH_ISSUER
               value: {{ .Values.ontrack.url }}/{{ .Values.auth.keycloak.service.path }}/realms/{{ .Values.auth.keycloak.realm }}
               {{- end }}
-              {{- if .Values.auth.keycloak.account.url }}
-            - name: NEXTAUTH_ACCOUNT_URL
+              {{- if and .Values.auth.keycloak.account.url (not .Values.auth.keycloak.ldap.enabled) }}
+            - name: YONTRACK_UI_MANAGE_ACCOUNT_URL
               value: {{ .Values.auth.keycloak.account.url }}
               {{- end }}
             - name: NEXTAUTH_CLIENT_ID
