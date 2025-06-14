@@ -3,6 +3,45 @@ Ontrack Helm Chart
 
 This Helm chart is compatible with Helm 3 and allows the installation of Ontrack in a Kubernetes cluster.
 
+<!-- TOC -->
+* [Ontrack Helm Chart](#ontrack-helm-chart)
+* [Usage](#usage)
+* [References](#references)
+* [License key](#license-key)
+* [Ingress configuration](#ingress-configuration)
+* [Authentication](#authentication)
+  * [Default local Keycloak instance](#default-local-keycloak-instance)
+  * [OIDC for Okta](#oidc-for-okta)
+  * [OIDC for Auth0](#oidc-for-auth0)
+  * [LDAP](#ldap)
+    * [Using a secret for the LDAP credentials](#using-a-secret-for-the-ldap-credentials)
+    * [Keycloak LDAP configuration](#keycloak-ldap-configuration)
+  * [Management of users in Ontrack](#management-of-users-in-ontrack)
+  * [Logging authentication](#logging-authentication)
+  * [Next Auth secret](#next-auth-secret)
+  * [Configuration of groups](#configuration-of-groups)
+    * [Keycloak database](#keycloak-database)
+    * [LDAP in Keycloak](#ldap-in-keycloak)
+    * [Okta](#okta)
+* [Using a managed database](#using-a-managed-database)
+* [Configuration as code (CasC)](#configuration-as-code-casc)
+  * [Secrets mappings](#secrets-mappings)
+    * [Using environment variables](#using-environment-variables)
+    * [Using secret files](#using-secret-files)
+* [Using a K8S secret for the encryption keys](#using-a-k8s-secret-for-the-encryption-keys)
+  * [Generating the secrets from scratch (new installation)](#generating-the-secrets-from-scratch-new-installation)
+  * [Copying the secrets (existing installation)](#copying-the-secrets-existing-installation)
+  * [Creating the secret in K8S](#creating-the-secret-in-k8s)
+* [Change log](#change-log)
+  * [1.0](#10)
+  * [0.13](#013)
+  * [0.12](#012)
+  * [0.11](#011)
+  * [0.10](#010)
+* [Development](#development)
+  * [Documentation generation](#documentation-generation)
+<!-- TOC -->
+
 # Usage
 
 [Helm](https://helm.sh) must be installed to use the charts.  Please refer to
@@ -82,166 +121,7 @@ By default, the Ontrack Helm chart sets up an instance of Keycloak, configured t
 
 ## Default local Keycloak instance
 
-Given the values provided for the [ingress](#ingress-configuration), you just run:
-
-```bash
-helm upgrade --install --values values.yaml ontrack ontrack/ontrack
-```
-
-By default,
-
-* the Keycloak admin user is set to `admin` / `admin`
-* one user is provisioned in the `ontrack` realm of Keycloak:
-  * name: `admin`
-  * email: `admin@ontrack.local`
-  * password: `admin`
-
-### Configuration of the access to Keycloak
-
-By default, the Keycloak instance is accessible on `<ontrack>/keycloak`.
-
-If this is not wished for, you can disable its exposure using:
-
-```yaml
-auth:
-  keycloak:
-    service:
-      ingressEnabled: false
-```
-
-### Configuration of the Keycloak client ID and secret
-
-When using Keycloak as the authentication source, the OIDC client ID
-and secret can be defined in different ways.
-
-#### Client ID and secret in values
-
-The default way is to store the OIDC client ID and secret directly
-into the values:
-
-```yaml
-auth:
-  keycloak:
-    client:
-      id: yontrack-client
-      secret: ontrack-client-secret
-```
-
-> Do not use this in production since it would expose your client
-> credentials through the Helm values.
-
-#### Client ID and secret in a secret
-
-You can store the client secret into a K8S secret:
-
-```yaml
-auth:
-  keycloak:
-    secret:
-      enabled: true
-      name: ontrack-keycloak
-```
-
-The secret must:
-
-* exist so that Keycloak can start
-* have a `secret` key to store the client secret
-
-#### Client ID and secret generation
-
-Like before, but you tell the chart to _generate_ the secret before hand.
-
-```yaml
-auth:
-  keycloak:
-    secret:
-      enabled: true
-      name: ontrack-keycloak
-      generate: true
-```
-
-The client secret is automatically generated and used by the 
-Ontrack UI client.
-
-If needs be, its value can be accessed by reading the secret.
-
-### Configuration of the Keycloak bootstrap administrator
-
-The default admin credentials of Keycloak are set to `admin/admin`.
-
-Several options are available to secure these credentials.
-
-#### Changing the credentials in the values
-
-> While OK for testing, this is not secure in a real environment.
-
-You can change the credentials:
-
-```yaml
-auth:
-  keycloak:
-    bootstrap:
-      username: admin
-      password: admin
-```
-
-#### Setting the credentials in a secret
-
-You can create a secret with two keys: `username` and `password`.
-
-The name of the secret is configurable:
-
-```yaml
-auth:
-  keycloak:
-    bootstrap:
-      bootstrapSecret:
-        enabled: true
-        secretName: ontrack-keycloak-bootstrap
-```
-
-#### Generation of a secret
-
-You can tell the chart  generate the secret:
-
-```yaml
-auth:
-  keycloak:
-    bootstrap:
-      bootstrapSecret:
-        enabled: true
-        generate: true
-        secretName: ontrack-keycloak-bootstrap
-```
-
-In this case, you don't have to provide the secret yourself. It'll be generated upon the installation
-of the Helm release and will contain the credentials in the `username` and `password` keys.
-
-> Note that the `username` is not generated and taken from `auth.keycloak.bootstrap.username`, which
-> defaults to `admin`.
-
-> You'll need to read the secret in Kubernetes to know the credentials to use to connect to Bootstrap.
-
-#### Using an external secret
-
-A more secure option, if your cluster supports this, is to use an external secret.
-
-You can then tell the chart to create an `ExternalSecret` and the actual secret will be generated. For example:
-
-```yaml
-auth:
-  keycloak:
-    bootstrap:
-      bootstrapSecret:
-        enabled: true
-        secretName: your-secret
-        externalSecret:
-          enabled: true
-          store:
-            name: vault-backend
-            kind: ClusterSecretStore
-            path: ontrack/test/v5/keycloak
-```
+> See [Keycloak authentication](docs/keycloak.md)
 
 ## OIDC for Okta
 
