@@ -512,6 +512,17 @@ postgresql:
   # -- For external database, using environment variables
   postgresFromEnv: false
 
+# -- Local database
+keycloak-postgresql:
+  # -- Authentication parameters
+  auth:
+    # -- Name of the database to create
+    database: keycloak
+    # -- Credentials to be used
+    username: keycloak
+    # -- Credentials to be used
+    password: keycloak
+
 # -- Local RabbitMQ for message processing
 rabbitmq:
   auth:

@@ -115,6 +115,16 @@ spec:
               name: {{ include "ontrack.fullname" . }}-keycloak-ldap-json
           {{- end }}
           env:
+            - name: KC_DB
+              value: postgres
+            - name: KC_DB_URL_HOST
+              value: ontrack-v5-keycloak-postgresql-hl
+            - name: KC_DB_URL_DATABASE
+              value: keycloak
+            - name: KC_DB_USERNAME
+              value: keycloak
+            - name: KC_DB_PASSWORD
+              value: keycloak
             {{- if .Values.auth.keycloak.bootstrap.bootstrapSecret.enabled }}
             - name: KC_BOOTSTRAP_ADMIN_USERNAME
               valueFrom:
