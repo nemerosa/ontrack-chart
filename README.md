@@ -123,7 +123,7 @@ into the values:
 auth:
   keycloak:
     client:
-      id: ontrack-client
+      id: yontrack-client
       secret: ontrack-client-secret
 ```
 
@@ -132,7 +132,7 @@ auth:
 
 #### Client ID and secret in a secret
 
-You can store the client ID and secret into a K8S secret:
+You can store the client secret into a K8S secret:
 
 ```yaml
 auth:
@@ -145,7 +145,7 @@ auth:
 The secret must:
 
 * exist so that Keycloak can start
-* have two keys: `id` and `secret` to respectively store the client ID and secret
+* have a `secret` key to store the client secret
 
 #### Client ID and secret generation
 
@@ -160,10 +160,10 @@ auth:
       generate: true
 ```
 
-The client ID and secrets are automatically generated and used by the 
+The client secret is automatically generated and used by the 
 Ontrack UI client.
 
-If need be, their values can be accessed by reading the secret.
+If needs be, its value can be accessed by reading the secret.
 
 ### Configuration of the Keycloak bootstrap administrator
 

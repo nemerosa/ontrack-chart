@@ -362,19 +362,18 @@ auth:
         password: "admin"
     # -- Connection parameters to Keycloak stored in a secret
     secret:
-      # -- Using a secret to store the client ID & secret
+      # -- Using a secret to store the client secret
       enabled: false
       # -- Name of the secret to use
       name: ontrack-keycloak
-      # -- Generating the client ID & secret
+      # -- Generating the client secret
       generate: true
-    # -- Connection parameters to Keycloak when not stored in a secret
-    # Should not be used in production
+    # -- Connection parameters to Keycloak
     client:
       # -- Client ID
-      id: ontrack-client
-      # -- Client secret
-      secret: ontrack-client-secret
+      id: yontrack-client
+      # -- Value of the client secret - should not be used in production
+      secret: yontrack-client-secret
     # -- Account management from Ontrack
     account:
       # -- If set to not blank, URL to allow users to manage their own account

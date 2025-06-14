@@ -26,7 +26,7 @@
 "clients": [
     {
       "name": {{ .Values.auth.keycloak.clientName | quote }},
-      "clientId": "${KEYCLOAK_CLIENT_ID}",
+      "clientId": {{ .Values.auth.keycloak.client.id | quote }},
       "secret": "${KEYCLOAK_CLIENT_SECRET}",
       "enabled": true,
       "protocol": "openid-connect",

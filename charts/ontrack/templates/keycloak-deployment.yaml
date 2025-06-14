@@ -135,12 +135,6 @@ spec:
               value: {{ .Values.auth.keycloak.bootstrap.password | quote }}
             {{- end }}
             {{- if .Values.auth.keycloak.secret.enabled }}
-            - name: KEYCLOAK_CLIENT_ID
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.auth.keycloak.secret.name | quote }}
-                  key: client-id
-                  optional: false
             - name: KEYCLOAK_CLIENT_SECRET
               valueFrom:
                 secretKeyRef:
