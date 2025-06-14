@@ -118,7 +118,7 @@ spec:
             - name: KC_DB
               value: postgres
             - name: KC_DB_URL_HOST
-              value: ontrack-v5-keycloak-postgresql-hl
+              value: {{ .Release.Name }}-keycloak-postgresql-hl
             - name: KC_DB_URL_DATABASE
               value: keycloak
             - name: KC_DB_USERNAME
