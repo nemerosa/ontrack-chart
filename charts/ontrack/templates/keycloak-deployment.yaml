@@ -134,6 +134,20 @@ spec:
             - name: KC_BOOTSTRAP_ADMIN_PASSWORD
               value: {{ .Values.auth.keycloak.bootstrap.password | quote }}
             {{- end }}
+            {{- if .Values.auth.keycloak.secret.enabled }}
+            - name: KEYCLOAK_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.auth.keycloak.secret.secretName | quote }}
+                  key: client-id
+                  optional: false
+            - name: KEYCLOAK_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.auth.keycloak.secret.secretName | quote }}
+                  key: client-secret
+                  optional: false
+            {{- end }}
             - name: KC_HOSTNAME
               value: "{{ .Values.ontrack.url }}/{{ .Values.auth.keycloak.service.path }}"
             - name: KC_HTTP_RELATIVE_PATH

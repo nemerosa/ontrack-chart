@@ -25,7 +25,8 @@
 ],
 "clients": [
     {
-      "clientId": "{{ .Values.auth.keycloak.client.id }}",
+      "clientId": "${KEYCLOAK_CLIENT_ID}",
+      "secret": "${KEYCLOAK_CLIENT_SECRET}",
       "enabled": true,
       "protocol": "openid-connect",
       "publicClient": false,
@@ -42,7 +43,6 @@
       "serviceAccountsEnabled": false,
       "authorizationServicesEnabled": false,
       "clientAuthenticatorType": "client-secret",
-      "secret": "{{ .Values.auth.keycloak.client.secret }}",
       "defaultClientScopes": [
         "web-origins",
         "acr",
