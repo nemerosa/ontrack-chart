@@ -95,7 +95,10 @@ spec:
           command:
             - /opt/keycloak/bin/kc.sh
           args:
-            - start-dev
+            - start
+            # Behind TLS termination
+            - --http-enabled
+            - "true"
             {{- if or .Values.auth.keycloak.settings.enabled .Values.auth.keycloak.ldap.enabled }}
             - --import-realm
             {{- end }}
