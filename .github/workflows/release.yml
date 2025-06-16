@@ -42,12 +42,12 @@ jobs:
         run: |
           helm package charts/ontrack
 
-      - name: Publishing in Chart Museum
-        run: |
-          curl --data-binary "@$(ls yontrack-*.tgz)" \
-            --fail \
-            --user "${{ secrets.CHARTMUSEUM_USERNAME }}:${{ secrets.CHARTMUSEUM_PASSWORD }}"\
-            https://chartmuseum.nemerosa.net/api/charts
+#      - name: Publishing in Chart Museum
+#        run: |
+#          curl --data-binary "@$(ls yontrack-*.tgz)" \
+#            --fail \
+#            --user "${{ secrets.CHARTMUSEUM_USERNAME }}:${{ secrets.CHARTMUSEUM_PASSWORD }}"\
+#            https://chartmuseum.nemerosa.net/api/charts
 
       - name: Publishing in Docker Hub (OCI)
         run: |
