@@ -285,7 +285,7 @@ auth:
     # -- Image of Keycloak to deploy
     image: quay.io/keycloak/keycloak
     # -- Version this image of Keycloak to deploy
-    tag: 26.1.4
+    tag: 26.2.5
     # -- Starting the server in verbose mode
     verbose: false
     # -- Admin user for the admin console of Keycloak
