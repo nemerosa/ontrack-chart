@@ -75,7 +75,7 @@ The secret must:
 
 ### Client ID and secret generation
 
-Like before, but you tell the chart to _generate_ the secret before hand.
+Like before, but you tell the chart to _generate_ the secret beforehand.
 
 ```yaml
 auth:
@@ -90,6 +90,23 @@ The client secret is automatically generated and used by the
 Ontrack UI client.
 
 If needs be, its value can be accessed by reading the secret.
+
+### Using an external secret for the client secret
+
+You can also define the client secret into an external secret store (like Vault):
+
+```yaml
+auth:
+  keycloak:
+    secret:
+      enabled: true
+      external:
+        enabled: true
+        store:
+          name: vault-backend
+          kind: ClusterSecretStore
+          path: ontrack/keycloak/client
+```
 
 ## Configuration of the Keycloak bootstrap administrator
 
