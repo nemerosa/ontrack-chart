@@ -149,6 +149,22 @@ ontrack:
       secret_name: "ontrack-key-store"
       # -- Directory to use inside the container
       directory: "/var/ontrack/key_store"
+      # -- Using an external secret
+      external:
+        # -- Activate the creation of the External secret
+        enabled: false
+        # -- Refresh interval
+        refreshInterval: 6h
+        # -- Location of the secret to bind to
+        store:
+          # -- Name of the secret store
+          name: vault-backend
+          # -- Scope of the secret store
+          kind: ClusterSecretStore
+          # -- Path to the secret in the store.
+          path: ontrack/encryption
+          # -- Name of the key in the external secret
+          key: key
     # License management
     license:
       # -- Provided license key
@@ -381,7 +397,6 @@ auth:
           # -- Scope of the secret store
           kind: ClusterSecretStore
           # -- Path to the secret in the store.
-          # The entry is expected to have the following keys: bindDn & bindCredential
           path: ontrack/keycloak/client
           # Key in the external store
           key: client-secret

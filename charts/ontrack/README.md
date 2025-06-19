@@ -1,6 +1,6 @@
 # yontrack-chart
 
-![Version: 1.0.0+alpha-039](https://img.shields.io/badge/Version-1.0.0+alpha--039-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 5.0-alpha.0-161](https://img.shields.io/badge/AppVersion-5.0--alpha.0--161-informational?style=flat-square)
+![Version: 1.0.0+alpha-040](https://img.shields.io/badge/Version-1.0.0+alpha--040-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 5.0-alpha.0-161](https://img.shields.io/badge/AppVersion-5.0--alpha.0--161-informational?style=flat-square)
 
 A Helm chart for Kubernetes
 
@@ -98,7 +98,7 @@ A Helm chart for Kubernetes
 | auth.keycloak.secret.external.store | object | `{"key":"client-secret","kind":"ClusterSecretStore","name":"vault-backend","path":"ontrack/keycloak/client"}` | Location of the secret to bind to |
 | auth.keycloak.secret.external.store.kind | string | `"ClusterSecretStore"` | Scope of the secret store |
 | auth.keycloak.secret.external.store.name | string | `"vault-backend"` | Name of the secret store |
-| auth.keycloak.secret.external.store.path | string | `"ontrack/keycloak/client"` | Path to the secret in the store. The entry is expected to have the following keys: bindDn & bindCredential |
+| auth.keycloak.secret.external.store.path | string | `"ontrack/keycloak/client"` | Path to the secret in the store. |
 | auth.keycloak.secret.generate | bool | `true` | Generating the client secret |
 | auth.keycloak.secret.name | string | `"ontrack-keycloak"` | Name of the secret to use |
 | auth.keycloak.service | object | `{"ingressEnabled":true,"path":"keycloak","port":8080}` | Service setup for the local Keycloak instance |
@@ -186,6 +186,14 @@ A Helm chart for Kubernetes
 | ontrack.config.key_store | string | `"jdbc"` | Using the database to store the key by default |
 | ontrack.config.license.key | string | `"eyJkYXRhIjoiZXlKdVlXMWxJam9pVXlJc0ltRnpjMmxuYm1WbElqb2lVSFZpYkdsaklpd2lkbUZzYVdSVmJuUnBiQ0k2SWpJd01qVXRNVEl0TXpFaUxDSnRZWGhRY205cVpXTjBjeUk2TVRBc0ltWmxZWFIxY21WeklqcGJleUpwWkNJNkltVjRkR1Z1YzJsdmJpNWxiblpwY205dWJXVnVkSE1pTENKbGJtRmliR1ZrSWpwbVlXeHpaU3dpWkdGMFlTSTZXM3NpYm1GdFpTSTZJbTFoZUVWdWRtbHliMjV0Wlc1MGN5SXNJblpoYkhWbElqb2lNQ0o5WFgxZExDSnRaWE56WVdkbElqb2lXVzkxSUdGeVpTQjFjMmx1WnlCaGJpQmxkbUZzZFdGMGFXOXVJR3hwWTJWdWMyVXVJbjA9Iiwic2lnbmF0dXJlIjoiTUVVQ0lFMWNjQWQxT25ZQXl2M3B4c3ZaQWc0eDE1Q3dmY3FjMFNNRm12ZUU5TVRDQWlFQTJJZHVsZEtxek5DU2Q2VHJNNGxsczhzVGlHWXQ3Nmw5bFRZQ3pFdDBKMjQ9In0="` | Provided license key An evaluation key is provided by default (valid until 2025-12-31, up to 10 projects, no extra features) |
 | ontrack.config.secret_key_store.directory | string | `"/var/ontrack/key_store"` | Directory to use inside the container |
+| ontrack.config.secret_key_store.external | object | `{"enabled":false,"refreshInterval":"6h","store":{"key":"key","kind":"ClusterSecretStore","name":"vault-backend","path":"ontrack/encryption"}}` | Using an external secret |
+| ontrack.config.secret_key_store.external.enabled | bool | `false` | Activate the creation of the External secret |
+| ontrack.config.secret_key_store.external.refreshInterval | string | `"6h"` | Refresh interval |
+| ontrack.config.secret_key_store.external.store | object | `{"key":"key","kind":"ClusterSecretStore","name":"vault-backend","path":"ontrack/encryption"}` | Location of the secret to bind to |
+| ontrack.config.secret_key_store.external.store.key | string | `"key"` | Name of the key in the external secret |
+| ontrack.config.secret_key_store.external.store.kind | string | `"ClusterSecretStore"` | Scope of the secret store |
+| ontrack.config.secret_key_store.external.store.name | string | `"vault-backend"` | Name of the secret store |
+| ontrack.config.secret_key_store.external.store.path | string | `"ontrack/encryption"` | Path to the secret in the store. |
 | ontrack.config.secret_key_store.secret_name | string | `"ontrack-key-store"` | Name of the secret |
 | ontrack.env | list | `[]` | Arbitrary environment variables |
 | ontrack.extraConfig.configmaps | list | `[]` | Arbitrary config map sources |

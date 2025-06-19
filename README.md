@@ -554,6 +554,25 @@ ontrack:
      #   secret_name: "ontrack-key-store"
 ```
 
+## Using an external secret for the decryption key
+
+You can store the AES 256 decryption key in a secret store (like Vault):
+
+```yaml
+ontrack:
+  config:
+    key_store: secret
+    secret_key_store:
+      external:
+        enabled: true
+        refreshInterval: 6h
+        store:
+          name: vault-backend
+          kind: ClusterSecretStore
+          path: ontrack/encryption
+          key: key
+```
+
 # Change log
 
 | Version        | Postgres | Elasticsearch | Kubernetes | Minimal Ontrack version |
