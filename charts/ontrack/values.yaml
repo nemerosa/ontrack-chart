@@ -383,6 +383,8 @@ auth:
           # -- Path to the secret in the store.
           # The entry is expected to have the following keys: bindDn & bindCredential
           path: ontrack/keycloak/client
+          # Key in the external store
+          key: client-secret
     # -- Connection parameters to Keycloak
     client:
       # -- Client ID

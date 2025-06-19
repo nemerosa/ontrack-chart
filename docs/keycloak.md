@@ -106,6 +106,7 @@ auth:
           name: vault-backend
           kind: ClusterSecretStore
           path: ontrack/keycloak/client
+          key: client-secret
 ```
 
 ## Configuration of the Keycloak bootstrap administrator
