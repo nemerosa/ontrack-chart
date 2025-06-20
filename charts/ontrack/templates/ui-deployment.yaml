@@ -40,6 +40,8 @@ spec:
           env:
             - name: ONTRACK_URL
               value: "http://{{ include "ontrack.fullname" . }}:{{ .Values.service.port }}"
+            - name: YONTRACK_UI_AUTH_SIGNIN_CUSTOM
+              value: {{ .Values.ontrack.ui.config.customSign | quote }}
             - name: NEXTAUTH_URL
               value: {{ .Values.ontrack.url | quote }}
             {{- if .Values.auth.oidc.enabled }}

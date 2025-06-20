@@ -111,6 +111,10 @@ ontrack:
         cpu: 800m
         # -- Next UI resources
         memory: 1Gi
+    # -- UI configuration
+    config:
+      # -- Using the custom signin page
+      customSign: true
   ## Adjust these values to your needs, but make sure that the memory limit is never under 4 GB
   resources:
     limits:

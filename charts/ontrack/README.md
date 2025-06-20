@@ -1,6 +1,6 @@
 # yontrack-chart
 
-![Version: 1.0.0+alpha-040](https://img.shields.io/badge/Version-1.0.0+alpha--040-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 5.0-alpha.0-161](https://img.shields.io/badge/AppVersion-5.0--alpha.0--161-informational?style=flat-square)
+![Version: 1.0.0+alpha-041](https://img.shields.io/badge/Version-1.0.0+alpha--041-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 5.0-alpha.0-161](https://img.shields.io/badge/AppVersion-5.0--alpha.0--161-informational?style=flat-square)
 
 A Helm chart for Kubernetes
 
@@ -212,7 +212,9 @@ A Helm chart for Kubernetes
 | ontrack.resources.requests.memory | string | `"1Gi"` | Ontrack resources |
 | ontrack.ui.image | string | `"nemerosa/ontrack-ui"` | Image to use for the UI |
 | ontrack.ui.replicas | int | `1` | Number of replicas for the UI (experimental) |
-| ontrack.ui.resources | object | `{"limits":{"cpu":"800m","memory":"1Gi"},"requests":{"cpu":"800m","memory":"1Gi"}}` | Next UI resources |
+| ontrack.ui.resources | object | `{"config":{"customSign":true},"limits":{"cpu":"800m","memory":"1Gi"},"requests":{"cpu":"800m","memory":"1Gi"}}` | Next UI resources |
+| ontrack.ui.resources.config | object | `{"customSign":true}` | UI configuration |
+| ontrack.ui.resources.config.customSign | bool | `true` | Using the custom signin page |
 | ontrack.ui.resources.limits.cpu | string | `"800m"` | Next UI resources |
 | ontrack.ui.resources.limits.memory | string | `"1Gi"` | Next UI resources |
 | ontrack.ui.resources.requests.cpu | string | `"800m"` | Next UI resources |
