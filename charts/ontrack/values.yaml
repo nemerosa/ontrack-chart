@@ -114,7 +114,7 @@ ontrack:
     # -- UI configuration
     config:
       # -- Using the custom signin page
-      customSign: true
+      customSignin: true
   ## Adjust these values to your needs, but make sure that the memory limit is never under 4 GB
   resources:
     limits:
