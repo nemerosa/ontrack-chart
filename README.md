@@ -197,6 +197,19 @@ ontrack:
 # TODO Volumes & volume mounts
 ```
 
+## CasC directly in values
+
+You can use the `casc` top value to declare the Casc configuration directly in the values:
+
+```yaml
+casc:
+  ontrack:
+    config:
+      github:
+        - name: github.com
+          token: {{ secret.github.token }}
+```
+
 # Using a K8S secret for the encryption keys
 
 Ontrack encrypts the credentials used to connect to external systems, using an AES256 key.
