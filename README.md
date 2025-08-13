@@ -114,6 +114,31 @@ This requires the following environmment variables to be set:
 * `SPRING_DATASOURCE_USERNAME` - username for the connection
 * `SPRING_DATASOURCE_PASSWORD` - password for the connection
 
+# Using an external Elasticsearch instance
+
+To use an external Elasticsearch instance, you need to disable the creation of the
+local Elasticsearch instance by the chart in the values:
+
+```yaml
+elasticsearch:
+  enabled: false
+```
+
+and to provide the connection parameters as environment variables:
+
+```yaml
+ontrack:
+  env:
+    - name: SPRING_ELASTICSEARCH_URIS
+      value:
+    - name: SPRING_ELASTICSEARCH_USERNAME
+      value:
+    - name: SPRING_ELASTICSEARCH_PASSWORD
+      valueFrom:
+        secretRef:
+          # ...
+```
+
 # Configuration as code (CasC)
 
 Casc is not enabled by default in the chart. To enabled it, use the following values:
