@@ -216,10 +216,9 @@ ontrack:
     enabled: true
     map: some-config-map-name
     secrets:
-      type: file
+      mapping: file
       names:
         - ontrack-github
-# TODO Volumes & volume mounts
 ```
 
 ## CasC directly in values
