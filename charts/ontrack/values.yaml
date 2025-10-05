@@ -241,6 +241,9 @@ ontrack:
 
 # Local database for testing purpose
 postgresql:
+  image:
+    # -- See the announcement at https://hub.docker.com/r/bitnami/postgresql
+    repository: bitnamilegacy/postgresql
   local: true
   # Authentication parameters
   auth:
@@ -260,6 +263,9 @@ postgresql:
 
 # Local RabbitMQ for message processing
 rabbitmq:
+  image:
+    # -- See the announcement at https://hub.docker.com/r/bitnami/rabbitmq
+    repository: bitnamilegacy/rabbitmq
   auth:
     username: ontrack
     password: ontrack
