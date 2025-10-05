@@ -529,6 +529,9 @@ auth:
 
 # -- Local database
 postgresql:
+  image:
+    # -- See the announcement at https://hub.docker.com/r/bitnami/rabbitmq
+    repository: bitnamilegacy/postgresql
   # -- Enabling the local database
   local: true
   # -- Authentication parameters
@@ -550,6 +553,9 @@ postgresql:
 
 # -- Local database
 keycloak-postgresql:
+  image:
+    # -- See the announcement at https://hub.docker.com/r/bitnami/rabbitmq
+    repository: bitnamilegacy/postgresql
   # -- Authentication parameters
   auth:
     # -- Name of the database to create
@@ -561,6 +567,9 @@ keycloak-postgresql:
 
 # -- Local RabbitMQ for message processing
 rabbitmq:
+  image:
+    # See the announcement at https://hub.docker.com/r/bitnami/rabbitmq
+    repository: bitnamilegacy/rabbitmq
   auth:
     username: ontrack
     password: ontrack
