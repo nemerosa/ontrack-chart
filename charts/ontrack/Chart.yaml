@@ -15,17 +15,17 @@ type: application
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
-version: 1.0.0+alpha-045
+version: 1.0.0+alpha-046
 # This is the version number of the application being deployed. This version number should be
 # incremented each time you make changes to the application. Versions are not expected to
 # follow Semantic Versioning. They should reflect the version the application is using.
 # It is recommended to use it with quotes.
-appVersion: 5.0-alpha.0-167
+appVersion: 5.0-alpha.0-297
 
 dependencies:
   - name: postgresql
     repository: https://charts.bitnami.com/bitnami
-    version: 12.12.10
+    version:  16.7.27 # PG 17.6.0
     condition: postgresql.local
   - name: postgresql
     alias: keycloak-postgresql
