@@ -4,47 +4,49 @@ Ontrack Helm Chart
 This Helm chart is compatible with Helm 3 and allows the installation of Ontrack in a Kubernetes cluster.
 
 <!-- TOC -->
+
 * [Ontrack Helm Chart](#ontrack-helm-chart)
 * [Usage](#usage)
 * [References](#references)
 * [License key](#license-key)
 * [Ingress configuration](#ingress-configuration)
 * [Authentication](#authentication)
-  * [Default local Keycloak instance](#default-local-keycloak-instance)
-  * [OIDC for Okta](#oidc-for-okta)
-  * [OIDC for Auth0](#oidc-for-auth0)
-  * [LDAP](#ldap)
-    * [Using a secret for the LDAP credentials](#using-a-secret-for-the-ldap-credentials)
-    * [Keycloak LDAP configuration](#keycloak-ldap-configuration)
-  * [Management of users in Ontrack](#management-of-users-in-ontrack)
-  * [Logging authentication](#logging-authentication)
-  * [Next Auth secret](#next-auth-secret)
-  * [Configuration of groups](#configuration-of-groups)
-    * [Keycloak database](#keycloak-database)
-    * [LDAP in Keycloak](#ldap-in-keycloak)
-    * [Okta](#okta)
+    * [Default local Keycloak instance](#default-local-keycloak-instance)
+    * [OIDC for Okta](#oidc-for-okta)
+    * [OIDC for Auth0](#oidc-for-auth0)
+    * [LDAP](#ldap)
+        * [Using a secret for the LDAP credentials](#using-a-secret-for-the-ldap-credentials)
+        * [Keycloak LDAP configuration](#keycloak-ldap-configuration)
+    * [Management of users in Ontrack](#management-of-users-in-ontrack)
+    * [Logging authentication](#logging-authentication)
+    * [Next Auth secret](#next-auth-secret)
+    * [Configuration of groups](#configuration-of-groups)
+        * [Keycloak database](#keycloak-database)
+        * [LDAP in Keycloak](#ldap-in-keycloak)
+        * [Okta](#okta)
 * [Using a managed database](#using-a-managed-database)
 * [Configuration as code (CasC)](#configuration-as-code-casc)
-  * [Secrets mappings](#secrets-mappings)
-    * [Using environment variables](#using-environment-variables)
-    * [Using secret files](#using-secret-files)
+    * [Secrets mappings](#secrets-mappings)
+        * [Using environment variables](#using-environment-variables)
+        * [Using secret files](#using-secret-files)
 * [Using a K8S secret for the encryption keys](#using-a-k8s-secret-for-the-encryption-keys)
-  * [Generating the secrets from scratch (new installation)](#generating-the-secrets-from-scratch-new-installation)
-  * [Copying the secrets (existing installation)](#copying-the-secrets-existing-installation)
-  * [Creating the secret in K8S](#creating-the-secret-in-k8s)
+    * [Generating the secrets from scratch (new installation)](#generating-the-secrets-from-scratch-new-installation)
+    * [Copying the secrets (existing installation)](#copying-the-secrets-existing-installation)
+    * [Creating the secret in K8S](#creating-the-secret-in-k8s)
 * [Change log](#change-log)
-  * [1.0](#10)
-  * [0.13](#013)
-  * [0.12](#012)
-  * [0.11](#011)
-  * [0.10](#010)
+    * [1.0](#10)
+    * [0.13](#013)
+    * [0.12](#012)
+    * [0.11](#011)
+    * [0.10](#010)
 * [Development](#development)
-  * [Documentation generation](#documentation-generation)
+    * [Documentation generation](#documentation-generation)
+
 <!-- TOC -->
 
 # Usage
 
-[Helm](https://helm.sh) must be installed to use the charts.  Please refer to
+[Helm](https://helm.sh) must be installed to use the charts. Please refer to
 Helm's [documentation](https://helm.sh/docs) to get started.
 
 The Yontrack Helm chart is available as an OCI Helm chart in Docker Hub.
@@ -63,7 +65,7 @@ This installs the following services:
 
 * Ontrack itself
 * a Postgres 17 database
-* an Elasticsearch 7 single node
+* an Elasticsearch 9 single node
 * a RabbitMQ message broker
 
 The default authentication mechanism, if no other configuration is provided, relies on Keycloak
@@ -104,8 +106,8 @@ ontrack:
 ingress:
   enabled: true
   annotations:
-    # kubernetes.io/ingress.class: nginx
-    # cert-manager.io/cluster-issuer: letsencrypt-prod
+  # kubernetes.io/ingress.class: nginx
+  # cert-manager.io/cluster-issuer: letsencrypt-prod
   host: <host>
 ```
 
@@ -153,25 +155,25 @@ auth:
         enabled: true
         # The secret is expected to have the following keys: clientId & clientSecret
         secretName: <secret name>
-        # Depending on your setup, you can also just create an external secret
-        # definition, pointing to the actual secret in a secret provided like
-        # Vault or your cloud secret manager
-        # If not using an external secret, Ontrack expects you to create the 
-        # secret manually.
-        # externalSecret:
+          # Depending on your setup, you can also just create an external secret
+          # definition, pointing to the actual secret in a secret provided like
+          # Vault or your cloud secret manager
+          # If not using an external secret, Ontrack expects you to create the 
+          # secret manually.
+          # externalSecret:
           # Enabling the creation of the external secret 
           # enabled: false
           # Refresh interval
           # refreshInterval: 6h
           # Location of the secret to bind to
           # store:
-            # Name of the secret store
-            # name: vault-backend
-            # Scope of the secret store
-            # kind: ClusterSecretStore
-            # Path to the secret in the store.
-            # The entry is expected to have the following keys: clientId & clientSecret
-            # path: ontrack/oidc
+          # Name of the secret store
+          # name: vault-backend
+          # Scope of the secret store
+          # kind: ClusterSecretStore
+          # Path to the secret in the store.
+          # The entry is expected to have the following keys: clientId & clientSecret
+        # path: ontrack/oidc
       # ... or provided directly in the values (ok for testing)
       # If a secret (or external secret) is provided, these values are not used
       # clientId: <client id>
@@ -219,7 +221,7 @@ auth:
 There are other [options](charts/ontrack/values.yaml) to configure the mapping of the user fields
 in the LDAP to the ones that Keycloak expects. The default mappings are suitable for OpenLDAP.
 
-Ontrack uses Keycloak as a relay to the LDAP, so attention must be given to the settings of 
+Ontrack uses Keycloak as a relay to the LDAP, so attention must be given to the settings of
 Keycloak as well, in terms of security.
 
 ### Using a secret for the LDAP credentials
@@ -281,7 +283,7 @@ auth:
   keycloak:
     ldap:
       components:
-         # Your config here
+      # Your config here
 ```
 
 > See the [values](charts/ontrack/values.yaml) for more information.
@@ -442,7 +444,7 @@ ontrack:
     - name: SPRING_ELASTICSEARCH_PASSWORD
       valueFrom:
         secretRef:
-          # ...
+        # ...
 ```
 
 # Configuration as code (CasC)
@@ -473,7 +475,8 @@ Casc files can contain `{{ secret.name.property }}` which are extrapolated using
 
 ### Using environment variables
 
-The default behaviour is to use environment variables. The name of the environment variable to consider is: `SECRET_<NAME>_<PROPERTY>`.
+The default behaviour is to use environment variables. The name of the environment variable to consider is:
+`SECRET_<NAME>_<PROPERTY>`.
 
 For example, if YAML Casc fragment contains:
 
@@ -482,10 +485,11 @@ ontrack:
   config:
     github:
       - name: github.com
-        token: {{ secret.github.token }}
+        token: { { secret.github.token } }
 ```
 
-Given a `ontrack-github` K8S secret containing the secret token in its `token` property, you can just set the following values for the chart:
+Given a `ontrack-github` K8S secret containing the secret token in its `token` property, you can just set the following
+values for the chart:
 
 ```yaml
 ontrack:
@@ -502,7 +506,8 @@ ontrack:
 
 ### Using secret files
 
-Instead of using environment variables, you can also map secrets to files and tell Ontrack to refer to the secrets in the files.
+Instead of using environment variables, you can also map secrets to files and tell Ontrack to refer to the secrets in
+the files.
 
 Given the example above:
 
@@ -511,7 +516,7 @@ ontrack:
   config:
     github:
       - name: github.com
-        token: {{ secret.github.token }}
+        token: { { secret.github.token } }
 ```
 
 You can map the `ontrack-github` K8S secret onto a volume and tell Ontrack to use this volume:
@@ -538,7 +543,7 @@ casc:
     config:
       github:
         - name: github.com
-          token: {{ secret.github.token }}
+          token: { { secret.github.token } }
 ```
 
 # Using a K8S secret for the encryption keys
@@ -571,11 +576,13 @@ curl --user admin https://<ontrack>/rest/admin/encryption | base64 -d > net.neme
 curl --user admin https://<ontrack>/admin/encryption | base64 -d > net.nemerosa.ontrack.security.EncryptionServiceImpl.encryption
 ```
 
-In both cases (V3 & V4), the username MUST be `admin`. No other user, even one with the `Administrators` role, will be accepted.
+In both cases (V3 & V4), the username MUST be `admin`. No other user, even one with the `Administrators` role, will be
+accepted.
 
 ## Creating the secret in K8S
 
-Given the `net.nemerosa.ontrack.security.EncryptionServiceImpl.encryption` file, generate a secret in the same namespace as Ontrack:
+Given the `net.nemerosa.ontrack.security.EncryptionServiceImpl.encryption` file, generate a secret in the same namespace
+as Ontrack:
 
 ```bash
 kubectl create secret generic ontrack-key-store --from-file=net.nemerosa.ontrack.security.EncryptionServiceImpl.encryption
@@ -585,11 +592,11 @@ Configure the Ontrack values to use this secret:
 
 ```yaml
 ontrack:
-   config:
-     key_store: secret
-     # If need be, the default secret name - ontrack-key-store - can be configured here
-     # secret_key_store:
-     #   secret_name: "ontrack-key-store"
+  config:
+    key_store: secret
+    # If need be, the default secret name - ontrack-key-store - can be configured here
+    # secret_key_store:
+    #   secret_name: "ontrack-key-store"
 ```
 
 ## Using an external secret for the decryption key
@@ -613,15 +620,15 @@ ontrack:
 
 # Change log
 
-| Version        | Postgres | Elasticsearch | Kubernetes | Minimal Ontrack version |
-|----------------|----------|---------------|------------|-------------------------|
-| [1.0.x](#10)   | 17       | 8             | 1.24       | 5                       |
-| [0.13.x](#013) | 15       | 7             | 1.24       | 4.12.3                  |
-| [0.12.x](#012) | 15       | 7             | 1.24       | 4.11.0                  |
-| [0.11.x](#011) | 15       | 7             | 1.24       | 4.8.12                  |
-| [0.10.x](#010) | 15       | 7             | 1.24       | 4.8.1                   |
-| 0.9.x          | 15       | 7             | 1.24       | 4.7.20                  |
-| 0.8.x          | 11       | 7             | 1.24       | 4.7.13                  |
+| Version        | Postgres | Elasticsearch | Rabbit MQ | Kubernetes | Minimal Ontrack version |
+|----------------|----------|---------------|-----------|------------|-------------------------|
+| [1.0.x](#10)   | 17       | 9             | 4         | 1.24       | 5                       |
+| [0.13.x](#013) | 15       | 7             | 3         | 1.24       | 4.12.3                  |
+| [0.12.x](#012) | 15       | 7             | 3         | 1.24       | 4.11.0                  |
+| [0.11.x](#011) | 15       | 7             | 3         | 1.24       | 4.8.12                  |
+| [0.10.x](#010) | 15       | 7             | 3         | 1.24       | 4.8.1                   |
+| 0.9.x          | 15       | 7             | 3         | 1.24       | 4.7.20                  |
+| 0.8.x          | 11       | 7             | 3         | 1.24       | 4.7.13                  |
 
 ## 1.0
 
@@ -641,8 +648,8 @@ ontrack:
 ontrack:
   config:
     license:
-        type: embedded
-        key: ....
+      type: embedded
+      key: ....
 ```
 
 ## 0.11
@@ -653,20 +660,21 @@ ontrack:
 ontrack:
   config:
     license:
-        type: fixed
-        fixed:
-          name: Premium
-          assignee: Nemerosa
-          active: true
-          validUntil: 2024-12-31T12:00:00
-          maxProjects: 0
+      type: fixed
+      fixed:
+        name: Premium
+        assignee: Nemerosa
+        active: true
+        validUntil: 2024-12-31T12:00:00
+        maxProjects: 0
 ```
 
 ## 0.10
 
 * Support for [Next UI](#enabling-next-ui)
 
-* **BREAKING** Ingress setup has been simplified, only the `ontrack.url` value is needed; no `path` must be provided any longer. Hosts and TLS setup must be provided as usual
+* **BREAKING** Ingress setup has been simplified, only the `ontrack.url` value is needed; no `path` must be provided any
+  longer. Hosts and TLS setup must be provided as usual
 
 Before:
 
@@ -674,7 +682,7 @@ Before:
 ingress:
   enabled: true
   annotations:
-    # ...
+  # ...
   hosts:
     - host: ${host}
       paths:
@@ -693,7 +701,7 @@ ontrack:
 ingress:
   enabled: true
   annotations:
-    # ...
+  # ...
   hosts:
     - host: ${host}
   tls:
@@ -721,5 +729,5 @@ The [`charts/ontrack/README.md`](charts/ontrack/README.md) is generated
 and referred to from the main `README`.
 
 In the [`charts/ontrack/values.yaml`](charts/ontrack/values.yaml) file,
-documentation of the values must be introduced using comments 
+documentation of the values must be introduced using comments
 prefixed by `# --`.
