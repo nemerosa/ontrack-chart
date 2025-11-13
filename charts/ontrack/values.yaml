@@ -594,6 +594,15 @@ elasticsearch:
       action.auto_create_index: ".*"
       # Disabling security warnings
       xpack.security.enabled: "false"
+  # Disable additional node types (ingest, data, coordinating)
+  master:
+    replicaCount: 1
+  data:
+    replicaCount: 0
+  coordinating:
+    replicaCount: 0
+  ingest:
+    replicaCount: 0
   resources:
     requests:
       cpu: 300m
