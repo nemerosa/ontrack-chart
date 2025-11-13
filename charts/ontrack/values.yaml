@@ -589,6 +589,7 @@ elasticsearch:
     tls:
       restEncryption: false
   master:
+    masterOnly: false
     replicaCount: 1
     resourcesPreset: small
     persistence:
