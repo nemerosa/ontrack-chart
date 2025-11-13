@@ -577,50 +577,28 @@ rabbitmq:
 
 # -- Local Elasticsearch engine for testing purpose
 elasticsearch:
-  image:
-    repository: bitnamilegacy/elasticsearch
-  volumePermissions:
-    image:
-      repository: bitnamilegacy/os-shell
-  sysctlImage:
-    repository: bitnamilegacy/os-shell
-  enabled: true
-  maxUnavailable: 0 # Even in K8S 1.25, the Pod Disruption budget is generated for policy/v1beta instead of policy/v1
-  replicas: 1
-  minimumMasterNodes: 1
-  antiAffinity: soft
-  masterService: ontrack-search
-  esJavaOpts: -Xmx512m -Xms512m -XX:-HeapDumpOnOutOfMemoryError
-  clusterHealthCheckParams: 'wait_for_status=yellow&timeout=1s'
-  esConfig:
-    elasticsearch.yml: |
-      discovery.zen.minimum_master_nodes: 1
-      bootstrap.system_call_filter: "false"
-      node.max_local_storage_nodes: 8
-      cluster.routing.allocation.disk.threshold_enabled: "false"
-      action.auto_create_index: ".*"
-      # Disabling security warnings
-      xpack.security.enabled: "false"
-  # Disable additional node types (ingest, data, coordinating)
+  # Ensure master nodes count matches your intended setup
   master:
-    replicaCount: 1
+    replicaCount: 1  # Keep as 1 if you want single-node, or increase for multi-node
+  
+  # For single-node setup, disable discovery
+  discovery:
+    seed_hosts: []  # Empty array to disable seed hosts discovery
+  
+  # OR, if you need a true single-node cluster
+  clusterName: "ontrack-elasticsearch"
+  
+  # Explicitly set single-node discovery type
+  extraEnvVars:
+    - name: discovery.type
+      value: "single-node"
+
   data:
     replicaCount: 0
   coordinating:
     replicaCount: 0
   ingest:
     replicaCount: 0
-  resources:
-    requests:
-      cpu: 300m
-      memory: 1024M
-    limits:
-      memory: 1024M
-  volumeClaimTemplate:
-    accessModes: [ ReadWriteOnce ]
-    resources:
-      requests:
-        storage: 5Gi
 
 # -- In case you want to specify different resources for emptyDir than {}
 emptyDir: { }
