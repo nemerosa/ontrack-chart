@@ -577,6 +577,8 @@ rabbitmq:
 
 # -- Local Elasticsearch engine for testing purpose
 elasticsearch:
+  image:
+    repository: bitnamilegacy/elasticsearch
   enabled: true
   maxUnavailable: 0 # Even in K8S 1.25, the Pod Disruption budget is generated for policy/v1beta instead of policy/v1
   replicas: 1
