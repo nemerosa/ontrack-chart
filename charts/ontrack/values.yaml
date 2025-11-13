@@ -577,22 +577,25 @@ rabbitmq:
 
 # -- Local Elasticsearch engine for testing purpose
 elasticsearch:
-  # Ensure master nodes count matches your intended setup
+  image:
+    repository: bitnamilegacy/elasticsearch
+  volumePermissions:
+    image:
+      repository: bitnamilegacy/os-shell
+  sysctlImage:
+    repository: bitnamilegacy/os-shell
+  security:
+    enabled: false
+    tls:
+      restEncryption: false
   master:
-    replicaCount: 1  # Keep as 1 if you want single-node, or increase for multi-node
-  
-  # For single-node setup, disable discovery
-  discovery:
-    seed_hosts: []  # Empty array to disable seed hosts discovery
-  
-  # OR, if you need a true single-node cluster
-  clusterName: "ontrack-elasticsearch"
-  
-  # Explicitly set single-node discovery type
-  extraEnvVars:
-    - name: discovery.type
-      value: "single-node"
-
+    replicaCount: 1
+    resourcesPreset: small
+    persistence:
+      enabled: true
+      size: 5Gi
+      accessModes:
+        - ReadWriteOnce
   data:
     replicaCount: 0
   coordinating:
