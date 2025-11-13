@@ -18,9 +18,19 @@ spec:
       labels:
         {{- include "ontrack.selectorLabels" . | nindent 8 }}
     spec:
-      {{- with .Values.imagePullSecrets }}
-      imagePullSecrets:
-        {{- toYaml . | nindent 8 }}
+      {{- if .Values.elasticsearch.enabled }}
+      initContainers:
+        - name: wait-for-elasticsearch
+          image: busybox:1.36
+          command:
+            - 'sh'
+            - '-c'
+            - |
+              until nc -z {{ .Release.Name }}-elasticsearch 9200; do
+                echo "Waiting for Elasticsearch to be ready..."
+                sleep 5
+              done
+              echo "Elasticsearch is ready!"
       {{- end }}
       serviceAccountName: {{ include "ontrack.serviceAccountName" . }}
       securityContext:
