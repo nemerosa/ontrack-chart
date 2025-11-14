@@ -162,7 +162,7 @@ spec:
                   name: {{ .Values.auth.keycloak.settings.admin.secret.name | quote }}
                   key: password
                   optional: false
-            {{- else }}}
+            {{- else }}
             - name: KEYCLOAK_USER_ADMIN_USERNAME
               value: {{ .Values.auth.keycloak.settings.admin.username | quote }}
             - name: KEYCLOAK_USER_ADMIN_PASSWORD
