@@ -149,10 +149,25 @@ spec:
             {{- end }}
             {{/* Initial admin user for Yontrack */}}
             {{- if .Values.auth.keycloak.settings.enabled }}
+            {{- if .Values.auth.keycloak.settings.admin.secret.enabled }}
+            - name: KEYCLOAK_USER_ADMIN_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.auth.keycloak.settings.admin.secret.name | quote }}
+                  key: username
+                  optional: false
+            - name: KEYCLOAK_USER_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.auth.keycloak.settings.admin.secret.name | quote }}
+                  key: password
+                  optional: false
+            {{- else }}}
             - name: KEYCLOAK_USER_ADMIN_USERNAME
               value: {{ .Values.auth.keycloak.settings.admin.username | quote }}
             - name: KEYCLOAK_USER_ADMIN_PASSWORD
               value: {{ .Values.auth.keycloak.settings.admin.password | quote }}
+            {{- end }}
             {{- end }}
             {{- if .Values.auth.keycloak.secret.enabled }}
             - name: KEYCLOAK_CLIENT_SECRET

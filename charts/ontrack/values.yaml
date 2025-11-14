@@ -373,8 +373,6 @@ auth:
       accessTokenLifespan: 3600
       # -- Initial Ontrack user to create
       admin:
-        # -- Username
-        username: "admin"
         # -- Email
         # If not set, `auth.admin.email` is used
         email: ""
@@ -382,8 +380,34 @@ auth:
         firstName: "Admin"
         # -- Last name
         lastName: "User"
+        # -- Username
+        username: "admin"
         # -- Password (would need to be changed)
         password: "admin"
+        # -- Fetching the admin user from a secret
+        secret:
+          # -- Using a secret to store the admin credentials (username & password keys)
+          enabled: false
+          # -- Name of the secret to use
+          name: yontrack-admin
+          # -- External secret for the admin credentials
+          external:
+            # -- Creating the external secret definition
+            enabled: false
+            # -- Refresh interval
+            refreshInterval: 6h
+            # -- Location of the secret to bind to
+            store:
+              # -- Name of the secret store
+              name: vault-backend
+              # -- Scope of the secret store
+              kind: ClusterSecretStore
+              # -- Path to the secret in the store.
+              path: ontrack/keycloak/admin
+              # Username key
+              usernameKey: username
+              # Password key
+              passwordKey: password
     # -- Connection parameters to Keycloak stored in a secret
     secret:
       # -- Using a secret to store the client secret
