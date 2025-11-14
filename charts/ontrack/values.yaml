@@ -577,6 +577,8 @@ rabbitmq:
 
 # -- Local Elasticsearch engine for testing purpose
 elasticsearch:
+  # -- Enabling the Elasticsearch deployment (when not using an external Elasticsearch cluster)
+  enabled: true
   image:
     repository: bitnamilegacy/elasticsearch
   volumePermissions:
