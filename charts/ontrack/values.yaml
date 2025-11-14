@@ -337,6 +337,10 @@ auth:
             # -- Path to the secret in the store.
             # The entry is expected to have the following keys: bindDn & bindCredential
             path: ontrack/keycloak/bootstrap
+            # -- Username key
+            usernameKey: username
+            # -- Password key
+            passwordKey: password
     # -- If using an external Keycloak instance
     external:
       # -- Enabling an external Keycloak instance
