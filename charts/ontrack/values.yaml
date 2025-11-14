@@ -216,6 +216,28 @@ ontrack:
       directory: "/var/ontrack/casc/mapping"
       # -- List of secret names to mount
       names: []
+    # -- List of external secrets to declare
+    externalSecrets:
+      # -- Enabling the creation of the external secret
+      enabled: false
+      # -- Refresh interval
+      refreshInterval: 6h
+      # -- Location of the secret to bind to
+      store:
+        # -- Name of the secret store
+        name: vault-backend
+        # -- Scope of the secret store
+        kind: ClusterSecretStore
+      # -- Name of the secret to create
+      secretName: ontrack-casc-secrets
+      # -- List of secret keys to create
+      secretKeys: []
+      #    # -- Path to the secret in the backend
+      #  - path: ontrack/casc/secrets
+      #    # -- Key in the backend secret to use
+      #    sourceKey: key
+      #    # -- Key in the target secret to create
+      #    targetKey: key
     # -- Auto reload configuration
     reloading:
       # -- Auto reload activation
