@@ -9,7 +9,7 @@
 "accessTokenLifespan": {{ .Values.auth.keycloak.settings.accessTokenLifespan }},
 "users": [
     {
-      "username": "{{ .Values.auth.keycloak.settings.admin.username }}",
+      "username": "${KEYCLOAK_USER_ADMIN_USERNAME}",
       "enabled": true,
       "email": "{{ .Values.auth.keycloak.settings.admin.email | default .Values.auth.admin.email }}",
       "firstName": "{{ .Values.auth.keycloak.settings.admin.firstName }}",
@@ -18,7 +18,7 @@
       "credentials": [
         {
           "type": "password",
-          "value": "{{ .Values.auth.keycloak.settings.admin.password }}"
+          "value": "${KEYCLOAK_USER_ADMIN_PASSWORD}"
         }
       ]
     }

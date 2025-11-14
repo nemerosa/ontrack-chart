@@ -147,6 +147,13 @@ spec:
             - name: KC_BOOTSTRAP_ADMIN_PASSWORD
               value: {{ .Values.auth.keycloak.bootstrap.password | quote }}
             {{- end }}
+            {{/* Initial admin user for Yontrack */}}
+            {{- if .Values.auth.keycloak.settings.enabled }}
+            - name: KEYCLOAK_USER_ADMIN_USERNAME
+              value: {{ .Values.auth.keycloak.settings.admin.username | quote }}
+            - name: KEYCLOAK_USER_ADMIN_PASSWORD
+              value: {{ .Values.auth.keycloak.settings.admin.password | quote }}
+            {{- end }}
             {{- if .Values.auth.keycloak.secret.enabled }}
             - name: KEYCLOAK_CLIENT_SECRET
               valueFrom:
