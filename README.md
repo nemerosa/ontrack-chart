@@ -485,7 +485,7 @@ ontrack:
   config:
     github:
       - name: github.com
-        token: { { secret.github.token } }
+        token: {{ secret.github.token }}
 ```
 
 Given a `ontrack-github` K8S secret containing the secret token in its `token` property, you can just set the following
@@ -516,7 +516,7 @@ ontrack:
   config:
     github:
       - name: github.com
-        token: { { secret.github.token } }
+        token: {{ secret.github.token }}
 ```
 
 You can map the `ontrack-github` K8S secret onto a volume and tell Ontrack to use this volume:
@@ -527,10 +527,9 @@ ontrack:
     enabled: true
     map: some-config-map-name
     secrets:
-      type: file
+      mapping: file
       names:
         - ontrack-github
-# TODO Volumes & volume mounts
 ```
 
 ## CasC directly in values
@@ -543,7 +542,7 @@ casc:
     config:
       github:
         - name: github.com
-          token: { { secret.github.token } }
+          token: {{ secret.github.token }}
 ```
 
 # Using a K8S secret for the encryption keys
