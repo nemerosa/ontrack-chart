@@ -54,4 +54,4 @@ jobs:
           helm registry login registry-1.docker.io \
             --username "${{ secrets.DOCKER_HUB_USERNAME }}" \
             --password "${{ secrets.DOCKER_HUB_TOKEN }}"
-          helm push "$(ls yontrack-*.tgz)" oci://registry-1.docker.io/nemerosa
+          helm push "$(ls yontrack-*.tgz)" oci://registry-1.docker.io/nemerosa/charts

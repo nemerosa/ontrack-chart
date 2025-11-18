@@ -52,7 +52,7 @@ Helm's [documentation](https://helm.sh/docs) to get started.
 The Yontrack Helm chart is available as an OCI Helm chart in Docker Hub.
 
 ```
-helm install yontrack oci://registry-1.docker.io/nemerosa/yontrack-chart
+helm install yontrack oci://registry-1.docker.io/nemerosa/charts/yontrack
 ```
 
 To uninstall the chart:
