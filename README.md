@@ -155,25 +155,25 @@ auth:
         enabled: true
         # The secret is expected to have the following keys: clientId & clientSecret
         secretName: <secret name>
-          # Depending on your setup, you can also just create an external secret
-          # definition, pointing to the actual secret in a secret provided like
-          # Vault or your cloud secret manager
-          # If not using an external secret, Ontrack expects you to create the 
-          # secret manually.
-          # externalSecret:
-          # Enabling the creation of the external secret 
-          # enabled: false
-          # Refresh interval
-          # refreshInterval: 6h
-          # Location of the secret to bind to
-          # store:
-          # Name of the secret store
-          # name: vault-backend
-          # Scope of the secret store
-          # kind: ClusterSecretStore
-          # Path to the secret in the store.
-          # The entry is expected to have the following keys: clientId & clientSecret
-        # path: ontrack/oidc
+        # -- Depending on your setup, you can also just create an external secret
+        # definition, pointing to the actual secret in a secret provided like
+        # Vault or your cloud secret manager
+        # If not using an external secret, Ontrack expects you to create the
+        # secret manually.
+        externalSecret:
+          # -- Enabling the creation of the external secret
+          enabled: false
+          # -- Refresh interval
+          refreshInterval: 6h
+          # -- Location of the secret to bind to
+          store:
+            # -- Name of the secret store
+            name: vault-backend
+            # -- Scope of the secret store
+            kind: ClusterSecretStore
+            # -- Path to the secret in the store.
+            # The entry is expected to have the following keys: clientId & clientSecret
+            path: ontrack/oidc
       # ... or provided directly in the values (ok for testing)
       # If a secret (or external secret) is provided, these values are not used
       # clientId: <client id>
