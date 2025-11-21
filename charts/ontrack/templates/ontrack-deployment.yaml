@@ -148,6 +148,8 @@ spec:
               value: {{ .Values.auth.admin.fullName | quote }}
             - name: ONTRACK_CONFIG_SECURITY_AUTHORIZATION_ADMIN_GROUPNAME
               value: {{ .Values.auth.admin.groupName | quote }}
+            - name: ONTRACK_CONFIG_SECURITY_AUTHORIZATION_ADMIN_FORCE
+              value: {{ .Values.auth.admin.force | quote }}
             {{- end }}
             {{- if .Values.auth.oidc.enabled }}
               {{- if .Values.auth.oidc.trailingSlash }}

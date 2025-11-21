@@ -271,6 +271,8 @@ auth:
     fullName: "Administrator"
     # -- Group of administrators
     groupName: "Administrators"
+    # -- Force the creation/update of the administrator user even if it already exists
+    force: false
   # -- OIDC configuration (disabled by default)
   oidc:
     # -- Enabling OIDC authentication
