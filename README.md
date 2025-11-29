@@ -449,13 +449,7 @@ ontrack:
 
 # Configuration as code (CasC)
 
-Casc is enabled by default in Yontrack starting from version 5. To enabled it, use the following values:
-
-```yaml
-ontrack:
-  casc:
-    enabled: true
-```
+Casc is enabled by default in Yontrack starting from version 5.
 
 Casc can take its values from a configuration map and/or a secret:
 
