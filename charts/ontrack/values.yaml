@@ -201,7 +201,7 @@ ontrack:
   # -- CasC configuration
   casc:
     # -- Is Casc enabled?
-    enabled: false
+    enabled: true
     # -- Config map containing all Casc files
     map: ""
     # -- Secret map containing all secret Casc files

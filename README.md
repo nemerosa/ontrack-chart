@@ -449,7 +449,7 @@ ontrack:
 
 # Configuration as code (CasC)
 
-Casc is not enabled by default in the chart. To enabled it, use the following values:
+Casc is enabled by default in Yontrack starting from version 5. To enabled it, use the following values:
 
 ```yaml
 ontrack:
