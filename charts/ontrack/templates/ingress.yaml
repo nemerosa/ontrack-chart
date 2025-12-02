@@ -1,4 +1,4 @@
-{{- if and .Values.auth.keycloak.enabled (not .Values.ingress.enabled) -}}
+{{- if and (eq "keycloak" .Values.auth.kind) (not .Values.ingress.enabled) -}}
 {{- fail "Ingress must be enabled when Keycloak is enabled." -}}
 {{- end }}
 
@@ -26,7 +26,7 @@ spec:
       http:
         paths:
           # Keycloak
-          {{- if and .Values.auth.keycloak.enabled .Values.auth.keycloak.service.ingressEnabled (not .Values.auth.keycloak.external.enabled) }}
+          {{- if and (eq "keycloak" .Values.auth.kind) .Values.auth.keycloak.service.ingressEnabled (not .Values.auth.keycloak.external.enabled) }}
           - path: "/{{ .Values.auth.keycloak.service.path }}"
             pathType: Prefix
             backend:

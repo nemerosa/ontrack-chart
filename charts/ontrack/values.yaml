@@ -261,6 +261,8 @@ ontrack:
 
 # -- Authentication
 auth:
+  # -- Type of authentication
+  kind: keycloak
   # -- Provisioning of groups & initial administrator
   provisioning: true
   # -- Configuration of the initial administrator
@@ -275,8 +277,6 @@ auth:
     force: false
   # -- OIDC configuration (disabled by default)
   oidc:
-    # -- Enabling OIDC authentication
-    enabled: false
     # -- Display name for your IdP (used for the login page)
     name: OIDC
     # -- OIDC issuer URL
@@ -319,9 +319,6 @@ auth:
         clientSecret: <client secret>
   # -- Configuration of the local Keycloak instance
   keycloak:
-    # -- By default, Keycloak is installed.
-    # Set to false to use an external authentication source like OIDC
-    enabled: true
     # -- Name to use on the Signin page
     name: Yontrack
     # -- Name of the Keycloak client

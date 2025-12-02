@@ -1,6 +1,3 @@
-{{- if and .Values.auth.oidc.enabled .Values.auth.keycloak.enabled }}
-{{- fail "Either OIDC or Keycloak must be enabled, not both" -}}
-{{- end }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -44,7 +41,7 @@ spec:
               value: {{ .Values.ontrack.ui.config.customSignin | toString | quote }}
             - name: NEXTAUTH_URL
               value: {{ .Values.ontrack.url | quote }}
-            {{- if .Values.auth.oidc.enabled }}
+            {{- if (eq "oidc" .Values.auth.kind) }}
             - name: NEXTAUTH_PROVIDER
               value: oidc
             - name: NEXTAUTH_PROVIDER_NAME
@@ -71,7 +68,7 @@ spec:
               value: {{ .Values.auth.oidc.credentials.client.clientSecret }}
               {{- end }}
             {{- end }}
-            {{- if .Values.auth.keycloak.enabled }}
+            {{- if (eq "keycloak" .Values.auth.kind) }}
               {{- if .Values.auth.keycloak.external.enabled }}
             - name: NEXTAUTH_ISSUER
               value: {{ .Values.auth.keycloak.external.url | quote }}

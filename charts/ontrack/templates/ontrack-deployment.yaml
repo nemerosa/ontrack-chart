@@ -151,7 +151,7 @@ spec:
             - name: ONTRACK_CONFIG_SECURITY_AUTHORIZATION_ADMIN_FORCE
               value: {{ .Values.auth.admin.force | quote }}
             {{- end }}
-            {{- if .Values.auth.oidc.enabled }}
+            {{- if (eq "oidc" .Values.auth.kind) }}
               {{- if .Values.auth.oidc.trailingSlash }}
             - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI
               value: "{{ .Values.auth.oidc.issuer }}/"
@@ -160,7 +160,7 @@ spec:
               value: "{{ .Values.auth.oidc.issuer }}"
               {{- end }}
             {{- end }}
-            {{- if .Values.auth.keycloak.enabled }}
+            {{- if (eq "keycloak" .Values.auth.kind) }}
             {{- if .Values.auth.keycloak.external.enabled }}
             - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI
               value: {{ .Values.auth.keycloak.external.url | quote }}

@@ -1,4 +1,4 @@
-{{- if and .Values.auth.keycloak.enabled (not .Values.auth.keycloak.external.enabled) }}
+{{- if and (eq "keycloak" .Values.auth.kind) (not .Values.auth.keycloak.external.enabled) }}
 {{- if and .Values.auth.keycloak.settings.enabled .Values.auth.keycloak.ldap.enabled -}}
 {{- fail "For Keycloak, either the settings or the LDAP must be enabled, not both." -}}
 {{- end }}

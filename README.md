@@ -138,11 +138,11 @@ ontrack:
   # Ontrack root URL
   url: https://****
 auth:
+  # Enabling OIDC authentication
+  kind: oidc
   # Key used for the generation of cookies by the Next Auth frontend
   secret: <openssl rand -hex 32>
   oidc:
-    # Enabling OIDC authentication
-    enabled: true
     # Display name for your IdP (used for the login page)
     name: <display name for the provider>
     # OIDC issuer URL
@@ -178,9 +178,6 @@ auth:
       # If a secret (or external secret) is provided, these values are not used
       # clientId: <client id>
       # clientSecret: <client secret>
-  keycloak:
-    # Disabling Keycloak altogether
-    enabled: false
   # Okta specifics: the JWT emitted by this IdP is not fully OIDC compliant
   jwt:
     # The `typ` attribute emitted by Okta does is not the expected "JWT" value

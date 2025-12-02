@@ -1,4 +1,4 @@
-{{- if and .Values.auth.keycloak.enabled .Values.auth.keycloak.ldap.enabled .Values.auth.keycloak.ldap.testing.enabled .Values.auth.keycloak.ldap.testing.provisioning.enabled }}
+{{- if and (eq "keycloak" .Values.auth.kind) .Values.auth.keycloak.ldap.enabled .Values.auth.keycloak.ldap.testing.enabled .Values.auth.keycloak.ldap.testing.provisioning.enabled }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
