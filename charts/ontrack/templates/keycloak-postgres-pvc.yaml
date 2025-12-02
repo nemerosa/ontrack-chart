@@ -1,0 +1,30 @@
+{{- if and
+    (eq "keycloak" .Values.auth.kind)
+    (not .Values.auth.keycloak.external.enabled)
+}}
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ include "ontrack.fullname" . }}-keycloak-postgres-pvc
+  labels:
+    {{- include "ontrack.labels" . | nindent 4 }}
+{{ if .Values.auth.keycloak.persistence.pvc.annotations}}
+  annotations:
+    {{- range $key, $value := .Values.auth.keycloak.persistence.pvc.annotations }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
+{{- end }}
+spec:
+  accessModes:
+    - {{ .Values.auth.keycloak.persistence.pvc.accessMode | quote }}
+  resources:
+    requests:
+      storage: {{ .Values.auth.keycloak.persistence.pvc.size | quote }}
+{{- if .Values.auth.keycloak.persistence.pvc.storageClass }}
+{{- if (eq "-" .Values.auth.keycloak.persistence.pvc.storageClass) }}
+  storageClassName: ""
+{{- else }}
+  storageClassName: "{{ .Values.auth.keycloak.persistence.pvc.storageClass }}"
+{{- end }}
+{{- end }}
+{{- end }}

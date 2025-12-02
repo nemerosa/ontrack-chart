@@ -121,13 +121,26 @@ spec:
             - name: KC_DB
               value: postgres
             - name: KC_DB_URL_HOST
-              value: {{ .Release.Name }}-keycloak-postgresql-hl
+              value: {{ include "ontrack.fullname" . }}-keycloak-postgres
             - name: KC_DB_URL_DATABASE
-              value: keycloak
+              value: {{ .Values.auth.keycloak.persistence.connection.database | quote }}
+            {{- if .Values.auth.keycloak.persistence.connection.secret.enabled }}
             - name: KC_DB_USERNAME
-              value: keycloak
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.auth.keycloak.persistence.connection.secret.name }}
+                  key: "username"
             - name: KC_DB_PASSWORD
-              value: keycloak
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.auth.keycloak.persistence.connection.secret.name }}
+                  key: "password"
+            {{- else }}
+            - name: KC_DB_USERNAME
+              value: {{ .Values.auth.keycloak.persistence.connection.username | quote }}
+            - name: KC_DB_PASSWORD
+              value: {{ .Values.auth.keycloak.persistence.connection.password | quote }}
+            {{- end }}
             {{- if .Values.auth.keycloak.bootstrap.bootstrapSecret.enabled }}
             - name: KC_BOOTSTRAP_ADMIN_USERNAME
               valueFrom:

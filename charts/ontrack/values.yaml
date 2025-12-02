@@ -554,6 +554,66 @@ auth:
             # -- SSHA admin password
             # `slappasswd -h {SSHA} -s admin`
             sshaPassword: "{SSHA}cqhYu0IJNPgwklQuoENm6PtzGJLpPkgt"
+    # -- Persistence options for Keycloak
+    persistence:
+      # -- PVC setup
+      pvc:
+        # -- Annotations for the PVC
+        annotations: {}
+        # -- PVC access mode
+        accessMode: ReadWriteOnce
+        # -- Disk size
+        size: 5Gi
+        # -- If defined, storageClassName: <storageClass>
+        # If set to "-", storageClassName: "", which disables dynamic provisioning
+        # If undefined (the default) or set to null, no storageClassName spec is
+        #   set, choosing the default provisioner.  (gp2 on AWS, standard on
+        #   GKE, AWS & OpenStack)
+        storageClass:
+      # -- Image for Postgres
+      image:
+        # -- Image repository
+        repository: postgres
+        # -- Image tag
+        tag: 17
+        # -- Pull policy
+        pullPolicy: IfNotPresent
+      # -- Resources to allocate to Postgres
+      resources: {}
+      # -- Connection parameters
+      connection:
+        # -- Database name
+        database: keycloak
+        # -- Username
+        username: keycloak
+        # -- Password
+        password: keycloak
+        # -- Credentials stored in a secret
+        secret:
+          # -- Using the secret for the credentials
+          enabled: false
+          # -- Name of the secret
+          # -- The secret is expected to have the following keys: username & password
+          name: keycloak-postgresql
+          # -- Using an external secret
+          externalSecret:
+            # -- Creating the external secret definition
+            enabled: false
+            # -- Refresh interval
+            refreshInterval: 6h
+            # -- Location of the secret to bind to
+            store:
+              # -- Name of the secret store
+              name: vault-backend
+              # -- Scope of the secret store
+              kind: ClusterSecretStore
+              # -- Path to the secret in the store.
+              # -- The entry is expected to have the following keys: username & password
+              path: ontrack/keycloak/postgres
+      # -- Postgres service
+      service:
+        # -- Service type
+        type: ClusterIP
   # -- Unique secret used by Next Auth in Ontrack to create session cookies
   next:
     # -- Secret definition

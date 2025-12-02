@@ -79,6 +79,18 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end }}
 
 {{/*
+Common labels for Keycloak Postgres
+*/}}
+{{- define "ontrack.labels.keycloak.postgres" -}}
+helm.sh/chart: {{ include "ontrack.chart" . }}
+{{ include "ontrack.selectorLabels.keycloak.postgres" . }}
+{{- if .Chart.AppVersion }}
+app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+{{- end }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- end }}
+
+{{/*
 Common labels for LDAP
 */}}
 {{- define "ontrack.labels.ldap" -}}
@@ -119,6 +131,14 @@ Selector labels for Keycloak
 */}}
 {{- define "ontrack.selectorLabels.keycloak" -}}
 app.kubernetes.io/name: {{ include "ontrack.name" . }}-keycloak
+app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}
+
+{{/*
+Selector labels for Keycloak Postgres
+*/}}
+{{- define "ontrack.selectorLabels.keycloak.postgres" -}}
+app.kubernetes.io/name: {{ include "ontrack.name" . }}-keycloak-postgres
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
