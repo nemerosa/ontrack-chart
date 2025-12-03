@@ -1,0 +1,143 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "ontrack.fullname" . }}-ui
+  labels:
+    {{- include "ontrack.labels.ui" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.ontrack.ui.replicas }}
+  selector:
+    matchLabels:
+      {{- include "ontrack.selectorLabels.ui" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "ontrack.selectorLabels.ui" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "ontrack.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+      {{- if .Values.extraContainers }}
+        {{- toYaml .Values.extraContainers | nindent 8 }}
+      {{- end }}
+        - name: {{ .Chart.Name }}-ui
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.ontrack.ui.image }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: ONTRACK_URL
+              value: "http://{{ include "ontrack.fullname" . }}:{{ .Values.service.port }}"
+            - name: YONTRACK_UI_AUTH_SIGNIN_CUSTOM
+              value: {{ .Values.ontrack.ui.config.customSignin | toString | quote }}
+            - name: NEXTAUTH_URL
+              value: {{ .Values.ontrack.url | quote }}
+            {{- if (eq "oidc" .Values.auth.kind) }}
+            - name: NEXTAUTH_PROVIDER
+              value: oidc
+            - name: NEXTAUTH_PROVIDER_NAME
+              value: {{ .Values.auth.oidc.name | quote }}
+            - name: NEXTAUTH_ISSUER
+              value: {{ .Values.auth.oidc.issuer | quote }}
+              {{- if .Values.auth.oidc.credentials.secret.enabled }}
+            - name: NEXTAUTH_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.auth.oidc.credentials.secret.secretName }}
+                  key: "clientId"
+                  optional: false
+            - name: NEXTAUTH_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.auth.oidc.credentials.secret.secretName }}
+                  key: "clientSecret"
+                  optional: false
+              {{- else }}
+            - name: NEXTAUTH_CLIENT_ID
+              value: {{ .Values.auth.oidc.credentials.client.clientId }}
+            - name: NEXTAUTH_CLIENT_SECRET
+              value: {{ .Values.auth.oidc.credentials.client.clientSecret }}
+              {{- end }}
+            {{- end }}
+            {{- if (eq "keycloak" .Values.auth.kind) }}
+              {{- if .Values.auth.keycloak.external.enabled }}
+            - name: NEXTAUTH_ISSUER
+              value: {{ .Values.auth.keycloak.external.url | quote }}
+              {{- else }}
+            - name: NEXTAUTH_ISSUER
+              value: {{ .Values.ontrack.url }}/{{ .Values.auth.keycloak.service.path }}/realms/{{ .Values.auth.keycloak.realm }}
+              {{- end }}
+              {{- if and .Values.auth.keycloak.account.url (not .Values.auth.keycloak.ldap.enabled) }}
+            - name: YONTRACK_UI_MANAGE_ACCOUNT_URL
+              value: {{ .Values.auth.keycloak.account.url }}
+              {{- end }}
+            - name: NEXTAUTH_CLIENT_ID
+              value: {{ .Values.auth.keycloak.client.id | quote }}
+              {{- if .Values.auth.keycloak.secret.enabled }}
+            - name: NEXTAUTH_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.auth.keycloak.secret.name }}
+                  key: "client-secret"
+                  optional: false
+              {{- else }}
+            - name: NEXTAUTH_CLIENT_SECRET
+              value: {{ .Values.auth.keycloak.client.secret | quote }}
+              {{- end }}
+            {{- else }}
+            - name: NEXTAUTH_PROVIDER_NAME
+              value: {{ .Values.auth.keycloak.name | quote }}
+            {{- end }}
+            - name: NEXTAUTH_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.auth.next.secret.name | quote }}
+                  key: "secret"
+                  optional: false
+            {{- with .Values.auth.jwt }}
+              {{- if .audience }}
+            - name: NEXTAUTH_AUDIENCE
+              value: {{ .audience | quote }}
+              {{- end }}
+            {{- end }}
+          ports:
+            - name: http
+              containerPort: 3000
+              protocol: TCP
+          resources: {{ toYaml .Values.ontrack.ui.resources | nindent 12 }}
+          # Probes
+          livenessProbe:
+            httpGet:
+              path: "/api/health"
+              port: 3000
+            failureThreshold: 6
+            periodSeconds: 20
+            initialDelaySeconds: 5
+          readinessProbe:
+            httpGet:
+              path: "/api/health"
+              port: 3000
+            failureThreshold: 6
+            periodSeconds: 20
+            initialDelaySeconds: 5
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if .Values.affinity }}
+      affinity:
+        {{- toYaml .Values.affinity | nindent 8 }}
+      {{- end }}
+      {{- if .Values.tolerations }}
+      tolerations:
+        {{- toYaml .Values.tolerations | nindent 8 }}
+      {{- end }}

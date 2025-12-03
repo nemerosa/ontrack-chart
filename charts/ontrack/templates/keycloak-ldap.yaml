@@ -1,0 +1,138 @@
+{{- if and (eq "keycloak" .Values.auth.kind) (not .Values.auth.keycloak.external.enabled) .Values.auth.keycloak.ldap.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "ontrack.fullname" . }}-keycloak-ldap-template
+data:
+  ontrack.json.tpl: |-
+    {
+      {{- tpl (.Files.Get "files/partials/keycloak/common.json.tpl") . | indent 6 }},
+      {{- if .Values.auth.keycloak.ldap.components }}
+      "components": {{ .Values.auth.keycloak.ldap.components | toJson }}
+      {{- else }}
+      "components": {
+        "org.keycloak.storage.UserStorageProvider": [
+          {
+            "id": "{{ .Values.auth.keycloak.ldap.id }}",
+            "name": "{{ .Values.auth.keycloak.ldap.name }}",
+            "providerId": "ldap",
+            "subComponents": {
+              "org.keycloak.storage.ldap.mappers.LDAPStorageMapper": [
+                {
+                  "name": "email",
+                  "providerId": "user-attribute-ldap-mapper",
+                  "config": {
+                    "ldap.attribute": [
+                      "mail"
+                    ],
+                    "is.mandatory.in.ldap": [
+                      "true"
+                    ],
+                    "read.only": [
+                      "true"
+                    ],
+                    "always.read.value.from.ldap": [
+                      "true"
+                    ],
+                    "user.model.attribute": [
+                      "email"
+                    ]
+                  }
+                },
+                {
+                  "name": "username",
+                  "providerId": "user-attribute-ldap-mapper",
+                  "config": {
+                    "ldap.attribute": [
+                      "uid"
+                    ],
+                    "is.mandatory.in.ldap": [
+                      "true"
+                    ],
+                    "always.read.value.from.ldap": [
+                      "true"
+                    ],
+                    "read.only": [
+                      "true"
+                    ],
+                    "user.model.attribute": [
+                      "username"
+                    ]
+                  }
+                },
+                {
+                  "name": "groups",
+                  "providerId": "group-ldap-mapper",
+                  "config": {
+                    "mode": [
+                      "LDAP_ONLY"
+                    ],
+                    "membership.attribute.type": [
+                      "{{ .Values.auth.keycloak.ldap.groups.membershipAttributeType }}"
+                    ],
+                    "user.roles.retrieve.strategy": [
+                      "LOAD_GROUPS_BY_MEMBER_ATTRIBUTE"
+                    ],
+                    "group.name.ldap.attribute": [
+                      "{{ .Values.auth.keycloak.ldap.groups.groupNameLdapAttribute }}"
+                    ],
+                    "ignore.missing.groups": [
+                      "false"
+                    ],
+                    "membership.user.ldap.attribute": [
+                      "{{ .Values.auth.keycloak.ldap.groups.membershipUserLdapAttribute }}"
+                    ],
+                    "preserve.group.inheritance": [
+                      "true"
+                    ],
+                    "membership.ldap.attribute": [
+                      "{{ .Values.auth.keycloak.ldap.groups.membershipLdapAttribute }}"
+                    ],
+                    "group.object.classes": [
+                      "{{ .Values.auth.keycloak.ldap.groups.groupObjectClasses }}"
+                    ],
+                    "memberof.ldap.attribute": [
+                      "{{ .Values.auth.keycloak.ldap.groups.memberofLdapAttribute }}"
+                    ],
+                    "groups.dn": [
+                      "{{ .Values.auth.keycloak.ldap.groups.groupsDn }}"
+                    ],
+                    "drop.non.existing.groups.during.sync": [
+                      "false"
+                    ],
+                    "groups.path": [
+                      "/"
+                    ]
+                  }
+                }
+              ]
+            },
+            "config": {
+              "enabled": ["true"],
+              "priority": ["0"],
+              "editMode": ["READ_ONLY"],
+              "importEnabled": ["false"],
+              "syncRegistrations": ["false"],
+              "vendor": ["other"],
+              "connectionUrl": ["{{ .Values.auth.keycloak.ldap.url }}"],
+              "usersDn": ["{{ .Values.auth.keycloak.ldap.usersDn }}"],
+              "bindDn": ["${BIND_DN}"],
+              "bindCredential": ["${BIND_CREDENTIAL}"],
+              "useTruststoreSpi": ["ldapsOnly"],
+              "connectionPooling": ["true"],
+              "pagination": ["true"],
+              "batchSizeForSync": ["1000"],
+              "usernameLDAPAttribute": ["{{ .Values.auth.keycloak.ldap.usernameLDAPAttribute }}"],
+              "rdnLDAPAttribute": ["{{ .Values.auth.keycloak.ldap.rdnLDAPAttribute }}"],
+              "uuidLDAPAttribute": ["{{ .Values.auth.keycloak.ldap.uuidLDAPAttribute }}"],
+              "userObjectClasses": ["{{ .Values.auth.keycloak.ldap.userObjectClasses }}"],
+              "searchScope": ["1"],
+              "validatePasswordPolicy": ["false"],
+              "trustEmail": ["true"]
+            }
+          }
+        ]
+      }
+    }
+    {{- end }}
+{{- end }}

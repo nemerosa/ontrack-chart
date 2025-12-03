@@ -1,0 +1,11 @@
+{{- if and (eq "keycloak" .Values.auth.kind) (not .Values.auth.keycloak.external.enabled) .Values.auth.keycloak.settings.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "ontrack.fullname" . }}-keycloak-settings
+data:
+  ontrack.json: |-
+    {
+      {{- tpl (.Files.Get "files/partials/keycloak/common.json.tpl") . | indent 6 }}
+    }
+{{- end }}

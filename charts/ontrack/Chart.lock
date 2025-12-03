@@ -1,12 +1,15 @@
 dependencies:
 - name: postgresql
   repository: https://charts.bitnami.com/bitnami
-  version: 12.12.10
+  version: 16.7.27
+- name: postgresql
+  repository: https://charts.bitnami.com/bitnami
+  version: 16.7.27
 - name: rabbitmq
   repository: https://charts.bitnami.com/bitnami
-  version: 14.7.0
+  version: 16.0.14
 - name: elasticsearch
-  repository: https://helm.elastic.co
-  version: 7.17.3
-digest: sha256:0bb531afcefc15838ece4fe79b167cf40f26dc47db7634122d504a2a1dbdcf01
-generated: "2025-08-13T12:22:05.698607+02:00"
+  repository: https://charts.bitnami.com/bitnami
+  version: 21.3.25
+digest: sha256:c20d394a8f6912ad37a348214e886c7e42b7355b3c0a926d419c9b540df788c5
+generated: "2025-11-13T19:45:52.955089+01:00"

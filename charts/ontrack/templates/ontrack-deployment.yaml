@@ -18,9 +18,19 @@ spec:
       labels:
         {{- include "ontrack.selectorLabels" . | nindent 8 }}
     spec:
-      {{- with .Values.imagePullSecrets }}
-      imagePullSecrets:
-        {{- toYaml . | nindent 8 }}
+      {{- if .Values.elasticsearch.enabled }}
+      initContainers:
+        - name: wait-for-elasticsearch
+          image: busybox:1.36
+          command:
+            - 'sh'
+            - '-c'
+            - |
+              until nc -z {{ .Release.Name }}-elasticsearch 9200; do
+                echo "Waiting for Elasticsearch to be ready..."
+                sleep 5
+              done
+              echo "Elasticsearch is ready!"
       {{- end }}
       serviceAccountName: {{ include "ontrack.serviceAccountName" . }}
       securityContext:
@@ -75,50 +85,15 @@ spec:
             - name: PROFILE
               value: {{ .Values.ontrack.profiles | quote }}
             ########################################
-            # Next UI configuration
-            ########################################
-            {{- if .Values.ontrack.ui.enabled }}
-            - name: ONTRACK_CONFIG_UI_ENABLED
-              value: "true"
-            - name: ONTRACK_CONFIG_UI_URI
-              value: "{{ .Values.ontrack.url }}/ui"
-            {{- end }}
-            ########################################
-            # Command line arguments
-            ########################################
-            {{- if .Values.ontrack.args }}
-            - name: ONTRACK_ARGS_GENERIC
-              value: {{ .Values.ontrack.args | quote }}
-            {{- else }}
-            - name: ONTRACK_ARGS_GENERIC
-              value: ""
-            {{- end }}
-            ########################################
-            # List of config files locations
-            ########################################
-            {{- if .Values.ontrack.config_locations }}
-            - name: ONTRACK_ARGS_LOCATIONS
-              # The default Ontrack configuration must be taken into account
-              value: "--spring.config.location=classpath:/config/application.yml,{{ .Values.ontrack.config_locations | join "," }}"
-            {{- else }}
-            - name: ONTRACK_ARGS_LOCATIONS
-              value: ""
-            {{- end}}
-            ########################################
             # Application properties
             ########################################
             {{- if .Values.ontrack.application_yaml }}
-            - name: ONTRACK_ARGS_CONFIG
+            - name: ONTRACK_ARGS
               value: "--spring.config.location=classpath:/config/application.yml,/var/ontrack/config/application.yaml"
             {{- else }}
-            - name: ONTRACK_ARGS_CONFIG
+            - name: ONTRACK_ARGS
               value: ""
             {{- end }}
-            ########################################
-            # All command line argument
-            ########################################
-            - name: ONTRACK_ARGS
-              value: "$(ONTRACK_ARGS_GENERIC) $(ONTRACK_ARGS_LOCATIONS) $(ONTRACK_ARGS_CONFIG)"
             ########################################
             # Database configuration
             ########################################
@@ -151,7 +126,7 @@ spec:
             # Elasticsearch configuration
             ########################################
             - name: SPRING_ELASTICSEARCH_URIS
-              value: "http://{{ .Values.elasticsearch.masterService }}-headless:9200"
+              value: "http://{{ .Release.Name }}-elasticsearch-master-hl:9200"
             ########################################
             # RabbitMQ configuration
             ########################################
@@ -161,6 +136,62 @@ spec:
               value: {{ .Values.rabbitmq.auth.username | quote }}
             - name: SPRING_RABBITMQ_PASSWORD
               value: {{ .Values.rabbitmq.auth.password | quote }}
+            ########################################
+            # Authentication
+            ########################################
+            - name: ONTRACK_CONFIG_SECURITY_AUTHORIZATION_PROVISIONING
+              value: {{ .Values.auth.provisioning | quote }}
+            {{- if .Values.auth.provisioning }}
+            - name: ONTRACK_CONFIG_SECURITY_AUTHORIZATION_ADMIN_EMAIL
+              value: {{ .Values.auth.admin.email | quote }}
+            - name: ONTRACK_CONFIG_SECURITY_AUTHORIZATION_ADMIN_FULLNAME
+              value: {{ .Values.auth.admin.fullName | quote }}
+            - name: ONTRACK_CONFIG_SECURITY_AUTHORIZATION_ADMIN_GROUPNAME
+              value: {{ .Values.auth.admin.groupName | quote }}
+            - name: ONTRACK_CONFIG_SECURITY_AUTHORIZATION_ADMIN_FORCE
+              value: {{ .Values.auth.admin.force | quote }}
+            {{- end }}
+            {{- if (eq "oidc" .Values.auth.kind) }}
+              {{- if .Values.auth.oidc.trailingSlash }}
+            - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI
+              value: "{{ .Values.auth.oidc.issuer }}/"
+              {{- else }}
+            - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI
+              value: "{{ .Values.auth.oidc.issuer }}"
+              {{- end }}
+            {{- end }}
+            {{- if (eq "keycloak" .Values.auth.kind) }}
+            {{- if .Values.auth.keycloak.external.enabled }}
+            - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI
+              value: {{ .Values.auth.keycloak.external.url | quote }}
+            {{- else }}
+            - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI
+              value: {{ .Values.ontrack.url }}/{{ .Values.auth.keycloak.service.path }}/realms/{{ .Values.auth.keycloak.realm }}
+            {{- end }}
+            {{- end }}
+            # JWT specifics
+            {{- if .Values.auth.jwt }}
+              {{- if .Values.auth.jwt.debug }}
+            - name: ONTRACK_CONFIG_SECURITY_AUTHORIZATION_JWT_DEBUG
+              value: "true"
+            - name: LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY
+              value: DEBUG
+              {{- end }}
+              {{- if .Values.auth.jwt.audience }}
+            - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_AUDIENCES
+              value: {{ .Values.auth.jwt.audience | quote }}
+              {{- end }}
+              {{- if .Values.auth.jwt.typ }}
+            - name: ONTRACK_CONFIG_SECURITY_AUTHORIZATION_JWT_TYP
+              value: {{ .Values.auth.jwt.typ | quote }}
+              {{- end }}
+              {{- if .Values.auth.jwt.claims }}
+                {{- if .Values.auth.jwt.claims.email }}
+            - name: ONTRACK_CONFIG_SECURITY_AUTHORIZATION_JWT_CLAIMS_EMAIL
+              value: {{ .Values.auth.jwt.claims.email | quote }}
+                {{- end }}
+              {{- end }}
+            {{- end }}
             ########################################
             # Metrics tags
             ########################################
@@ -203,36 +234,8 @@ spec:
             ########################################
             # License management
             ########################################
-            - name: ONTRACK_CONFIG_LICENSE_PROVIDER
-              value: {{ .Values.ontrack.config.license.type | quote }}
-            {{ if eq .Values.ontrack.config.license.type "stripe" }}
-            - name: ONTRACK_CONFIG_LICENSE_STRIPE_TOKEN
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.ontrack.config.license.stripe.secret | quote }}
-                  key: {{ .Values.ontrack.config.license.stripe.token_key_name | quote }}
-            - name: ONTRACK_CONFIG_LICENSE_STRIPE_SUBSCRIPTION
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.ontrack.config.license.stripe.secret | quote }}
-                  key: {{ .Values.ontrack.config.license.stripe.subscription_key_name | quote }}
-            {{- end }}
-            {{ if eq .Values.ontrack.config.license.type "fixed" }}
-            - name: ONTRACK_CONFIG_LICENSE_FIXED_NAME
-              value: {{ .Values.ontrack.config.license.fixed.name | quote }}
-            - name: ONTRACK_CONFIG_LICENSE_FIXED_ASSIGNEE
-              value: {{ .Values.ontrack.config.license.fixed.assignee | quote }}
-            - name: ONTRACK_CONFIG_LICENSE_FIXED_VALIDUNTIL
-              value: {{ .Values.ontrack.config.license.fixed.validUntil | quote }}
-            - name: ONTRACK_CONFIG_LICENSE_FIXED_MAXPROJECTS
-              value: {{ .Values.ontrack.config.license.fixed.maxProjects | quote }}
-            - name: ONTRACK_CONFIG_LICENSE_FIXED_ACTIVE
-              value: {{ .Values.ontrack.config.license.fixed.active | quote }}
-            {{- end }}
-            {{ if eq .Values.ontrack.config.license.type "embedded" }}
-            - name: ONTRACK_CONFIG_LICENSE_EMBEDDED_KEY
-              value: {{ .Values.ontrack.config.license.embedded.key | quote }}
-            {{- end }}
+            - name: ONTRACK_CONFIG_LICENSE_KEY
+              value: {{ .Values.ontrack.config.license.key | quote }}
             ########################################
             # Arbitrary environment variables
             ########################################

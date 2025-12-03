@@ -1,0 +1,261 @@
+{{- if and (eq "keycloak" .Values.auth.kind) (not .Values.auth.keycloak.external.enabled) }}
+{{- if and .Values.auth.keycloak.settings.enabled .Values.auth.keycloak.ldap.enabled -}}
+{{- fail "For Keycloak, either the settings or the LDAP must be enabled, not both." -}}
+{{- end }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "ontrack.fullname" . }}-keycloak
+  labels:
+    {{- include "ontrack.labels.keycloak" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.ontrack.ui.replicas }}
+  selector:
+    matchLabels:
+      {{- include "ontrack.selectorLabels.keycloak" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "ontrack.selectorLabels.keycloak" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "ontrack.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      initContainers:
+        - name: {{ .Chart.Name }}-keycloak-theme
+          image: busybox:1.37.0
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: [ "/bin/sh", "-c" ]
+          args:
+            - >
+              mkdir -p /theme &&
+              cp /config/yontrack.tar.gz /theme/ &&
+              cd /theme && tar vxzf yontrack.tar.gz
+          volumeMounts:
+            - name: {{ include "ontrack.fullname" . }}-keycloak-theme-archive
+              mountPath: /config
+            - name: {{ include "ontrack.fullname" . }}-keycloak-theme-dir
+              mountPath: /theme
+      {{- if .Values.auth.keycloak.ldap.enabled }}
+        - name: {{ .Chart.Name }}-keycloak-init
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: busybox:1.37.0
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: [ "/bin/sh", "-c" ]
+          {{- if .Values.auth.keycloak.ldap.bindCredentialSecret.enabled }}
+          args:
+            - >
+              export BIND_DN="$(cat /secrets/bindDn)" &&
+              export BIND_CREDENTIAL="$(cat /secrets/bindCredential)" &&
+              cat /config/ontrack.json.tpl &&
+              cp /config/ontrack.json.tpl /tmp/ontrack.json &&
+              sed "s|\${BIND_DN}|$BIND_DN|g" /tmp/ontrack.json> /tmp/ontrack-dn.json &&
+              sed "s|\${BIND_CREDENTIAL}|$BIND_CREDENTIAL|g" /tmp/ontrack-dn.json > /output/ontrack.json &&
+              cat /output/ontrack.json
+          {{- else }}
+          env:
+            - name: BIND_DN
+              value: {{ .Values.auth.keycloak.ldap.bindDn | quote }}
+            - name: BIND_CREDENTIAL
+              value: {{ .Values.auth.keycloak.ldap.bindCredential | quote }}
+          args:
+            - >
+              cp /config/ontrack.json.tpl /tmp/ontrack.json &&
+              sed "s|\${BIND_DN}|$BIND_DN|g" /tmp/ontrack.json> /tmp/ontrack-dn.json &&
+              sed "s|\${BIND_CREDENTIAL}|$BIND_CREDENTIAL|g" /tmp/ontrack-dn.json > /output/ontrack.json
+          {{- end }}
+          volumeMounts:
+            - name: {{ include "ontrack.fullname" . }}-keycloak-ldap-template
+              mountPath: /config
+            - name: {{ include "ontrack.fullname" . }}-keycloak-ldap-json
+              mountPath: /output
+            {{- if .Values.auth.keycloak.ldap.bindCredentialSecret.enabled }}
+            - name: {{ include "ontrack.fullname" . }}-keycloak-ldap-secret
+              mountPath: /secrets
+            {{- end }}
+      {{- end }}
+      containers:
+      {{- if .Values.extraContainers }}
+        {{- toYaml .Values.extraContainers | nindent 8 }}
+      {{- end }}
+        - name: {{ .Chart.Name }}-keycloak
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.auth.keycloak.image }}:{{ .Values.auth.keycloak.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - /opt/keycloak/bin/kc.sh
+          args:
+            - start
+            # Behind TLS termination
+            - --http-enabled
+            - "true"
+            {{- if or .Values.auth.keycloak.settings.enabled .Values.auth.keycloak.ldap.enabled }}
+            - --import-realm
+            {{- end }}
+            {{- if .Values.auth.keycloak.verbose }}
+            - --verbose
+            {{- end }}
+          volumeMounts:
+            - mountPath: /opt/keycloak/themes/yontrack
+              subPath: yontrack
+              name: {{ include "ontrack.fullname" . }}-keycloak-theme-dir
+          {{- if .Values.auth.keycloak.settings.enabled }}
+            - mountPath: /opt/keycloak/data/import
+              name: {{ include "ontrack.fullname" . }}-keycloak-settings
+          {{- end }}
+          {{- if .Values.auth.keycloak.ldap.enabled }}
+            - mountPath: /opt/keycloak/data/import
+              name: {{ include "ontrack.fullname" . }}-keycloak-ldap-json
+          {{- end }}
+          env:
+            - name: KC_DB
+              value: postgres
+            - name: KC_DB_URL_HOST
+              value: {{ include "ontrack.fullname" . }}-keycloak-postgres
+            - name: KC_DB_URL_DATABASE
+              value: {{ .Values.auth.keycloak.persistence.connection.database | quote }}
+            {{- if .Values.auth.keycloak.persistence.connection.secret.enabled }}
+            - name: KC_DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.auth.keycloak.persistence.connection.secret.name }}
+                  key: "username"
+            - name: KC_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.auth.keycloak.persistence.connection.secret.name }}
+                  key: "password"
+            {{- else }}
+            - name: KC_DB_USERNAME
+              value: {{ .Values.auth.keycloak.persistence.connection.username | quote }}
+            - name: KC_DB_PASSWORD
+              value: {{ .Values.auth.keycloak.persistence.connection.password | quote }}
+            {{- end }}
+            {{- if .Values.auth.keycloak.bootstrap.bootstrapSecret.enabled }}
+            - name: KC_BOOTSTRAP_ADMIN_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.auth.keycloak.bootstrap.bootstrapSecret.secretName | quote }}
+                  key: username
+                  optional: false
+            - name: KC_BOOTSTRAP_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.auth.keycloak.bootstrap.bootstrapSecret.secretName | quote }}
+                  key: password
+                  optional: false
+            {{- else }}
+            - name: KC_BOOTSTRAP_ADMIN_USERNAME
+              value: {{ .Values.auth.keycloak.bootstrap.username | quote }}
+            - name: KC_BOOTSTRAP_ADMIN_PASSWORD
+              value: {{ .Values.auth.keycloak.bootstrap.password | quote }}
+            {{- end }}
+            {{/* Initial admin user for Yontrack */}}
+            {{- if .Values.auth.keycloak.settings.enabled }}
+            {{- if .Values.auth.keycloak.settings.admin.secret.enabled }}
+            - name: KEYCLOAK_USER_ADMIN_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.auth.keycloak.settings.admin.secret.name | quote }}
+                  key: username
+                  optional: false
+            - name: KEYCLOAK_USER_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.auth.keycloak.settings.admin.secret.name | quote }}
+                  key: password
+                  optional: false
+            {{- else }}
+            - name: KEYCLOAK_USER_ADMIN_USERNAME
+              value: {{ .Values.auth.keycloak.settings.admin.username | quote }}
+            - name: KEYCLOAK_USER_ADMIN_PASSWORD
+              value: {{ .Values.auth.keycloak.settings.admin.password | quote }}
+            {{- end }}
+            {{- end }}
+            {{- if .Values.auth.keycloak.secret.enabled }}
+            - name: KEYCLOAK_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.auth.keycloak.secret.name | quote }}
+                  key: client-secret
+                  optional: false
+            {{- end }}
+            - name: KC_HOSTNAME
+              value: "{{ .Values.ontrack.url }}/{{ .Values.auth.keycloak.service.path }}"
+            - name: KC_HTTP_RELATIVE_PATH
+              value: "/{{ .Values.auth.keycloak.service.path }}"
+            - name: KC_HEALTH_ENABLED
+              value: "true"
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+            - name: health
+              containerPort: 9000
+              protocol: TCP
+          resources: {{ toYaml .Values.auth.keycloak.resources | nindent 12 }}
+          livenessProbe:
+            httpGet:
+              path: "/{{ .Values.auth.keycloak.service.path }}/health/live"
+              port: 9000
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            failureThreshold: 6
+          readinessProbe:
+            httpGet:
+              path: "/{{ .Values.auth.keycloak.service.path }}/health/ready"
+              port: 9000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            failureThreshold: 6
+      volumes:
+        - name: {{ include "ontrack.fullname" . }}-keycloak-theme-archive
+          configMap:
+            name: {{ include "ontrack.fullname" . }}-keycloak-theme
+            optional: false
+        - name: {{ include "ontrack.fullname" . }}-keycloak-theme-dir
+          emptyDir: {}
+      {{- if .Values.auth.keycloak.settings.enabled }}
+        - name: {{ include "ontrack.fullname" . }}-keycloak-settings
+          configMap:
+            name: {{ include "ontrack.fullname" . }}-keycloak-settings
+            optional: false
+      {{- end }}
+      {{- if .Values.auth.keycloak.ldap.enabled }}
+        - name: {{ include "ontrack.fullname" . }}-keycloak-ldap-template
+          configMap:
+            name: {{ include "ontrack.fullname" . }}-keycloak-ldap-template
+            optional: false
+        - name: {{ include "ontrack.fullname" . }}-keycloak-ldap-json
+          emptyDir: {}
+        {{- if .Values.auth.keycloak.ldap.bindCredentialSecret.enabled }}
+        - name: {{ include "ontrack.fullname" . }}-keycloak-ldap-secret
+          projected:
+            sources:
+              - secret:
+                  name: {{ .Values.auth.keycloak.ldap.bindCredentialSecret.secretName | quote }}
+        {{- end }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if .Values.affinity }}
+      affinity:
+        {{- toYaml .Values.affinity | nindent 8 }}
+      {{- end }}
+      {{- if .Values.tolerations }}
+      tolerations:
+        {{- toYaml .Values.tolerations | nindent 8 }}
+      {{- end }}
+{{- end }}

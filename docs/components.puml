@@ -1,0 +1,32 @@
+@startuml
+
+package namespace {
+    database postgres
+    component ontrack
+    component "next-ui" as nextUI
+    component elasticSearch
+    component rabbitMQ
+
+    package "keycloak <optional>" as keycloak-package {
+        database "postgres-keycloak"
+        component keycloak
+    }
+}
+
+nextUI --> ontrack: 8080
+ontrack --> postgres: 5432
+ontrack --> elasticSearch
+ontrack --> rabbitMQ
+
+keycloak --> "postgres-keycloak": 5432
+
+ontrack --> keycloak: 8080 (jwt)
+nextUI --> keycloak: 8080 (oidc)
+
+interface ingress
+
+ingress --> nextUI: 3000 (/)
+ingress --> keycloak: 8080 (/keycloak => /keycloak)
+ingress --> ontrack: 8080 (/graphql => /graphql)
+
+@enduml

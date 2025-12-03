@@ -1,0 +1,21 @@
+{{- if and (eq "keycloak" .Values.auth.kind) (not .Values.auth.keycloak.external.enabled) }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "ontrack.fullname" . }}-keycloak-postgres
+  labels:
+    {{ include "ontrack.labels.keycloak.postgres" . | nindent 4 }}
+  {{- with .Values.service.annotations }}
+  annotations:
+    {{ toYaml . | nindent 8 }}
+  {{- end }}
+spec:
+  selector:
+    {{ include "ontrack.selectorLabels.keycloak.postgres" . | nindent 4 }}
+  type: {{ .Values.auth.keycloak.persistence.service.type }}
+  ports:
+    - protocol: TCP
+      name: postgres
+      port: 5432
+      targetPort: postgres
+{{- end }}
