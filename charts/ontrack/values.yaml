@@ -184,8 +184,10 @@ ontrack:
         # -- Application instance tag to add to all exposed metrics
         application_instance: "ontrack"
 
-  # -- Arbitrary environment variables
+  # -- Arbitrary environment variables, using https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.35/#envvar-v1-core
   env: [ ]
+  # -- Arbitrary environment variables (as a map)
+  envMap: {}
 
   # Arbitrary secrets & config map sources
   extraConfig:

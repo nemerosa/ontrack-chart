@@ -242,6 +242,13 @@ spec:
             {{- with .Values.ontrack.env }}
             {{- . | toYaml | trim | nindent 12 }}
             {{- end }}
+            ##############################################
+            # Arbitrary environment variables (as a map
+            ##############################################
+            {{- range $key, $value := .Values.ontrack.envMap }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+            {{- end }}
           envFrom:
           {{- range .Values.ontrack.extraConfig.secrets }}
             - secretRef:
