@@ -608,11 +608,26 @@ ontrack:
           key: key
 ```
 
+# OpenShift support
+
+The chart has some support for OpenShift. To enable it, set `openshift.enabled` to `true`.
+
+```bash
+helm install ontrack ontrack/yontrack-chart --set openshift.enabled=true
+```
+
+When enabled:
+* an OpenShift `Route` is created instead of a standard `Ingress`.
+* default security contexts are more likely to be compatible with OpenShift restricted SCC.
+* init containers are also configured with security contexts.
+
+For the sub-charts (PostgreSQL, RabbitMQ, Elasticsearch), the `global.compatibility.openshift.adaptSecurityContext` is set to `auto` by default to help them run on OpenShift.
+
 # Change log
 
 | Version        | Postgres | Elasticsearch | Rabbit MQ | Kubernetes | Minimal Ontrack version |
 |----------------|----------|---------------|-----------|------------|-------------------------|
-| [1.0.x](#10)   | 17       | 9             | 4         | 1.24       | 5                       |
+| [5.0.x](#10)   | 17       | 9             | 4         | 1.24       | 5.0.0                   |
 | [0.13.x](#013) | 15       | 7             | 3         | 1.24       | 4.12.3                  |
 | [0.12.x](#012) | 15       | 7             | 3         | 1.24       | 4.11.0                  |
 | [0.11.x](#011) | 15       | 7             | 3         | 1.24       | 4.8.12                  |

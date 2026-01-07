@@ -24,6 +24,8 @@ spec:
         {{ toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
         - name: postgres
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
           image: {{ .Values.auth.keycloak.persistence.image.repository }}:{{ .Values.auth.keycloak.persistence.image.tag }}
           imagePullPolicy: {{ .Values.auth.keycloak.persistence.image.pullPolicy }}
           env:

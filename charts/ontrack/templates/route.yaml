@@ -1,0 +1,28 @@
+{{- if .Values.openshift.enabled -}}
+{{- $fullName := include "ontrack.fullname" . -}}
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: {{ $fullName }}
+  labels:
+    {{- include "ontrack.labels" . | nindent 4 }}
+  {{- with .Values.ingress.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  host: {{ .Values.ingress.host }}
+  to:
+    kind: Service
+    name: {{ $fullName }}-ui
+    weight: 100
+  port:
+    targetPort: http
+  tls:
+    {{- if .Values.ingress.tls.enabled }}
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
+    {{- else }}
+    termination: none
+    {{- end }}
+{{- end }}

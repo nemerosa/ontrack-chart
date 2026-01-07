@@ -42,6 +42,14 @@ securityContext: { }
 # runAsNonRoot: true
 # runAsUser: 1000
 
+# -- Global configuration for all sub-charts
+global:
+  # -- Configuration for OpenShift
+  compatibility:
+    openshift:
+      # -- Whether to adapt the security context for OpenShift
+      adaptSecurityContext: auto
+
 service:
   # -- Service type for the Ontrack service
   type: ClusterIP
@@ -80,6 +88,11 @@ tolerations: []
 
 # -- Node affinity for the Ontrack resources
 affinity: {}
+
+# -- Configuration for OpenShift
+openshift:
+  # -- Whether to enable OpenShift specific resources (like Routes)
+  enabled: false
 
 # Ontrack configuration
 ontrack:
