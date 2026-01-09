@@ -125,7 +125,7 @@ data:
               "usernameLDAPAttribute": ["{{ .Values.auth.keycloak.ldap.usernameLDAPAttribute }}"],
               "rdnLDAPAttribute": ["{{ .Values.auth.keycloak.ldap.rdnLDAPAttribute }}"],
               "uuidLDAPAttribute": ["{{ .Values.auth.keycloak.ldap.uuidLDAPAttribute }}"],
-              "userObjectClasses": {{ .Values.auth.keycloak.ldap.userObjectClasses }},
+              "userObjectClasses": {{ .Values.auth.keycloak.ldap.userObjectClasses | toJson }},
               "searchScope": ["1"],
               "validatePasswordPolicy": ["false"],
               "trustEmail": ["true"]
