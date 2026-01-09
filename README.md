@@ -285,6 +285,22 @@ auth:
 
 > See the [values](charts/ontrack/values.yaml) for more information.
 
+
+### Active Directory support
+
+For Active Directory, you can use the following values for the LDAP configuration:
+
+```yaml
+auth:
+  keycloak:
+    ldap:
+      vendor: Active Directory
+      usernameLDAPAttribute: sAMAccountName
+      rdnLDAPAttribute: cn
+      uuidLDAPAttribute: objectGUID
+      userObjectClasses: ["person", "organizationalPerson", "user"]
+```
+
 ## Management of users in Ontrack
 
 For any user connecting to Ontrack through any authentication provider, upon login,

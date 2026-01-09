@@ -488,6 +488,8 @@ auth:
       id: ldap-users
       # -- Name of the LDAP federation in Keycloak
       name: ldap-users
+      # -- Vendor name
+      vendor: other
       # -- URL to the ldap
       url: ldap://ldap:389
       # -- Users DN
@@ -529,7 +531,7 @@ auth:
       # -- LDAP attributes: unique ID
       uuidLDAPAttribute: entryUUID
       # -- LDAP attributes: class for the user object
-      userObjectClasses: inetOrgPerson
+      userObjectClasses: ["inetOrgPerson"]
       # -- Configuration of the LDAP groups
       groups:
         # -- Groups DN

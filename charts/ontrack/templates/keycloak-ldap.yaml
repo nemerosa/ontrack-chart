@@ -113,7 +113,7 @@ data:
               "editMode": ["READ_ONLY"],
               "importEnabled": ["false"],
               "syncRegistrations": ["false"],
-              "vendor": ["other"],
+              "vendor": ["{{ .Values.auth.keycloak.ldap.vendor }}"],
               "connectionUrl": ["{{ .Values.auth.keycloak.ldap.url }}"],
               "usersDn": ["{{ .Values.auth.keycloak.ldap.usersDn }}"],
               "bindDn": ["${BIND_DN}"],
@@ -125,7 +125,7 @@ data:
               "usernameLDAPAttribute": ["{{ .Values.auth.keycloak.ldap.usernameLDAPAttribute }}"],
               "rdnLDAPAttribute": ["{{ .Values.auth.keycloak.ldap.rdnLDAPAttribute }}"],
               "uuidLDAPAttribute": ["{{ .Values.auth.keycloak.ldap.uuidLDAPAttribute }}"],
-              "userObjectClasses": ["{{ .Values.auth.keycloak.ldap.userObjectClasses }}"],
+              "userObjectClasses": {{ .Values.auth.keycloak.ldap.userObjectClasses }},
               "searchScope": ["1"],
               "validatePasswordPolicy": ["false"],
               "trustEmail": ["true"]
