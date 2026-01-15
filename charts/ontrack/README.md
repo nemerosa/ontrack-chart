@@ -1,6 +1,6 @@
 # yontrack-chart
 
-![Version: 1.0.0+alpha-041](https://img.shields.io/badge/Version-1.0.0+alpha--041-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 5.0-alpha.0-161](https://img.shields.io/badge/AppVersion-5.0--alpha.0--161-informational?style=flat-square)
+![Version: 5.0.8](https://img.shields.io/badge/Version-5.0.8-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 5.0.1](https://img.shields.io/badge/AppVersion-5.0.1-informational?style=flat-square)
 
 A Helm chart for Kubernetes
 
@@ -8,34 +8,36 @@ A Helm chart for Kubernetes
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://charts.bitnami.com/bitnami | postgresql | 12.12.10 |
-| https://charts.bitnami.com/bitnami | keycloak-postgresql(postgresql) | 12.12.10 |
-| https://charts.bitnami.com/bitnami | rabbitmq | 14.7.0 |
-| https://helm.elastic.co | elasticsearch | 7.17.3 |
+| https://charts.bitnami.com/bitnami | elasticsearch | 22.1.6 |
+| https://charts.bitnami.com/bitnami | postgresql | 16.7.27 |
+| https://charts.bitnami.com/bitnami | rabbitmq | 16.0.14 |
 
 ## Values
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | affinity | object | `{}` | Node affinity for the Ontrack resources |
-| auth | object | `{"admin":{"email":"admin@ontrack.local","fullName":"Administrator","groupName":"Administrators"},"keycloak":{"account":{"url":"http://localhost:8008/realms/ontrack/account"},"bootstrap":{"bootstrapSecret":{"enabled":false,"externalSecret":{"enabled":false,"refreshInterval":"6h","store":{"kind":"ClusterSecretStore","name":"vault-backend","path":"ontrack/keycloak/bootstrap"}},"generate":true,"secretName":"ontrack-keycloak-bootstrap"},"password":"admin","username":"admin"},"client":{"id":"yontrack-client","secret":"yontrack-client-secret"},"clientName":"yontrack-client","enabled":true,"external":{"enabled":false,"url":"https://keycloak"},"image":"quay.io/keycloak/keycloak","ldap":{"bindCredential":"admin","bindCredentialSecret":{"enabled":false,"externalSecret":{"enabled":false,"refreshInterval":"6h","store":{"kind":"ClusterSecretStore","name":"vault-backend","path":"ontrack/keycloak/ldap"}},"secretName":"ontrack-ldap-credentials"},"bindDn":"cn=admin,dc=example,dc=com","components":{},"enabled":false,"groups":{"groupNameLdapAttribute":"cn","groupObjectClasses":"groupOfNames","groupsDn":"ou=groups,dc=example,dc=com","memberofLdapAttribute":"memberOf","membershipAttributeType":"DN","membershipLdapAttribute":"member","membershipUserLdapAttribute":"uid"},"id":"ldap-users","name":"ldap-users","rdnLDAPAttribute":"uid","testing":{"admin":{"password":"admin"},"enabled":false,"image":"osixia/openldap","provisioning":{"admin":{"sshaPassword":"{SSHA}cqhYu0IJNPgwklQuoENm6PtzGJLpPkgt"},"domain":{"extension":"com","name":"nemerosa"},"enabled":true,"organisation":"Ontrack"},"resources":{},"tag":"1.5.0"},"url":"ldap://ldap:389","userObjectClasses":"inetOrgPerson","usernameLDAPAttribute":"uid","usersDn":"ou=users,dc=example,dc=com","uuidLDAPAttribute":"entryUUID"},"name":"Yontrack","realm":"ontrack","resources":{},"secret":{"enabled":false,"external":{"enabled":false,"refreshInterval":"6h","store":{"key":"client-secret","kind":"ClusterSecretStore","name":"vault-backend","path":"ontrack/keycloak/client"}},"generate":true,"name":"ontrack-keycloak"},"service":{"ingressEnabled":true,"path":"keycloak","port":8080},"settings":{"accessTokenLifespan":3600,"admin":{"email":"","firstName":"Admin","lastName":"User","password":"admin","username":"admin"},"enabled":true,"registrationAllowed":true,"resetPasswordAllowed":true,"ssoSessionIdleTimeout":3600},"tag":"26.2.5","verbose":false},"next":{"secret":{"generate":true,"name":"ontrack-next-auth"}},"oidc":{"credentials":{"client":{"clientId":"<client id>","clientSecret":"<client secret>"},"secret":{"enabled":true,"externalSecret":{"enabled":false,"refreshInterval":"6h","store":{"kind":"ClusterSecretStore","name":"vault-backend","path":"ontrack/oidc"}},"secretName":"ontrack-oidc"}},"enabled":false,"issuer":"","name":"OIDC","trailingSlash":false},"provisioning":true}` | Authentication |
-| auth.admin | object | `{"email":"admin@ontrack.local","fullName":"Administrator","groupName":"Administrators"}` | Configuration of the initial administrator |
+| auth | object | `{"admin":{"email":"admin@ontrack.local","force":false,"fullName":"Administrator","groupName":"Administrators"},"keycloak":{"account":{"url":"http://localhost:8008/realms/ontrack/account"},"bootstrap":{"bootstrapSecret":{"enabled":false,"externalSecret":{"enabled":false,"refreshInterval":"6h","store":{"kind":"ClusterSecretStore","name":"vault-backend","passwordKey":"password","path":"ontrack/keycloak/bootstrap","usernameKey":"username"}},"generate":true,"secretName":"ontrack-keycloak-bootstrap"},"password":"admin","username":"admin"},"client":{"id":"yontrack-client","secret":"yontrack-client-secret"},"clientName":"yontrack-client","external":{"enabled":false,"url":"https://keycloak"},"image":"quay.io/keycloak/keycloak","initContainers":{"image":{"repository":"busybox","tag":"1.37.0"}},"ldap":{"bindCredential":"admin","bindCredentialSecret":{"enabled":false,"externalSecret":{"enabled":false,"refreshInterval":"6h","store":{"kind":"ClusterSecretStore","name":"vault-backend","path":"ontrack/keycloak/ldap"}},"secretName":"ontrack-ldap-credentials"},"bindDn":"cn=admin,dc=example,dc=com","components":{},"enabled":false,"groups":{"groupNameLdapAttribute":"cn","groupObjectClasses":"groupOfNames","groupsDn":"ou=groups,dc=example,dc=com","memberofLdapAttribute":"memberOf","membershipAttributeType":"DN","membershipLdapAttribute":"member","membershipUserLdapAttribute":"uid"},"id":"ldap-users","name":"ldap-users","rdnLDAPAttribute":"uid","testing":{"admin":{"password":"admin"},"enabled":false,"image":"osixia/openldap","provisioning":{"admin":{"sshaPassword":"{SSHA}cqhYu0IJNPgwklQuoENm6PtzGJLpPkgt"},"domain":{"extension":"com","name":"nemerosa"},"enabled":true,"organisation":"Ontrack"},"resources":{},"tag":"1.5.0"},"url":"ldap://ldap:389","userObjectClasses":["inetOrgPerson"],"usernameLDAPAttribute":"uid","usersDn":"ou=users,dc=example,dc=com","uuidLDAPAttribute":"entryUUID","vendor":"other"},"name":"Yontrack","persistence":{"connection":{"database":"keycloak","password":"keycloak","secret":{"enabled":false,"externalSecret":{"enabled":false,"refreshInterval":"6h","store":{"kind":"ClusterSecretStore","name":"vault-backend","path":"ontrack/keycloak/postgres"}},"name":"keycloak-postgresql"},"username":"keycloak"},"image":{"pullPolicy":"IfNotPresent","repository":"postgres","tag":17},"pvc":{"accessMode":"ReadWriteOnce","annotations":{},"size":"5Gi","storageClass":null},"resources":{},"service":{"type":"ClusterIP"}},"realm":"ontrack","resources":{},"secret":{"enabled":false,"external":{"enabled":false,"refreshInterval":"6h","store":{"key":"client-secret","kind":"ClusterSecretStore","name":"vault-backend","path":"ontrack/keycloak/client"}},"generate":true,"name":"ontrack-keycloak"},"service":{"ingressEnabled":true,"path":"keycloak","port":8080},"settings":{"accessTokenLifespan":3600,"admin":{"email":"","firstName":"Admin","lastName":"User","password":"admin","secret":{"enabled":false,"external":{"enabled":false,"refreshInterval":"6h","store":{"kind":"ClusterSecretStore","name":"vault-backend","passwordKey":"password","path":"ontrack/keycloak/admin","usernameKey":"username"}},"name":"yontrack-admin"},"username":"admin"},"enabled":true,"registrationAllowed":true,"resetPasswordAllowed":true,"ssoSessionIdleTimeout":3600},"tag":"26.2.5","verbose":false},"kind":"keycloak","next":{"secret":{"generate":true,"name":"ontrack-next-auth"}},"oidc":{"credentials":{"client":{"clientId":"<client id>","clientSecret":"<client secret>"},"secret":{"enabled":true,"externalSecret":{"enabled":false,"refreshInterval":"6h","store":{"kind":"ClusterSecretStore","name":"vault-backend","path":"ontrack/oidc"}},"secretName":"ontrack-oidc"}},"issuer":"","name":"OIDC","trailingSlash":false},"provisioning":true}` | Authentication |
+| auth.admin | object | `{"email":"admin@ontrack.local","force":false,"fullName":"Administrator","groupName":"Administrators"}` | Configuration of the initial administrator |
 | auth.admin.email | string | `"admin@ontrack.local"` | Their email |
+| auth.admin.force | bool | `false` | Force the creation/update of the administrator user even if it already exists |
 | auth.admin.fullName | string | `"Administrator"` | Their full name (if not provided) |
 | auth.admin.groupName | string | `"Administrators"` | Group of administrators |
-| auth.keycloak | object | `{"account":{"url":"http://localhost:8008/realms/ontrack/account"},"bootstrap":{"bootstrapSecret":{"enabled":false,"externalSecret":{"enabled":false,"refreshInterval":"6h","store":{"kind":"ClusterSecretStore","name":"vault-backend","path":"ontrack/keycloak/bootstrap"}},"generate":true,"secretName":"ontrack-keycloak-bootstrap"},"password":"admin","username":"admin"},"client":{"id":"yontrack-client","secret":"yontrack-client-secret"},"clientName":"yontrack-client","enabled":true,"external":{"enabled":false,"url":"https://keycloak"},"image":"quay.io/keycloak/keycloak","ldap":{"bindCredential":"admin","bindCredentialSecret":{"enabled":false,"externalSecret":{"enabled":false,"refreshInterval":"6h","store":{"kind":"ClusterSecretStore","name":"vault-backend","path":"ontrack/keycloak/ldap"}},"secretName":"ontrack-ldap-credentials"},"bindDn":"cn=admin,dc=example,dc=com","components":{},"enabled":false,"groups":{"groupNameLdapAttribute":"cn","groupObjectClasses":"groupOfNames","groupsDn":"ou=groups,dc=example,dc=com","memberofLdapAttribute":"memberOf","membershipAttributeType":"DN","membershipLdapAttribute":"member","membershipUserLdapAttribute":"uid"},"id":"ldap-users","name":"ldap-users","rdnLDAPAttribute":"uid","testing":{"admin":{"password":"admin"},"enabled":false,"image":"osixia/openldap","provisioning":{"admin":{"sshaPassword":"{SSHA}cqhYu0IJNPgwklQuoENm6PtzGJLpPkgt"},"domain":{"extension":"com","name":"nemerosa"},"enabled":true,"organisation":"Ontrack"},"resources":{},"tag":"1.5.0"},"url":"ldap://ldap:389","userObjectClasses":"inetOrgPerson","usernameLDAPAttribute":"uid","usersDn":"ou=users,dc=example,dc=com","uuidLDAPAttribute":"entryUUID"},"name":"Yontrack","realm":"ontrack","resources":{},"secret":{"enabled":false,"external":{"enabled":false,"refreshInterval":"6h","store":{"key":"client-secret","kind":"ClusterSecretStore","name":"vault-backend","path":"ontrack/keycloak/client"}},"generate":true,"name":"ontrack-keycloak"},"service":{"ingressEnabled":true,"path":"keycloak","port":8080},"settings":{"accessTokenLifespan":3600,"admin":{"email":"","firstName":"Admin","lastName":"User","password":"admin","username":"admin"},"enabled":true,"registrationAllowed":true,"resetPasswordAllowed":true,"ssoSessionIdleTimeout":3600},"tag":"26.2.5","verbose":false}` | Configuration of the local Keycloak instance |
+| auth.keycloak | object | `{"account":{"url":"http://localhost:8008/realms/ontrack/account"},"bootstrap":{"bootstrapSecret":{"enabled":false,"externalSecret":{"enabled":false,"refreshInterval":"6h","store":{"kind":"ClusterSecretStore","name":"vault-backend","passwordKey":"password","path":"ontrack/keycloak/bootstrap","usernameKey":"username"}},"generate":true,"secretName":"ontrack-keycloak-bootstrap"},"password":"admin","username":"admin"},"client":{"id":"yontrack-client","secret":"yontrack-client-secret"},"clientName":"yontrack-client","external":{"enabled":false,"url":"https://keycloak"},"image":"quay.io/keycloak/keycloak","initContainers":{"image":{"repository":"busybox","tag":"1.37.0"}},"ldap":{"bindCredential":"admin","bindCredentialSecret":{"enabled":false,"externalSecret":{"enabled":false,"refreshInterval":"6h","store":{"kind":"ClusterSecretStore","name":"vault-backend","path":"ontrack/keycloak/ldap"}},"secretName":"ontrack-ldap-credentials"},"bindDn":"cn=admin,dc=example,dc=com","components":{},"enabled":false,"groups":{"groupNameLdapAttribute":"cn","groupObjectClasses":"groupOfNames","groupsDn":"ou=groups,dc=example,dc=com","memberofLdapAttribute":"memberOf","membershipAttributeType":"DN","membershipLdapAttribute":"member","membershipUserLdapAttribute":"uid"},"id":"ldap-users","name":"ldap-users","rdnLDAPAttribute":"uid","testing":{"admin":{"password":"admin"},"enabled":false,"image":"osixia/openldap","provisioning":{"admin":{"sshaPassword":"{SSHA}cqhYu0IJNPgwklQuoENm6PtzGJLpPkgt"},"domain":{"extension":"com","name":"nemerosa"},"enabled":true,"organisation":"Ontrack"},"resources":{},"tag":"1.5.0"},"url":"ldap://ldap:389","userObjectClasses":["inetOrgPerson"],"usernameLDAPAttribute":"uid","usersDn":"ou=users,dc=example,dc=com","uuidLDAPAttribute":"entryUUID","vendor":"other"},"name":"Yontrack","persistence":{"connection":{"database":"keycloak","password":"keycloak","secret":{"enabled":false,"externalSecret":{"enabled":false,"refreshInterval":"6h","store":{"kind":"ClusterSecretStore","name":"vault-backend","path":"ontrack/keycloak/postgres"}},"name":"keycloak-postgresql"},"username":"keycloak"},"image":{"pullPolicy":"IfNotPresent","repository":"postgres","tag":17},"pvc":{"accessMode":"ReadWriteOnce","annotations":{},"size":"5Gi","storageClass":null},"resources":{},"service":{"type":"ClusterIP"}},"realm":"ontrack","resources":{},"secret":{"enabled":false,"external":{"enabled":false,"refreshInterval":"6h","store":{"key":"client-secret","kind":"ClusterSecretStore","name":"vault-backend","path":"ontrack/keycloak/client"}},"generate":true,"name":"ontrack-keycloak"},"service":{"ingressEnabled":true,"path":"keycloak","port":8080},"settings":{"accessTokenLifespan":3600,"admin":{"email":"","firstName":"Admin","lastName":"User","password":"admin","secret":{"enabled":false,"external":{"enabled":false,"refreshInterval":"6h","store":{"kind":"ClusterSecretStore","name":"vault-backend","passwordKey":"password","path":"ontrack/keycloak/admin","usernameKey":"username"}},"name":"yontrack-admin"},"username":"admin"},"enabled":true,"registrationAllowed":true,"resetPasswordAllowed":true,"ssoSessionIdleTimeout":3600},"tag":"26.2.5","verbose":false}` | Configuration of the local Keycloak instance |
 | auth.keycloak.account | object | `{"url":"http://localhost:8008/realms/ontrack/account"}` | Account management from Ontrack |
 | auth.keycloak.account.url | string | `"http://localhost:8008/realms/ontrack/account"` | If set to not blank, URL to allow users to manage their own account |
-| auth.keycloak.bootstrap | object | `{"bootstrapSecret":{"enabled":false,"externalSecret":{"enabled":false,"refreshInterval":"6h","store":{"kind":"ClusterSecretStore","name":"vault-backend","path":"ontrack/keycloak/bootstrap"}},"generate":true,"secretName":"ontrack-keycloak-bootstrap"},"password":"admin","username":"admin"}` | Admin user for the admin console of Keycloak |
-| auth.keycloak.bootstrap.bootstrapSecret | object | `{"enabled":false,"externalSecret":{"enabled":false,"refreshInterval":"6h","store":{"kind":"ClusterSecretStore","name":"vault-backend","path":"ontrack/keycloak/bootstrap"}},"generate":true,"secretName":"ontrack-keycloak-bootstrap"}` | Secret for the bootstrapping |
+| auth.keycloak.bootstrap | object | `{"bootstrapSecret":{"enabled":false,"externalSecret":{"enabled":false,"refreshInterval":"6h","store":{"kind":"ClusterSecretStore","name":"vault-backend","passwordKey":"password","path":"ontrack/keycloak/bootstrap","usernameKey":"username"}},"generate":true,"secretName":"ontrack-keycloak-bootstrap"},"password":"admin","username":"admin"}` | Admin user for the admin console of Keycloak |
+| auth.keycloak.bootstrap.bootstrapSecret | object | `{"enabled":false,"externalSecret":{"enabled":false,"refreshInterval":"6h","store":{"kind":"ClusterSecretStore","name":"vault-backend","passwordKey":"password","path":"ontrack/keycloak/bootstrap","usernameKey":"username"}},"generate":true,"secretName":"ontrack-keycloak-bootstrap"}` | Secret for the bootstrapping |
 | auth.keycloak.bootstrap.bootstrapSecret.enabled | bool | `false` | Enabling using a secret |
-| auth.keycloak.bootstrap.bootstrapSecret.externalSecret | object | `{"enabled":false,"refreshInterval":"6h","store":{"kind":"ClusterSecretStore","name":"vault-backend","path":"ontrack/keycloak/bootstrap"}}` | Using an external secret |
+| auth.keycloak.bootstrap.bootstrapSecret.externalSecret | object | `{"enabled":false,"refreshInterval":"6h","store":{"kind":"ClusterSecretStore","name":"vault-backend","passwordKey":"password","path":"ontrack/keycloak/bootstrap","usernameKey":"username"}}` | Using an external secret |
 | auth.keycloak.bootstrap.bootstrapSecret.externalSecret.enabled | bool | `false` | Creating the external secret definition |
 | auth.keycloak.bootstrap.bootstrapSecret.externalSecret.refreshInterval | string | `"6h"` | Refresh interval |
-| auth.keycloak.bootstrap.bootstrapSecret.externalSecret.store | object | `{"kind":"ClusterSecretStore","name":"vault-backend","path":"ontrack/keycloak/bootstrap"}` | Location of the secret to bind to |
+| auth.keycloak.bootstrap.bootstrapSecret.externalSecret.store | object | `{"kind":"ClusterSecretStore","name":"vault-backend","passwordKey":"password","path":"ontrack/keycloak/bootstrap","usernameKey":"username"}` | Location of the secret to bind to |
 | auth.keycloak.bootstrap.bootstrapSecret.externalSecret.store.kind | string | `"ClusterSecretStore"` | Scope of the secret store |
 | auth.keycloak.bootstrap.bootstrapSecret.externalSecret.store.name | string | `"vault-backend"` | Name of the secret store |
+| auth.keycloak.bootstrap.bootstrapSecret.externalSecret.store.passwordKey | string | `"password"` | Password key |
 | auth.keycloak.bootstrap.bootstrapSecret.externalSecret.store.path | string | `"ontrack/keycloak/bootstrap"` | Path to the secret in the store. The entry is expected to have the following keys: bindDn & bindCredential |
+| auth.keycloak.bootstrap.bootstrapSecret.externalSecret.store.usernameKey | string | `"username"` | Username key |
 | auth.keycloak.bootstrap.bootstrapSecret.generate | bool | `true` | Generating the secret (the password only, keeping the username) |
 | auth.keycloak.bootstrap.bootstrapSecret.secretName | string | `"ontrack-keycloak-bootstrap"` | Secret name |
 | auth.keycloak.bootstrap.password | string | `"admin"` | Password to connect to Bootstrap. Prefer using a secret. |
@@ -44,12 +46,14 @@ A Helm chart for Kubernetes
 | auth.keycloak.client.id | string | `"yontrack-client"` | Client ID |
 | auth.keycloak.client.secret | string | `"yontrack-client-secret"` | Value of the client secret - should not be used in production |
 | auth.keycloak.clientName | string | `"yontrack-client"` | Name of the Keycloak client |
-| auth.keycloak.enabled | bool | `true` | By default, Keycloak is installed. Set to false to use an external authentication source like OIDC |
 | auth.keycloak.external | object | `{"enabled":false,"url":"https://keycloak"}` | If using an external Keycloak instance |
 | auth.keycloak.external.enabled | bool | `false` | Enabling an external Keycloak instance |
 | auth.keycloak.external.url | string | `"https://keycloak"` | URL to the external Keycloak instance |
 | auth.keycloak.image | string | `"quay.io/keycloak/keycloak"` | Image of Keycloak to deploy |
-| auth.keycloak.ldap | object | `{"bindCredential":"admin","bindCredentialSecret":{"enabled":false,"externalSecret":{"enabled":false,"refreshInterval":"6h","store":{"kind":"ClusterSecretStore","name":"vault-backend","path":"ontrack/keycloak/ldap"}},"secretName":"ontrack-ldap-credentials"},"bindDn":"cn=admin,dc=example,dc=com","components":{},"enabled":false,"groups":{"groupNameLdapAttribute":"cn","groupObjectClasses":"groupOfNames","groupsDn":"ou=groups,dc=example,dc=com","memberofLdapAttribute":"memberOf","membershipAttributeType":"DN","membershipLdapAttribute":"member","membershipUserLdapAttribute":"uid"},"id":"ldap-users","name":"ldap-users","rdnLDAPAttribute":"uid","testing":{"admin":{"password":"admin"},"enabled":false,"image":"osixia/openldap","provisioning":{"admin":{"sshaPassword":"{SSHA}cqhYu0IJNPgwklQuoENm6PtzGJLpPkgt"},"domain":{"extension":"com","name":"nemerosa"},"enabled":true,"organisation":"Ontrack"},"resources":{},"tag":"1.5.0"},"url":"ldap://ldap:389","userObjectClasses":"inetOrgPerson","usernameLDAPAttribute":"uid","usersDn":"ou=users,dc=example,dc=com","uuidLDAPAttribute":"entryUUID"}` | Configuration of Keycloak to use a LDAP for user federation |
+| auth.keycloak.initContainers | object | `{"image":{"repository":"busybox","tag":"1.37.0"}}` | General configuration of the init containers |
+| auth.keycloak.initContainers.image | object | `{"repository":"busybox","tag":"1.37.0"}` | Configuration of the image used for the init containers |
+| auth.keycloak.initContainers.image.repository | string | `"busybox"` | Image repository (including the registry) |
+| auth.keycloak.ldap | object | `{"bindCredential":"admin","bindCredentialSecret":{"enabled":false,"externalSecret":{"enabled":false,"refreshInterval":"6h","store":{"kind":"ClusterSecretStore","name":"vault-backend","path":"ontrack/keycloak/ldap"}},"secretName":"ontrack-ldap-credentials"},"bindDn":"cn=admin,dc=example,dc=com","components":{},"enabled":false,"groups":{"groupNameLdapAttribute":"cn","groupObjectClasses":"groupOfNames","groupsDn":"ou=groups,dc=example,dc=com","memberofLdapAttribute":"memberOf","membershipAttributeType":"DN","membershipLdapAttribute":"member","membershipUserLdapAttribute":"uid"},"id":"ldap-users","name":"ldap-users","rdnLDAPAttribute":"uid","testing":{"admin":{"password":"admin"},"enabled":false,"image":"osixia/openldap","provisioning":{"admin":{"sshaPassword":"{SSHA}cqhYu0IJNPgwklQuoENm6PtzGJLpPkgt"},"domain":{"extension":"com","name":"nemerosa"},"enabled":true,"organisation":"Ontrack"},"resources":{},"tag":"1.5.0"},"url":"ldap://ldap:389","userObjectClasses":["inetOrgPerson"],"usernameLDAPAttribute":"uid","usersDn":"ou=users,dc=example,dc=com","uuidLDAPAttribute":"entryUUID","vendor":"other"}` | Configuration of Keycloak to use a LDAP for user federation |
 | auth.keycloak.ldap.bindCredential | string | `"admin"` | Bind credentials Not recommended in production, better use a secret |
 | auth.keycloak.ldap.bindCredentialSecret | object | `{"enabled":false,"externalSecret":{"enabled":false,"refreshInterval":"6h","store":{"kind":"ClusterSecretStore","name":"vault-backend","path":"ontrack/keycloak/ldap"}},"secretName":"ontrack-ldap-credentials"}` | Bind credentials in a secret |
 | auth.keycloak.ldap.bindCredentialSecret.enabled | bool | `false` | Using a secret to store the credentials |
@@ -83,11 +87,39 @@ A Helm chart for Kubernetes
 | auth.keycloak.ldap.testing.resources | object | `{}` | Resources to allocate |
 | auth.keycloak.ldap.testing.tag | string | `"1.5.0"` | Tag to be used for the LDAP service |
 | auth.keycloak.ldap.url | string | `"ldap://ldap:389"` | URL to the ldap |
-| auth.keycloak.ldap.userObjectClasses | string | `"inetOrgPerson"` | LDAP attributes: class for the user object |
+| auth.keycloak.ldap.userObjectClasses | list | `["inetOrgPerson"]` | LDAP attributes: class for the user object |
 | auth.keycloak.ldap.usernameLDAPAttribute | string | `"uid"` | LDAP attributes: username |
 | auth.keycloak.ldap.usersDn | string | `"ou=users,dc=example,dc=com"` | Users DN |
 | auth.keycloak.ldap.uuidLDAPAttribute | string | `"entryUUID"` | LDAP attributes: unique ID |
+| auth.keycloak.ldap.vendor | string | `"other"` | Vendor name |
 | auth.keycloak.name | string | `"Yontrack"` | Name to use on the Signin page |
+| auth.keycloak.persistence | object | `{"connection":{"database":"keycloak","password":"keycloak","secret":{"enabled":false,"externalSecret":{"enabled":false,"refreshInterval":"6h","store":{"kind":"ClusterSecretStore","name":"vault-backend","path":"ontrack/keycloak/postgres"}},"name":"keycloak-postgresql"},"username":"keycloak"},"image":{"pullPolicy":"IfNotPresent","repository":"postgres","tag":17},"pvc":{"accessMode":"ReadWriteOnce","annotations":{},"size":"5Gi","storageClass":null},"resources":{},"service":{"type":"ClusterIP"}}` | Persistence options for Keycloak |
+| auth.keycloak.persistence.connection | object | `{"database":"keycloak","password":"keycloak","secret":{"enabled":false,"externalSecret":{"enabled":false,"refreshInterval":"6h","store":{"kind":"ClusterSecretStore","name":"vault-backend","path":"ontrack/keycloak/postgres"}},"name":"keycloak-postgresql"},"username":"keycloak"}` | Connection parameters |
+| auth.keycloak.persistence.connection.database | string | `"keycloak"` | Database name |
+| auth.keycloak.persistence.connection.password | string | `"keycloak"` | Password |
+| auth.keycloak.persistence.connection.secret | object | `{"enabled":false,"externalSecret":{"enabled":false,"refreshInterval":"6h","store":{"kind":"ClusterSecretStore","name":"vault-backend","path":"ontrack/keycloak/postgres"}},"name":"keycloak-postgresql"}` | Credentials stored in a secret |
+| auth.keycloak.persistence.connection.secret.enabled | bool | `false` | Using the secret for the credentials |
+| auth.keycloak.persistence.connection.secret.externalSecret | object | `{"enabled":false,"refreshInterval":"6h","store":{"kind":"ClusterSecretStore","name":"vault-backend","path":"ontrack/keycloak/postgres"}}` | Using an external secret |
+| auth.keycloak.persistence.connection.secret.externalSecret.enabled | bool | `false` | Creating the external secret definition |
+| auth.keycloak.persistence.connection.secret.externalSecret.refreshInterval | string | `"6h"` | Refresh interval |
+| auth.keycloak.persistence.connection.secret.externalSecret.store | object | `{"kind":"ClusterSecretStore","name":"vault-backend","path":"ontrack/keycloak/postgres"}` | Location of the secret to bind to |
+| auth.keycloak.persistence.connection.secret.externalSecret.store.kind | string | `"ClusterSecretStore"` | Scope of the secret store |
+| auth.keycloak.persistence.connection.secret.externalSecret.store.name | string | `"vault-backend"` | Name of the secret store |
+| auth.keycloak.persistence.connection.secret.externalSecret.store.path | string | `"ontrack/keycloak/postgres"` | The entry is expected to have the following keys: username & password |
+| auth.keycloak.persistence.connection.secret.name | string | `"keycloak-postgresql"` | The secret is expected to have the following keys: username & password |
+| auth.keycloak.persistence.connection.username | string | `"keycloak"` | Username |
+| auth.keycloak.persistence.image | object | `{"pullPolicy":"IfNotPresent","repository":"postgres","tag":17}` | Image for Postgres |
+| auth.keycloak.persistence.image.pullPolicy | string | `"IfNotPresent"` | Pull policy |
+| auth.keycloak.persistence.image.repository | string | `"postgres"` | Image repository |
+| auth.keycloak.persistence.image.tag | int | `17` | Image tag |
+| auth.keycloak.persistence.pvc | object | `{"accessMode":"ReadWriteOnce","annotations":{},"size":"5Gi","storageClass":null}` | PVC setup |
+| auth.keycloak.persistence.pvc.accessMode | string | `"ReadWriteOnce"` | PVC access mode |
+| auth.keycloak.persistence.pvc.annotations | object | `{}` | Annotations for the PVC |
+| auth.keycloak.persistence.pvc.size | string | `"5Gi"` | Disk size |
+| auth.keycloak.persistence.pvc.storageClass | string | `nil` | If defined, storageClassName: <storageClass> If set to "-", storageClassName: "", which disables dynamic provisioning If undefined (the default) or set to null, no storageClassName spec is   set, choosing the default provisioner.  (gp2 on AWS, standard on   GKE, AWS & OpenStack) |
+| auth.keycloak.persistence.resources | object | `{}` | Resources to allocate to Postgres |
+| auth.keycloak.persistence.service | object | `{"type":"ClusterIP"}` | Postgres service |
+| auth.keycloak.persistence.service.type | string | `"ClusterIP"` | Service type |
 | auth.keycloak.realm | string | `"ontrack"` | Name of the realm to create in Keycloak to serve the Ontrack users |
 | auth.keycloak.resources | object | `{}` | Resources to allocate to the local Keycloak instance |
 | auth.keycloak.secret | object | `{"enabled":false,"external":{"enabled":false,"refreshInterval":"6h","store":{"key":"client-secret","kind":"ClusterSecretStore","name":"vault-backend","path":"ontrack/keycloak/client"}},"generate":true,"name":"ontrack-keycloak"}` | Connection parameters to Keycloak stored in a secret |
@@ -105,13 +137,23 @@ A Helm chart for Kubernetes
 | auth.keycloak.service.ingressEnabled | bool | `true` | Enabling Keycloak in the Ingress |
 | auth.keycloak.service.path | string | `"keycloak"` | Relative path for the local Keycloak instance (relatively to the Ontrack main URL) |
 | auth.keycloak.service.port | int | `8080` | Port of the service for the local Keycloak instance |
-| auth.keycloak.settings | object | `{"accessTokenLifespan":3600,"admin":{"email":"","firstName":"Admin","lastName":"User","password":"admin","username":"admin"},"enabled":true,"registrationAllowed":true,"resetPasswordAllowed":true,"ssoSessionIdleTimeout":3600}` | Provisioning settings |
+| auth.keycloak.settings | object | `{"accessTokenLifespan":3600,"admin":{"email":"","firstName":"Admin","lastName":"User","password":"admin","secret":{"enabled":false,"external":{"enabled":false,"refreshInterval":"6h","store":{"kind":"ClusterSecretStore","name":"vault-backend","passwordKey":"password","path":"ontrack/keycloak/admin","usernameKey":"username"}},"name":"yontrack-admin"},"username":"admin"},"enabled":true,"registrationAllowed":true,"resetPasswordAllowed":true,"ssoSessionIdleTimeout":3600}` | Provisioning settings |
 | auth.keycloak.settings.accessTokenLifespan | int | `3600` | Access Token Lifespan (in seconds) |
-| auth.keycloak.settings.admin | object | `{"email":"","firstName":"Admin","lastName":"User","password":"admin","username":"admin"}` | Initial Ontrack user to create |
+| auth.keycloak.settings.admin | object | `{"email":"","firstName":"Admin","lastName":"User","password":"admin","secret":{"enabled":false,"external":{"enabled":false,"refreshInterval":"6h","store":{"kind":"ClusterSecretStore","name":"vault-backend","passwordKey":"password","path":"ontrack/keycloak/admin","usernameKey":"username"}},"name":"yontrack-admin"},"username":"admin"}` | Initial Ontrack user to create |
 | auth.keycloak.settings.admin.email | string | `""` | Email If not set, `auth.admin.email` is used |
 | auth.keycloak.settings.admin.firstName | string | `"Admin"` | First name |
 | auth.keycloak.settings.admin.lastName | string | `"User"` | Last name |
 | auth.keycloak.settings.admin.password | string | `"admin"` | Password (would need to be changed) |
+| auth.keycloak.settings.admin.secret | object | `{"enabled":false,"external":{"enabled":false,"refreshInterval":"6h","store":{"kind":"ClusterSecretStore","name":"vault-backend","passwordKey":"password","path":"ontrack/keycloak/admin","usernameKey":"username"}},"name":"yontrack-admin"}` | Fetching the admin user from a secret |
+| auth.keycloak.settings.admin.secret.enabled | bool | `false` | Using a secret to store the admin credentials (username & password keys) |
+| auth.keycloak.settings.admin.secret.external | object | `{"enabled":false,"refreshInterval":"6h","store":{"kind":"ClusterSecretStore","name":"vault-backend","passwordKey":"password","path":"ontrack/keycloak/admin","usernameKey":"username"}}` | External secret for the admin credentials |
+| auth.keycloak.settings.admin.secret.external.enabled | bool | `false` | Creating the external secret definition |
+| auth.keycloak.settings.admin.secret.external.refreshInterval | string | `"6h"` | Refresh interval |
+| auth.keycloak.settings.admin.secret.external.store | object | `{"kind":"ClusterSecretStore","name":"vault-backend","passwordKey":"password","path":"ontrack/keycloak/admin","usernameKey":"username"}` | Location of the secret to bind to |
+| auth.keycloak.settings.admin.secret.external.store.kind | string | `"ClusterSecretStore"` | Scope of the secret store |
+| auth.keycloak.settings.admin.secret.external.store.name | string | `"vault-backend"` | Name of the secret store |
+| auth.keycloak.settings.admin.secret.external.store.path | string | `"ontrack/keycloak/admin"` | Path to the secret in the store. |
+| auth.keycloak.settings.admin.secret.name | string | `"yontrack-admin"` | Name of the secret to use |
 | auth.keycloak.settings.admin.username | string | `"admin"` | Username |
 | auth.keycloak.settings.enabled | bool | `true` | Provisioning of Keycloak is enabled |
 | auth.keycloak.settings.registrationAllowed | bool | `true` | Enabling users to register in the local instance of Keycloak |
@@ -119,11 +161,12 @@ A Helm chart for Kubernetes
 | auth.keycloak.settings.ssoSessionIdleTimeout | int | `3600` | SSO idle time (in seconds) |
 | auth.keycloak.tag | string | `"26.2.5"` | Version this image of Keycloak to deploy |
 | auth.keycloak.verbose | bool | `false` | Starting the server in verbose mode |
+| auth.kind | string | `"keycloak"` | Type of authentication |
 | auth.next | object | `{"secret":{"generate":true,"name":"ontrack-next-auth"}}` | Unique secret used by Next Auth in Ontrack to create session cookies |
 | auth.next.secret | object | `{"generate":true,"name":"ontrack-next-auth"}` | Secret definition |
 | auth.next.secret.generate | bool | `true` | Generating the secret |
 | auth.next.secret.name | string | `"ontrack-next-auth"` | Name of the secret The secret must have an `secret` entry |
-| auth.oidc | object | `{"credentials":{"client":{"clientId":"<client id>","clientSecret":"<client secret>"},"secret":{"enabled":true,"externalSecret":{"enabled":false,"refreshInterval":"6h","store":{"kind":"ClusterSecretStore","name":"vault-backend","path":"ontrack/oidc"}},"secretName":"ontrack-oidc"}},"enabled":false,"issuer":"","name":"OIDC","trailingSlash":false}` | OIDC configuration (disabled by default) |
+| auth.oidc | object | `{"credentials":{"client":{"clientId":"<client id>","clientSecret":"<client secret>"},"secret":{"enabled":true,"externalSecret":{"enabled":false,"refreshInterval":"6h","store":{"kind":"ClusterSecretStore","name":"vault-backend","path":"ontrack/oidc"}},"secretName":"ontrack-oidc"}},"issuer":"","name":"OIDC","trailingSlash":false}` | OIDC configuration (disabled by default) |
 | auth.oidc.credentials | object | `{"client":{"clientId":"<client id>","clientSecret":"<client secret>"},"secret":{"enabled":true,"externalSecret":{"enabled":false,"refreshInterval":"6h","store":{"kind":"ClusterSecretStore","name":"vault-backend","path":"ontrack/oidc"}},"secretName":"ontrack-oidc"}}` | Credentials used to contact the OIDC provider |
 | auth.oidc.credentials.client | object | `{"clientId":"<client id>","clientSecret":"<client secret>"}` | ... or provided directly in the values (ok for testing) If a secret (or external secret) is provided, these values are not used |
 | auth.oidc.credentials.client.clientId | string | `"<client id>"` | OIDC Client ID |
@@ -138,15 +181,18 @@ A Helm chart for Kubernetes
 | auth.oidc.credentials.secret.externalSecret.store.name | string | `"vault-backend"` | Name of the secret store |
 | auth.oidc.credentials.secret.externalSecret.store.path | string | `"ontrack/oidc"` | Path to the secret in the store. The entry is expected to have the following keys: clientId & clientSecret |
 | auth.oidc.credentials.secret.secretName | string | `"ontrack-oidc"` | The secret is expected to have the following keys: clientId & clientSecret |
-| auth.oidc.enabled | bool | `false` | Enabling OIDC authentication |
 | auth.oidc.issuer | string | `""` | OIDC issuer URL |
 | auth.oidc.name | string | `"OIDC"` | Display name for your IdP (used for the login page) |
 | auth.oidc.trailingSlash | bool | `false` | Trailing slash for the issuer URL (used for Auth0) |
 | auth.provisioning | bool | `true` | Provisioning of groups & initial administrator |
-| elasticsearch | object | `{"antiAffinity":"soft","clusterHealthCheckParams":"wait_for_status=yellow&timeout=1s","enabled":true,"esConfig":{"elasticsearch.yml":"discovery.zen.minimum_master_nodes: 1\nbootstrap.system_call_filter: \"false\"\nnode.max_local_storage_nodes: 8\ncluster.routing.allocation.disk.threshold_enabled: \"false\"\naction.auto_create_index: \".*\"\n# Disabling security warnings\nxpack.security.enabled: \"false\"\n"},"esJavaOpts":"-Xmx512m -Xms512m -XX:-HeapDumpOnOutOfMemoryError","masterService":"ontrack-search","maxUnavailable":0,"minimumMasterNodes":1,"replicas":1,"resources":{"limits":{"memory":"1024M"},"requests":{"cpu":"300m","memory":"1024M"}},"volumeClaimTemplate":{"accessModes":["ReadWriteOnce"],"resources":{"requests":{"storage":"5Gi"}}}}` | Local Elasticsearch engine for testing purpose |
+| elasticsearch | object | `{"coordinating":{"replicaCount":0},"data":{"replicaCount":0},"enabled":true,"image":{"repository":"bitnamilegacy/elasticsearch"},"ingest":{"replicaCount":0},"master":{"masterOnly":false,"persistence":{"accessModes":["ReadWriteOnce"],"enabled":true,"size":"5Gi"},"replicaCount":1,"resourcesPreset":"small"},"security":{"enabled":false,"tls":{"restEncryption":false}},"sysctlImage":{"repository":"bitnamilegacy/os-shell"},"volumePermissions":{"image":{"repository":"bitnamilegacy/os-shell"}}}` | Local Elasticsearch engine for testing purpose |
+| elasticsearch.enabled | bool | `true` | Enabling the Elasticsearch deployment (when not using an external Elasticsearch cluster) |
 | emptyDir | object | `{}` | In case you want to specify different resources for emptyDir than {} |
 | extraContainers | list | `[]` | Array of extra containers to run alongside the Ontrack container  Example: - name: myapp-container   image: busybox   command: ['sh', '-c', 'echo Hello && sleep 3600']  |
 | fullnameOverride | string | `""` | If defined, uses this name for the resource names instead of the using the chart name |
+| global | object | `{"compatibility":{"openshift":{"adaptSecurityContext":"auto"}}}` | Global configuration for all sub-charts |
+| global.compatibility | object | `{"openshift":{"adaptSecurityContext":"auto"}}` | Configuration for OpenShift |
+| global.compatibility.openshift.adaptSecurityContext | string | `"auto"` | Whether to adapt the security context for OpenShift |
 | image.pullPolicy | string | `"IfNotPresent"` | Pull policy |
 | image.repository | string | `"nemerosa/ontrack"` | Image to use for Ontrack (backend) |
 | image.tag | string | `""` | Overrides the image tag whose default is the chart appVersion. |
@@ -155,11 +201,12 @@ A Helm chart for Kubernetes
 | ingress.enabled | bool | `true` | Creating an Ingress for the Ontrack different services. This is required when using Keycloak. |
 | ingress.host | string | `"ontrack.local"` | Host for Ontrack |
 | ingress.tls.enabled | bool | `true` | Using TLS for Ontrack |
-| keycloak-postgresql | object | `{"auth":{"database":"keycloak","password":"keycloak","username":"keycloak"}}` | Local database |
+| keycloak-postgresql | object | `{"auth":{"database":"keycloak","password":"keycloak","username":"keycloak"},"image":{"repository":"bitnamilegacy/postgresql"}}` | Local database |
 | keycloak-postgresql.auth | object | `{"database":"keycloak","password":"keycloak","username":"keycloak"}` | Authentication parameters |
 | keycloak-postgresql.auth.database | string | `"keycloak"` | Name of the database to create |
 | keycloak-postgresql.auth.password | string | `"keycloak"` | Credentials to be used |
 | keycloak-postgresql.auth.username | string | `"keycloak"` | Credentials to be used |
+| keycloak-postgresql.image.repository | string | `"bitnamilegacy/postgresql"` | See the announcement at https://hub.docker.com/r/bitnami/rabbitmq |
 | management.service.annotations | object | `{}` | Annotations for the management service. Only used when specific == true |
 | management.service.port | int | `8800` | Exposed port for the Ontrack management service |
 | management.service.specific | bool | `false` | Set to true to have the management port exposed by another Service. By default, using the same service and two different named ports |
@@ -167,9 +214,17 @@ A Helm chart for Kubernetes
 | nameOverride | string | `""` | Name to use instead of the chart name |
 | nodeSelector | object | `{}` | Node selectors for the Ontrack resources |
 | ontrack.application_yaml | string | `""` | Application configuration file as a YAML content |
-| ontrack.casc | object | `{"directory":"/var/ontrack/casc","enabled":false,"map":"","mapValues":{"mapEntryName":"casc.yaml"},"reloading":{"cron":"","enabled":false},"secret":"","secrets":{"directory":"/var/ontrack/casc/mapping","mapping":"env","names":[]},"upload":{"enabled":false}}` | CasC configuration |
+| ontrack.casc | object | `{"directory":"/var/ontrack/casc","enabled":true,"externalSecrets":{"enabled":false,"refreshInterval":"6h","secretKeys":[],"secretName":"ontrack-casc-secrets","store":{"kind":"ClusterSecretStore","name":"vault-backend"}},"map":"","mapValues":{"mapEntryName":"casc.yaml"},"reloading":{"cron":"","enabled":false},"secret":"","secrets":{"directory":"/var/ontrack/casc/mapping","mapping":"env","names":[]},"upload":{"enabled":false}}` | CasC configuration |
 | ontrack.casc.directory | string | `"/var/ontrack/casc"` | Path where to mount the Casc files |
-| ontrack.casc.enabled | bool | `false` | Is Casc enabled? |
+| ontrack.casc.enabled | bool | `true` | Is Casc enabled? |
+| ontrack.casc.externalSecrets | object | `{"enabled":false,"refreshInterval":"6h","secretKeys":[],"secretName":"ontrack-casc-secrets","store":{"kind":"ClusterSecretStore","name":"vault-backend"}}` | List of external secrets to declare |
+| ontrack.casc.externalSecrets.enabled | bool | `false` | Enabling the creation of the external secret |
+| ontrack.casc.externalSecrets.refreshInterval | string | `"6h"` | Refresh interval |
+| ontrack.casc.externalSecrets.secretKeys | list | `[]` | List of secret keys to create |
+| ontrack.casc.externalSecrets.secretName | string | `"ontrack-casc-secrets"` | Name of the secret to create |
+| ontrack.casc.externalSecrets.store | object | `{"kind":"ClusterSecretStore","name":"vault-backend"}` | Location of the secret to bind to |
+| ontrack.casc.externalSecrets.store.kind | string | `"ClusterSecretStore"` | Scope of the secret store |
+| ontrack.casc.externalSecrets.store.name | string | `"vault-backend"` | Name of the secret store |
 | ontrack.casc.map | string | `""` | Config map containing all Casc files |
 | ontrack.casc.mapValues | object | `{"mapEntryName":"casc.yaml"}` | Casc from values |
 | ontrack.casc.mapValues.mapEntryName | string | `"casc.yaml"` | Name of the entry to hold the values |
@@ -195,7 +250,8 @@ A Helm chart for Kubernetes
 | ontrack.config.secret_key_store.external.store.name | string | `"vault-backend"` | Name of the secret store |
 | ontrack.config.secret_key_store.external.store.path | string | `"ontrack/encryption"` | Path to the secret in the store. |
 | ontrack.config.secret_key_store.secret_name | string | `"ontrack-key-store"` | Name of the secret |
-| ontrack.env | list | `[]` | Arbitrary environment variables |
+| ontrack.env | list | `[]` | Arbitrary environment variables, using https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.35/#envvar-v1-core |
+| ontrack.envMap | object | `{}` | Arbitrary environment variables (as a map) |
 | ontrack.extraConfig.configmaps | list | `[]` | Arbitrary config map sources |
 | ontrack.extraConfig.secrets | list | `[]` | Arbitrary secrets map sources |
 | ontrack.management.metrics.tags.application | string | `"ontrack"` | Application tag to add to all exposed metrics |
@@ -210,28 +266,31 @@ A Helm chart for Kubernetes
 | ontrack.resources.limits.memory | string | `"2Gi"` | Ontrack resources |
 | ontrack.resources.requests.cpu | string | `"800m"` | Ontrack resources |
 | ontrack.resources.requests.memory | string | `"1Gi"` | Ontrack resources |
+| ontrack.ui.config | object | `{"customSignin":true}` | UI configuration |
+| ontrack.ui.config.customSignin | bool | `true` | Using the custom signin page |
 | ontrack.ui.image | string | `"nemerosa/ontrack-ui"` | Image to use for the UI |
 | ontrack.ui.replicas | int | `1` | Number of replicas for the UI (experimental) |
-| ontrack.ui.resources | object | `{"config":{"customSign":true},"limits":{"cpu":"800m","memory":"1Gi"},"requests":{"cpu":"800m","memory":"1Gi"}}` | Next UI resources |
-| ontrack.ui.resources.config | object | `{"customSign":true}` | UI configuration |
-| ontrack.ui.resources.config.customSign | bool | `true` | Using the custom signin page |
+| ontrack.ui.resources | object | `{"limits":{"cpu":"800m","memory":"1Gi"},"requests":{"cpu":"800m","memory":"1Gi"}}` | Next UI resources |
 | ontrack.ui.resources.limits.cpu | string | `"800m"` | Next UI resources |
 | ontrack.ui.resources.limits.memory | string | `"1Gi"` | Next UI resources |
 | ontrack.ui.resources.requests.cpu | string | `"800m"` | Next UI resources |
 | ontrack.ui.resources.requests.memory | string | `"1Gi"` | Next UI resources |
 | ontrack.ui.service.port | int | `3000` | Exposed port for the Ontrack IO |
 | ontrack.url | string | `"http://localhost:3000"` | Ontrack root URL - must point to the UI service |
+| openshift | object | `{"enabled":false}` | Configuration for OpenShift |
+| openshift.enabled | bool | `false` | Whether to enable OpenShift specific resources (like Routes) |
 | podAnnotations | object | `{}` | Annotations for all pods |
 | podSecurityContext | object | `{}` | Security context for all pods |
-| postgresql | object | `{"auth":{"database":"ontrack","password":"ontrack","username":"ontrack"},"local":true,"postgresFromEnv":false,"postgresqlUrl":""}` | Local database |
+| postgresql | object | `{"auth":{"database":"ontrack","password":"ontrack","username":"ontrack"},"image":{"repository":"bitnamilegacy/postgresql"},"local":true,"postgresFromEnv":false,"postgresqlUrl":""}` | Local database |
 | postgresql.auth | object | `{"database":"ontrack","password":"ontrack","username":"ontrack"}` | Authentication parameters |
 | postgresql.auth.database | string | `"ontrack"` | Name of the database to create |
 | postgresql.auth.password | string | `"ontrack"` | Credentials to be used |
 | postgresql.auth.username | string | `"ontrack"` | Credentials to be used |
+| postgresql.image.repository | string | `"bitnamilegacy/postgresql"` | See the announcement at https://hub.docker.com/r/bitnami/rabbitmq |
 | postgresql.local | bool | `true` | Enabling the local database |
 | postgresql.postgresFromEnv | bool | `false` | For external database, using environment variables |
 | postgresql.postgresqlUrl | string | `""` | For external database |
-| rabbitmq | object | `{"auth":{"erlangCookie":"ontrack","password":"ontrack","username":"ontrack"}}` | Local RabbitMQ for message processing |
+| rabbitmq | object | `{"auth":{"erlangCookie":"ontrack","password":"ontrack","username":"ontrack"},"image":{"repository":"bitnamilegacy/rabbitmq"}}` | Local RabbitMQ for message processing |
 | replicaCount | int | `1` |  |
 | securityContext | object | `{}` | Security context for the containers |
 | service.annotations | object | `{}` | Annotations for the Ontrack service |

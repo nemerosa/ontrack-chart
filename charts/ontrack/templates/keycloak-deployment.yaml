@@ -33,7 +33,7 @@ spec:
         - name: {{ .Chart.Name }}-keycloak-theme
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: busybox:1.37.0
+          image: {{ .Values.auth.keycloak.initContainers.image.repository }}:{{ .Values.auth.keycloak.initContainers.image.tag }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command: [ "/bin/sh", "-c" ]
           args:
@@ -50,7 +50,7 @@ spec:
         - name: {{ .Chart.Name }}-keycloak-init
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: busybox:1.37.0
+          image: {{ .Values.auth.keycloak.initContainers.image.repository }}:{{ .Values.auth.keycloak.initContainers.image.tag }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command: [ "/bin/sh", "-c" ]
           {{- if .Values.auth.keycloak.ldap.bindCredentialSecret.enabled }}
