@@ -94,6 +94,15 @@ openshift:
   # -- Whether to enable OpenShift specific resources (like Routes)
   enabled: false
 
+# -- General configuration of the init containers
+initContainers:
+  # -- Configuration of the image used for the init containers
+  image:
+    # -- Image repository (including the registry)
+    repository: busybox
+    # Image tag
+    tag: 1.37.0
+
 # Ontrack configuration
 ontrack:
   # -- Ontrack root URL - must point to the UI service
@@ -344,14 +353,6 @@ auth:
     tag: 26.2.5
     # -- Starting the server in verbose mode
     verbose: false
-    # -- General configuration of the init containers
-    initContainers:
-      # -- Configuration of the image used for the init containers
-      image:
-        # -- Image repository (including the registry)
-        repository: busybox
-        # Image tag
-        tag: 1.37.0
     # -- Admin user for the admin console of Keycloak
     bootstrap:
       # -- Username to connect to Bootstrap. Prefer using a secret.
