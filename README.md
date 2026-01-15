@@ -352,7 +352,7 @@ auth:
   next:
     secret:
       name: ontrack-next-auth
-      generate: true
+      generate: false
 ```
 
 ## Configuration of groups
