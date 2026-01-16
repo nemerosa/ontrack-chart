@@ -72,9 +72,15 @@ jobs:
           run: echo "currentRelease=$CURRENT_RELEASE" >> "$GITHUB_OUTPUT"
 
       - name: Publishing in Docker Hub (OCI)
+        id: publish
         if: ${{ steps.release.outcome != '' && steps.release.outputs.lastRelease != steps.release.outputs.currentRelease }}
         run: |
           helm registry login registry-1.docker.io \
             --username "${{ secrets.DOCKER_HUB_USERNAME }}" \
             --password "${{ secrets.DOCKER_HUB_TOKEN }}"
           helm push "$(ls yontrack-*.tgz)" oci://registry-1.docker.io/nemerosa
+
+      - name: Yontrack release
+        if: ${{ steps.publish.outcome != '' }}
+        run: |
+          yontrack validate --validation build --status ${{ steps.publish.outcome == 'success' && 'PASSED' || 'FAILED' }}
