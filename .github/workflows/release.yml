@@ -55,10 +55,11 @@ jobs:
           helm package charts/ontrack
 
       - name: Yontrack build
+        if: ${{ steps.build.outcome != '' }}
         run: |
-          yontrack validate --validation build
+          yontrack validate --validation build --status ${{ steps.build.outcome == 'success' && 'PASSED' || 'FAILED' }}
 
-#      - name: Getting previous release
+#      - name: Getting the previous release
 
       - name: Publishing in Docker Hub (OCI)
         run: |
