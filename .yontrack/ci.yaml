@@ -2,6 +2,14 @@ version: v1
 configuration:
   defaults:
     branch:
+      validations:
+        build: {}
+        release: {}
+      promotions:
+        RELEASE:
+          validations:
+            - build
+            - release
       autoVersioning:
         configurations:
           - sourceProject: ontrack

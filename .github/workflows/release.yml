@@ -54,6 +54,12 @@ jobs:
         run: |
           helm package charts/ontrack
 
+      - name: Yontrack build
+        run: |
+          yontrack validate --validation build
+
+#      - name: Getting previous release
+
       - name: Publishing in Docker Hub (OCI)
         run: |
           helm registry login registry-1.docker.io \
