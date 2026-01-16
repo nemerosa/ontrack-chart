@@ -81,6 +81,6 @@ jobs:
           helm push "$(ls yontrack-*.tgz)" oci://registry-1.docker.io/nemerosa
 
       - name: Yontrack release
-        if: ${{ steps.publish.outcome != '' }}
+        if: ${{ steps.publish.outcome != '' && steps.publish.outcome != 'skipped' }}
         run: |
-          yontrack validate --validation build --status ${{ steps.publish.outcome == 'success' && 'PASSED' || 'FAILED' }}
+          yontrack validate --validation release --status ${{ steps.publish.outcome == 'success' && 'PASSED' || 'FAILED' }}
