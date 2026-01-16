@@ -51,17 +51,28 @@ jobs:
           ./scripts/check-images.sh
 
       - name: Packaging
+        id: packaging
         run: |
           helm package charts/ontrack
 
       - name: Yontrack build
+        if: ${{ steps.packaging.outcome != '' }}
+        run: |
+          yontrack validate --validation build --status ${{ steps.packaging.outcome == 'success' && 'PASSED' || 'FAILED' }}
+
+      - name: Getting the previous release
+        id: release
         if: ${{ steps.build.outcome != '' }}
         run: |
-          yontrack validate --validation build --status ${{ steps.build.outcome == 'success' && 'PASSED' || 'FAILED' }}
-
-#      - name: Getting the previous release
+          LAST_RELEASE=$(yontrack build search --with-promotion RELEASE --count 1 --output json --accept-not-found | jq -r .DisplayName)
+          echo "Last release: $LAST_RELEASE"
+          CURRENT_RELEASE=$(cat charts/ontrack/Chart.yaml | yq -r .appVersion)
+          echo "Current release: $CURRENT_RELEASE"
+          run: echo "lastRelease=$LAST_RELEASE" >> "$GITHUB_OUTPUT"
+          run: echo "currentRelease=$CURRENT_RELEASE" >> "$GITHUB_OUTPUT"
 
       - name: Publishing in Docker Hub (OCI)
+        if: ${{ steps.release.outcome != '' && steps.release.outputs.lastRelease != steps.release.outputs.currentRelease }}
         run: |
           helm registry login registry-1.docker.io \
             --username "${{ secrets.DOCKER_HUB_USERNAME }}" \
