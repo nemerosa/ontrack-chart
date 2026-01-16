@@ -353,6 +353,8 @@ auth:
     tag: 26.2.5
     # -- Starting the server in verbose mode
     verbose: false
+    # -- Log level for the local Keycloak instance
+    logLevel: INFO
     # -- Admin user for the admin console of Keycloak
     bootstrap:
       # -- Username to connect to Bootstrap. Prefer using a secret.

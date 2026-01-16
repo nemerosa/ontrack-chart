@@ -198,6 +198,8 @@ spec:
               value: "/{{ .Values.auth.keycloak.service.path }}"
             - name: KC_HEALTH_ENABLED
               value: "true"
+            - name: KC_LOG_LEVEL
+              value: {{ .Values.auth.keycloak.logLevel | quote }}
           ports:
             - name: http
               containerPort: 8080
