@@ -62,7 +62,7 @@ jobs:
 
       - name: Getting the previous release
         id: release
-        if: ${{ steps.build.outcome != '' }}
+        if: ${{ steps.packaging.outcome != '' }}
         run: |
           LAST_RELEASE=$(yontrack build search --with-promotion RELEASE --count 1 --output json --accept-not-found | jq -r .DisplayName)
           echo "Last release: $LAST_RELEASE"
@@ -73,7 +73,7 @@ jobs:
 
       - name: Publishing in Docker Hub (OCI)
         id: publish
-        if: ${{ steps.release.outcome != '' && steps.release.outputs.lastRelease != steps.release.outputs.currentRelease }}
+        if: ${{ steps.release.outcome == 'success' && steps.release.outputs.lastRelease != steps.release.outputs.currentRelease }}
         run: |
           helm registry login registry-1.docker.io \
             --username "${{ secrets.DOCKER_HUB_USERNAME }}" \
