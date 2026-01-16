@@ -85,7 +85,15 @@ jobs:
         if: ${{ steps.publish.outcome == 'success' }}
         run: |
           yontrack build changelog semantic --from-promotion RELEASE --emojis > changelog.md
-          
+
+      - name: GitHub release
+        if: ${{ steps.changelog.outcome == 'success' && steps.publish.outcome == 'success' }}
+        run: |
+          gh release create ${{ steps.release.outputs.currentRelease }} \
+            --title "${{ steps.release.outputs.currentRelease }}" \
+            --notes-file changelog.md
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Yontrack release
         if: ${{ steps.publish.outcome != '' && steps.publish.outcome != 'skipped' }}
