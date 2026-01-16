@@ -66,7 +66,7 @@ jobs:
         run: |
           LAST_RELEASE=$(yontrack build search --with-promotion RELEASE --count 1 --output json --accept-not-found | jq -r .DisplayName)
           echo "Last release: $LAST_RELEASE"
-          CURRENT_RELEASE=$(cat charts/ontrack/Chart.yaml | yq -r .appVersion)
+          CURRENT_RELEASE=$(cat charts/ontrack/Chart.yaml | yq -r .version)
           echo "Current release: $CURRENT_RELEASE"
           run: echo "lastRelease=$LAST_RELEASE" >> "$GITHUB_OUTPUT"
           run: echo "currentRelease=$CURRENT_RELEASE" >> "$GITHUB_OUTPUT"
