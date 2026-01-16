@@ -80,6 +80,13 @@ jobs:
             --password "${{ secrets.DOCKER_HUB_TOKEN }}"
           helm push "$(ls yontrack-*.tgz)" oci://registry-1.docker.io/nemerosa
 
+      - name: Changelog since last release
+        id: changelog
+        if: ${{ steps.publish.outcome == 'success' }}
+        run: |
+          yontrack build changelog semantic --from-promotion RELEASE --emojis > changelog.md
+          
+
       - name: Yontrack release
         if: ${{ steps.publish.outcome != '' && steps.publish.outcome != 'skipped' }}
         run: |
