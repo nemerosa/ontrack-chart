@@ -68,8 +68,8 @@ jobs:
           echo "Last release: $LAST_RELEASE"
           CURRENT_RELEASE=$(cat charts/ontrack/Chart.yaml | yq -r .version)
           echo "Current release: $CURRENT_RELEASE"
-          run: echo "lastRelease=$LAST_RELEASE" >> "$GITHUB_OUTPUT"
-          run: echo "currentRelease=$CURRENT_RELEASE" >> "$GITHUB_OUTPUT"
+          echo "lastRelease=$LAST_RELEASE" >> "$GITHUB_OUTPUT"
+          echo "currentRelease=$CURRENT_RELEASE" >> "$GITHUB_OUTPUT"
 
       - name: Publishing in Docker Hub (OCI)
         id: publish
