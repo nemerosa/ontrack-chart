@@ -1,0 +1,18 @@
+version: v1
+configuration:
+  defaults:
+    branch:
+      autoVersioning:
+        configurations:
+          - sourceProject: ontrack
+            sourceBranch: main
+            sourcePromotion: RELEASE
+            targetPath: charts/ontrack/Chart.yaml
+            targetRegex: '^appVersion: "(.*)"$'
+            validationStamp: auto
+            prTitleTemplate: "chore: Using Yontrack ${VERSION}"
+            prBodyTemplateFormat: markdown
+            prBodyTemplate: |
+              ${av.changelog?commitsOption=OPTIONAL&empty=No changelog&title=true}
+    build:
+      autoVersioningCheck: true
