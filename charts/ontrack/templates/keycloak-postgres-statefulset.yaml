@@ -20,12 +20,16 @@ spec:
         {{ include "ontrack.selectorLabels.keycloak.postgres" . | nindent 8 }}
     spec:
       serviceAccountName: {{ include "ontrack.serviceAccountName" . }}
+      {{- if not (and .Values.openshift.enabled (or (eq .Values.global.compatibility.openshift.adaptSecurityContext "force") (eq .Values.global.compatibility.openshift.adaptSecurityContext "auto"))) }}
       securityContext:
         {{ toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- end }}
       containers:
         - name: postgres
+          {{- if not (and .Values.openshift.enabled (or (eq .Values.global.compatibility.openshift.adaptSecurityContext "force") (eq .Values.global.compatibility.openshift.adaptSecurityContext "auto"))) }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
+          {{- end }}
           image: {{ .Values.auth.keycloak.persistence.image.repository }}:{{ .Values.auth.keycloak.persistence.image.tag }}
           imagePullPolicy: {{ .Values.auth.keycloak.persistence.image.pullPolicy }}
           env:

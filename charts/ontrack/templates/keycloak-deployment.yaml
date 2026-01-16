@@ -27,12 +27,16 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       serviceAccountName: {{ include "ontrack.serviceAccountName" . }}
+      {{- if not (and .Values.openshift.enabled (or (eq .Values.global.compatibility.openshift.adaptSecurityContext "force") (eq .Values.global.compatibility.openshift.adaptSecurityContext "auto"))) }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- end }}
       initContainers:
         - name: {{ .Chart.Name }}-keycloak-theme
+          {{- if not (and .Values.openshift.enabled (or (eq .Values.global.compatibility.openshift.adaptSecurityContext "force") (eq .Values.global.compatibility.openshift.adaptSecurityContext "auto"))) }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
+          {{- end }}
           image: {{ .Values.initContainers.image.repository }}:{{ .Values.initContainers.image.tag }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command: [ "/bin/sh", "-c" ]
@@ -48,8 +52,10 @@ spec:
               mountPath: /theme
       {{- if .Values.auth.keycloak.ldap.enabled }}
         - name: {{ .Chart.Name }}-keycloak-init
+          {{- if not (and .Values.openshift.enabled (or (eq .Values.global.compatibility.openshift.adaptSecurityContext "force") (eq .Values.global.compatibility.openshift.adaptSecurityContext "auto"))) }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
+          {{- end }}
           image: {{ .Values.initContainers.image.repository }}:{{ .Values.initContainers.image.tag }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command: [ "/bin/sh", "-c" ]
@@ -90,8 +96,10 @@ spec:
         {{- toYaml .Values.extraContainers | nindent 8 }}
       {{- end }}
         - name: {{ .Chart.Name }}-keycloak
+          {{- if not (and .Values.openshift.enabled (or (eq .Values.global.compatibility.openshift.adaptSecurityContext "force") (eq .Values.global.compatibility.openshift.adaptSecurityContext "auto"))) }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
+          {{- end }}
           image: "{{ .Values.auth.keycloak.image }}:{{ .Values.auth.keycloak.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command:

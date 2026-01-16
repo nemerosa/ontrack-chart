@@ -601,9 +601,9 @@ auth:
       # -- Image for Postgres
       image:
         # -- Image repository
-        repository: postgres
+        repository: bitnamilegacy/postgresql
         # -- Image tag
-        tag: 17
+        tag: 16
         # -- Pull policy
         pullPolicy: IfNotPresent
       # -- Resources to allocate to Postgres
