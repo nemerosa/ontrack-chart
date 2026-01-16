@@ -2,7 +2,7 @@
 {{- fail "Ingress must be enabled when Keycloak is enabled." -}}
 {{- end }}
 
-{{- if and .Values.ingress.enabled (not .Values.openshift.enabled) -}}
+{{- if .Values.ingress.enabled -}}
 {{- $fullName := include "ontrack.fullname" . -}}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
