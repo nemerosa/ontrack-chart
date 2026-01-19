@@ -50,38 +50,16 @@ spec:
               mountPath: /config
             - name: {{ include "ontrack.fullname" . }}-keycloak-theme-dir
               mountPath: /theme
-{{- if .Values.auth.keycloak.ldap.enabled }}
+      {{- if .Values.auth.keycloak.ldap.enabled }}
         - name: {{ .Chart.Name }}-keycloak-init
           {{- if not (and .Values.openshift.enabled (or (eq .Values.global.compatibility.openshift.adaptSecurityContext "force") (eq .Values.global.compatibility.openshift.adaptSecurityContext "auto"))) }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           {{- end }}
-          {{- if and .Values.auth.keycloak.ldap.tls.enabled .Values.auth.keycloak.ldap.tls.secretName }}
-          image: {{ .Values.initContainers.jreImage.repository }}:{{ .Values.initContainers.jreImage.tag }}
-          {{- else }}
           image: {{ .Values.initContainers.image.repository }}:{{ .Values.initContainers.image.tag }}
-          {{- end }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command: [ "/bin/sh", "-c" ]
-          {{- if and .Values.auth.keycloak.ldap.tls.enabled .Values.auth.keycloak.ldap.tls.secretName }}
-          args:
-            - >
-              {{- if .Values.auth.keycloak.ldap.bindCredentialSecret.enabled }}
-              export BIND_DN="$(cat /secrets/bindDn)" &&
-              export BIND_CREDENTIAL="$(cat /secrets/bindCredential)" &&
-              {{- else }}
-              export BIND_DN="{{ .Values.auth.keycloak.ldap.bindDn }}" &&
-              export BIND_CREDENTIAL="{{ .Values.auth.keycloak.ldap.bindCredential }}" &&
-              {{- end }}
-              cat /config/ontrack.json.tpl &&
-              cp /config/ontrack.json.tpl /tmp/ontrack.json &&
-              sed "s|\${BIND_DN}|$BIND_DN|g" /tmp/ontrack.json> /tmp/ontrack-dn.json &&
-              sed "s|\${BIND_CREDENTIAL}|$BIND_CREDENTIAL|g" /tmp/ontrack-dn.json > /output/ontrack.json &&
-              cat /output/ontrack.json &&
-              {{/* Truststore creation */}}
-              keytool -import -alias ca -keystore /output/truststore.p12 -storetype PKCS12 -file /ldap-tls/ca.crt -storepass password -noprompt &&
-              keytool -import -alias ldap -keystore /output/truststore.p12 -storetype PKCS12 -file /ldap-tls/tls.crt -storepass password -noprompt
-          {{- else if .Values.auth.keycloak.ldap.bindCredentialSecret.enabled }}
+          {{- if .Values.auth.keycloak.ldap.bindCredentialSecret.enabled }}
           args:
             - >
               export BIND_DN="$(cat /secrets/bindDn)" &&
@@ -111,10 +89,6 @@ spec:
             {{- if .Values.auth.keycloak.ldap.bindCredentialSecret.enabled }}
             - name: {{ include "ontrack.fullname" . }}-keycloak-ldap-secret
               mountPath: /secrets
-            {{- end }}
-            {{- if and .Values.auth.keycloak.ldap.tls.enabled .Values.auth.keycloak.ldap.tls.secretName }}
-            - name: {{ include "ontrack.fullname" . }}-keycloak-ldap-tls
-              mountPath: /ldap-tls
             {{- end }}
       {{- end }}
       containers:
@@ -234,12 +208,6 @@ spec:
               value: "true"
             - name: KC_LOG_LEVEL
               value: {{ .Values.auth.keycloak.logLevel | quote }}
-            {{- if and .Values.auth.keycloak.ldap.enabled .Values.auth.keycloak.ldap.tls.enabled .Values.auth.keycloak.ldap.tls.secretName }}
-            - name: KC_HTTPS_TRUST_STORE_FILE
-              value: /opt/keycloak/data/import/truststore.p12
-            - name: KC_HTTPS_TRUST_STORE_PASSWORD
-              value: password
-            {{- end }}
           ports:
             - name: http
               containerPort: 8080
@@ -288,11 +256,6 @@ spec:
             sources:
               - secret:
                   name: {{ .Values.auth.keycloak.ldap.bindCredentialSecret.secretName | quote }}
-        {{- end }}
-        {{- if and .Values.auth.keycloak.ldap.tls.enabled .Values.auth.keycloak.ldap.tls.secretName }}
-        - name: {{ include "ontrack.fullname" . }}-keycloak-ldap-tls
-          secret:
-            secretName: {{ .Values.auth.keycloak.ldap.tls.secretName | quote }}
         {{- end }}
       {{- end }}
       {{- with .Values.nodeSelector }}
