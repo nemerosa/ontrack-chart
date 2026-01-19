@@ -105,6 +105,12 @@ initContainers:
     repository: busybox
     # Image tag
     tag: 1.37.0
+  # -- Configuration of the image used for the init containers requiring a JRE (like Keycloak LDAP TLS)
+  jreImage:
+    # -- Image repository (including the registry)
+    repository: eclipse-temurin
+    # Image tag
+    tag: 17-jre-alpine
 
 # Ontrack configuration
 ontrack:
@@ -556,6 +562,16 @@ auth:
         memberofLdapAttribute: memberOf
         groupNameLdapAttribute: cn
         groupObjectClasses: groupOfNames
+      # -- LDAP TLS configuration
+      tls:
+        # -- If enabled, the LDAP connection will use TLS
+        enabled: false
+        # -- Secret name containing the TLS certificates
+        # The secret is expected to contain the following keys:
+        # * ca.crt
+        # * tls.crt
+        # * tls.key
+        secretName: ontrack-keycloak-ldap-tls
       # -- Creating a testing LDAP instance
       testing:
         # -- Enabling the creation of the LDAP test instance
