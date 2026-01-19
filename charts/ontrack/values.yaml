@@ -79,6 +79,9 @@ ingress:
   tls:
     # -- Using TLS for Ontrack
     enabled: true
+    # -- Name of the secret containing the TLS certificate
+    # If not provided, defaults to <host>-tls
+    secretName: ""
 
 # -- Node selectors for the Ontrack resources
 nodeSelector: {}
