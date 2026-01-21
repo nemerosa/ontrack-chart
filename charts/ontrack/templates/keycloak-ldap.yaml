@@ -60,6 +60,23 @@ data:
                     ]
                   }
                 },
+                {{- if .Values.auth.keycloak.ldap.mappers.name.enabled }}
+                {
+                  "name": "name",
+                  "providerId": "full-name-ldap-mapper",
+                  "config": {
+                    "read.only": [
+                      "true"
+                    ],
+                    "write.only": [
+                      "false"
+                    ],
+                    "ldap.full.name.attribute": [
+                      {{ .Values.auth.keycloak.ldap.mappers.name.attribute | quote }}
+                    ],
+                  }
+                },
+                {{- end }}
                 {
                   "name": "groups",
                   "providerId": "group-ldap-mapper",

@@ -7,6 +7,7 @@
 "resetPasswordAllowed": {{ .Values.auth.keycloak.settings.resetPasswordAllowed }},
 "ssoSessionIdleTimeout": {{ .Values.auth.keycloak.settings.ssoSessionIdleTimeout }},
 "accessTokenLifespan": {{ .Values.auth.keycloak.settings.accessTokenLifespan }},
+"requiredActions": [],
 "users": [
     {
       "username": "${KEYCLOAK_USER_ADMIN_USERNAME}",

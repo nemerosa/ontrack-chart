@@ -566,6 +566,12 @@ auth:
         groups:
           # -- Preserve group inheritance
           preserveGroupInheritance: true
+        # -- Mapping of the full name
+        name:
+          # -- Enabling the mapper
+          enabled: true
+          # -- LDAP attribute containing the full name
+          attribute: name
       # -- Creating a testing LDAP instance
       testing:
         # -- Enabling the creation of the LDAP test instance
