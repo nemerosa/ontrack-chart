@@ -44,7 +44,7 @@ data:
                   "providerId": "user-attribute-ldap-mapper",
                   "config": {
                     "ldap.attribute": [
-                      "uid"
+                      {{ .Values.auth.keycloak.ldap.usernameLDAPAttribute | quote }}
                     ],
                     "is.mandatory.in.ldap": [
                       "true"
@@ -83,7 +83,7 @@ data:
                       "{{ .Values.auth.keycloak.ldap.groups.membershipUserLdapAttribute }}"
                     ],
                     "preserve.group.inheritance": [
-                      "true"
+                      {{ .Values.auth.keycloak.ldap.mappers.groups.preserveGroupInheritance | quote }}
                     ],
                     "membership.ldap.attribute": [
                       "{{ .Values.auth.keycloak.ldap.groups.membershipLdapAttribute }}"
@@ -126,7 +126,7 @@ data:
               "rdnLDAPAttribute": ["{{ .Values.auth.keycloak.ldap.rdnLDAPAttribute }}"],
               "uuidLDAPAttribute": ["{{ .Values.auth.keycloak.ldap.uuidLDAPAttribute }}"],
               "userObjectClasses": {{ .Values.auth.keycloak.ldap.userObjectClasses | toJson }},
-              "searchScope": ["1"],
+              "searchScope": [{{ .Values.auth.keycloak.ldap.searchScope | quote }}],
               "validatePasswordPolicy": ["false"],
               "trustEmail": ["true"]
             }

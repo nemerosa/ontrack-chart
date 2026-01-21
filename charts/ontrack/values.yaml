@@ -546,6 +546,10 @@ auth:
       uuidLDAPAttribute: entryUUID
       # -- LDAP attributes: class for the user object
       userObjectClasses: ["inetOrgPerson"]
+      # -- Search scope for the users
+      # 1: One Level
+      # 2: Subtree
+      searchScope: 1
       # -- Configuration of the LDAP groups
       groups:
         # -- Groups DN
@@ -556,6 +560,12 @@ auth:
         memberofLdapAttribute: memberOf
         groupNameLdapAttribute: cn
         groupObjectClasses: groupOfNames
+      # -- Mappers configurations
+      mappers:
+        # -- `groups` mapper
+        groups:
+          # -- Preserve group inheritance
+          preserveGroupInheritance: true
       # -- Creating a testing LDAP instance
       testing:
         # -- Enabling the creation of the LDAP test instance
