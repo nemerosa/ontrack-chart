@@ -73,7 +73,7 @@ data:
                     ],
                     "ldap.full.name.attribute": [
                       {{ .Values.auth.keycloak.ldap.mappers.name.attribute | quote }}
-                    ],
+                    ]
                   }
                 },
                 {{- end }}
