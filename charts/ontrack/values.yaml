@@ -370,6 +370,10 @@ auth:
         enabled: false
         # -- Secret name
         secretName: ontrack-keycloak-bootstrap
+        # -- Secret key for the username
+        usernameKey: username
+        # -- Secret key for the password
+        passwordKey: password
         # -- Generating the secret (the password only, keeping the username)
         generate: true
         # -- Using an external secret

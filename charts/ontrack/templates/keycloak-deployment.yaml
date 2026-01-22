@@ -156,13 +156,13 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.auth.keycloak.bootstrap.bootstrapSecret.secretName | quote }}
-                  key: username
+                  key: {{ .Values.auth.keycloak.bootstrap.bootstrapSecret.usernameKey | quote }}
                   optional: false
             - name: KC_BOOTSTRAP_ADMIN_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.auth.keycloak.bootstrap.bootstrapSecret.secretName | quote }}
-                  key: password
+                  key: {{ .Values.auth.keycloak.bootstrap.bootstrapSecret.passwordKey | quote }}
                   optional: false
             {{- else }}
             - name: KC_BOOTSTRAP_ADMIN_USERNAME
