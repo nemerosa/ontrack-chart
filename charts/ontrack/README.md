@@ -1,6 +1,6 @@
 # yontrack-chart
 
-![Version: 5.0.21](https://img.shields.io/badge/Version-5.0.21-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 5.0.5](https://img.shields.io/badge/AppVersion-5.0.5-informational?style=flat-square)
+![Version: 5.0.22](https://img.shields.io/badge/Version-5.0.22-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 5.0.13](https://img.shields.io/badge/AppVersion-5.0.13-informational?style=flat-square)
 
 A Helm chart for Kubernetes
 
@@ -272,14 +272,16 @@ A Helm chart for Kubernetes
 | ontrack.persistence.enabled | bool | `true` | Enabling the persistent storage |
 | ontrack.persistence.size | string | `"5Gi"` | PVC initial size |
 | ontrack.persistence.storageClass | string | `nil` | If defined, storageClassName: <storageClass> If set to "-", storageClassName: "", which disables dynamic provisioning If undefined (the default) or set to null, no storageClassName spec is   set, choosing the default provisioner.  (gp2 on AWS, standard on   GKE, AWS & OpenStack) |
+| ontrack.podAnnotations | object | `{}` | Annotations for the Yontrack pod |
 | ontrack.profiles | string | `"prod"` | Comma-separated list of active Spring profiles |
 | ontrack.resources.limits.cpu | string | `"800m"` | Ontrack resources |
 | ontrack.resources.limits.memory | string | `"2Gi"` | Ontrack resources |
+| ontrack.resources.memory | string | `"1Gi"` |  |
 | ontrack.resources.requests.cpu | string | `"800m"` | Ontrack resources |
-| ontrack.resources.requests.memory | string | `"1Gi"` | Ontrack resources |
 | ontrack.ui.config | object | `{"customSignin":true}` | UI configuration |
 | ontrack.ui.config.customSignin | bool | `true` | Using the custom signin page |
 | ontrack.ui.image | string | `"nemerosa/ontrack-ui"` | Image to use for the UI |
+| ontrack.ui.podAnnotations | object | `{}` | Annotations for the Yontrack UI pod |
 | ontrack.ui.replicas | int | `1` | Number of replicas for the UI (experimental) |
 | ontrack.ui.resources | object | `{"limits":{"cpu":"800m","memory":"1Gi"},"requests":{"cpu":"800m","memory":"1Gi"}}` | Next UI resources |
 | ontrack.ui.resources.limits.cpu | string | `"800m"` | Next UI resources |

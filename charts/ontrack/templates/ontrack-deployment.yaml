@@ -11,7 +11,7 @@ spec:
       {{- include "ontrack.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      {{- with .Values.podAnnotations }}
+      {{- with merge (deepCopy .Values.ontrack.podAnnotations | default (dict)) (deepCopy .Values.podAnnotations | default (dict)) }}
       annotations:
         {{- toYaml . | nindent 8 }}
       {{- end }}

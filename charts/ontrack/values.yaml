@@ -136,6 +136,8 @@ ontrack:
         cpu: 800m
         # -- Next UI resources
         memory: 1Gi
+    # -- Annotations for the Yontrack UI pod
+    podAnnotations: { }
     # -- UI configuration
     config:
       # -- Using the custom signin page
@@ -151,7 +153,9 @@ ontrack:
       # -- Ontrack resources
       cpu: 800m
       # -- Ontrack resources
-      memory: 1Gi
+    memory: 1Gi
+  # -- Annotations for the Yontrack pod
+  podAnnotations: { }
   # Persistence configuration
   persistence:
     # -- Enabling the persistent storage
