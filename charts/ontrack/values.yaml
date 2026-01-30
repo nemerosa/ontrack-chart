@@ -154,6 +154,16 @@ ontrack:
       cpu: 800m
       # -- Ontrack resources
     memory: 1Gi
+  # -- Probes configuration
+  probes:
+    # -- Startup probe configuration
+    startup:
+      # -- Failure threshold at startup
+      failureThreshold: 5
+      # -- Probe interval at startup
+      periodSeconds: 30
+      # -- Initial delay at startup
+      initialDelaySeconds: 60
   # -- Annotations for the Yontrack pod
   podAnnotations: { }
   # Persistence configuration

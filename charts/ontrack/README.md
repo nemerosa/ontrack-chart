@@ -273,6 +273,11 @@ A Helm chart for Kubernetes
 | ontrack.persistence.size | string | `"5Gi"` | PVC initial size |
 | ontrack.persistence.storageClass | string | `nil` | If defined, storageClassName: <storageClass> If set to "-", storageClassName: "", which disables dynamic provisioning If undefined (the default) or set to null, no storageClassName spec is   set, choosing the default provisioner.  (gp2 on AWS, standard on   GKE, AWS & OpenStack) |
 | ontrack.podAnnotations | object | `{}` | Annotations for the Yontrack pod |
+| ontrack.probes | object | `{"startup":{"failureThreshold":5,"initialDelaySeconds":60,"periodSeconds":30}}` | Probes configuration |
+| ontrack.probes.startup | object | `{"failureThreshold":5,"initialDelaySeconds":60,"periodSeconds":30}` | Startup probe configuration |
+| ontrack.probes.startup.failureThreshold | int | `5` | Failure threshold at startup |
+| ontrack.probes.startup.initialDelaySeconds | int | `60` | Initial delay at startup |
+| ontrack.probes.startup.periodSeconds | int | `30` | Probe interval at startup |
 | ontrack.profiles | string | `"prod"` | Comma-separated list of active Spring profiles |
 | ontrack.resources.limits.cpu | string | `"800m"` | Ontrack resources |
 | ontrack.resources.limits.memory | string | `"2Gi"` | Ontrack resources |
