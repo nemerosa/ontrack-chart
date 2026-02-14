@@ -441,6 +441,8 @@ auth:
       accessTokenLifespan: 3600
       # -- Initial Ontrack user to create
       admin:
+        # -- Enabling the provisioning of the admin user
+        enabled: true
         # -- Email
         # If not set, `auth.admin.email` is used
         email: ""

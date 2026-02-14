@@ -206,7 +206,8 @@ Use the following values, at a minimum:
 auth:
   keycloak:
     settings:
-      enabled: false
+      admin:
+        enabled: false
     ldap:
       enabled: true
       url: <url to the LDAP>
