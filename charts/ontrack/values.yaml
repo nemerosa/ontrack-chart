@@ -152,8 +152,6 @@ ontrack:
     requests:
       # -- Ontrack resources
       cpu: 800m
-      # -- Ontrack resources
-    memory: 1Gi
   # -- Probes configuration
   probes:
     # -- Startup probe configuration
