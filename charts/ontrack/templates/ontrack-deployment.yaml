@@ -92,9 +92,6 @@ spec:
             {{- if .Values.ontrack.application_yaml }}
             - name: ONTRACK_ARGS
               value: "--spring.config.location=classpath:/config/application.yml,/var/ontrack/config/application.yaml"
-            {{- else }}
-            - name: ONTRACK_ARGS
-              value: ""
             {{- end }}
             ########################################
             # Database configuration
@@ -218,8 +215,10 @@ spec:
               {{- $locations = append $locations (printf "file://%s/values" .Values.ontrack.casc.directory) -}}
             {{- end -}}
             {{- $locationsValue := join "," $locations }}
+            {{- if $locationsValue }}
             - name: ONTRACK_CONFIG_CASC_LOCATIONS
               value: {{ $locationsValue | quote }}
+            {{- end }}
             {{- if .Values.ontrack.casc.reloading.enabled }}
             - name: ONTRACK_CONFIG_CASC_RELOADING_ENABLED
               value: "true"
