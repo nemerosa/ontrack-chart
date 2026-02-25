@@ -1,6 +1,6 @@
 {{- if and (eq "keycloak" .Values.auth.kind) (not .Values.auth.keycloak.external.enabled) }}
-{{- if and .Values.auth.keycloak.settings.enabled .Values.auth.keycloak.ldap.enabled -}}
-{{- fail "For Keycloak, either the settings or the LDAP must be enabled, not both." -}}
+{{- if and .Values.auth.keycloak.settings.admin.enabled .Values.auth.keycloak.ldap.enabled -}}
+{{- fail "For Keycloak, either the admin settings or the LDAP must be enabled, not both." -}}
 {{- end }}
 apiVersion: apps/v1
 kind: Deployment
