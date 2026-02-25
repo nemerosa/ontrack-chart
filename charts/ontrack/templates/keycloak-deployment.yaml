@@ -171,7 +171,7 @@ spec:
               value: {{ .Values.auth.keycloak.bootstrap.password | quote }}
             {{- end }}
             {{/* Initial admin user for Yontrack */}}
-            {{- if .Values.auth.keycloak.settings.enabled }}
+            {{- if and .Values.auth.keycloak.settings.enabled .Values.auth.keycloak.settings.admin.enabled }}
             {{- if .Values.auth.keycloak.settings.admin.secret.enabled }}
             - name: KEYCLOAK_USER_ADMIN_USERNAME
               valueFrom:
