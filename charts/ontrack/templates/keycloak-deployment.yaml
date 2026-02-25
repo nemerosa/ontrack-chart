@@ -120,12 +120,13 @@ spec:
               subPath: yontrack
               name: {{ include "ontrack.fullname" . }}-keycloak-theme-dir
           {{- if .Values.auth.keycloak.settings.enabled }}
-            - mountPath: /opt/keycloak/data/import
-              name: {{ include "ontrack.fullname" . }}-keycloak-settings
-          {{- end }}
-          {{- if .Values.auth.keycloak.ldap.enabled }}
+            {{- if .Values.auth.keycloak.ldap.enabled }}
             - mountPath: /opt/keycloak/data/import
               name: {{ include "ontrack.fullname" . }}-keycloak-ldap-json
+            {{- else }}
+            - mountPath: /opt/keycloak/data/import
+              name: {{ include "ontrack.fullname" . }}-keycloak-settings
+            {{- end }}
           {{- end }}
           env:
             - name: KC_DB
