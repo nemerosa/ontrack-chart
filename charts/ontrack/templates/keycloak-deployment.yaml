@@ -238,24 +238,25 @@ spec:
         - name: {{ include "ontrack.fullname" . }}-keycloak-theme-dir
           emptyDir: {}
       {{- if .Values.auth.keycloak.settings.enabled }}
-        - name: {{ include "ontrack.fullname" . }}-keycloak-settings
-          configMap:
-            name: {{ include "ontrack.fullname" . }}-keycloak-settings
-            optional: false
-      {{- end }}
-      {{- if .Values.auth.keycloak.ldap.enabled }}
+        {{- if .Values.auth.keycloak.ldap.enabled }}
         - name: {{ include "ontrack.fullname" . }}-keycloak-ldap-template
           configMap:
             name: {{ include "ontrack.fullname" . }}-keycloak-ldap-template
             optional: false
         - name: {{ include "ontrack.fullname" . }}-keycloak-ldap-json
           emptyDir: {}
-        {{- if .Values.auth.keycloak.ldap.bindCredentialSecret.enabled }}
+          {{- if .Values.auth.keycloak.ldap.bindCredentialSecret.enabled }}
         - name: {{ include "ontrack.fullname" . }}-keycloak-ldap-secret
           projected:
             sources:
               - secret:
                   name: {{ .Values.auth.keycloak.ldap.bindCredentialSecret.secretName | quote }}
+          {{- end }}
+        {{- else }}
+        - name: {{ include "ontrack.fullname" . }}-keycloak-settings
+          configMap:
+            name: {{ include "ontrack.fullname" . }}-keycloak-settings
+            optional: false
         {{- end }}
       {{- end }}
       {{- with .Values.nodeSelector }}
