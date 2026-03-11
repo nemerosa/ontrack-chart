@@ -113,12 +113,12 @@ initContainers:
       # -- CPU limits for the init containers
       cpu: 100m
       # -- Memory limits for the init containers
-      memory: 100m
+      memory: 50Mi
     requests:
       # -- CPU request for the init containers
       cpu: 100m
       # -- Memory request for the init containers
-      memory: 100m
+      memory: 50Mi
 
 # Ontrack configuration
 ontrack:
