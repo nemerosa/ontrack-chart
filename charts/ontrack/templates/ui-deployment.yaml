@@ -72,6 +72,8 @@ spec:
               {{- if .Values.auth.keycloak.external.enabled }}
             - name: NEXTAUTH_ISSUER
               value: {{ .Values.auth.keycloak.external.url | quote }}
+            - name: NEXTAUTH_SCOPE
+              value: {{ .Values.auth.oidc.scope | quote }}
               {{- else }}
             - name: NEXTAUTH_ISSUER
               value: {{ .Values.ontrack.url }}/{{ .Values.auth.keycloak.service.path }}/realms/{{ .Values.auth.keycloak.realm }}

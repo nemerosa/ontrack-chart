@@ -332,6 +332,8 @@ auth:
   oidc:
     # -- Display name for your IdP (used for the login page)
     name: OIDC
+    # -- OIDC scope
+    scope: "openid profile email"
     # -- OIDC issuer URL
     issuer: ""
     # -- Trailing slash for the issuer URL (used for Auth0)
