@@ -154,10 +154,10 @@ spec:
             {{- if (eq "oidc" .Values.auth.kind) }}
               {{- if .Values.auth.oidc.trailingSlash }}
             - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI
-              value: "{{ .Values.auth.oidc.issuer }}/"
+              value: "{{ (.Values.auth.oidc.jwt).issuer | default .Values.auth.oidc.issuer }}/"
               {{- else }}
             - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI
-              value: "{{ .Values.auth.oidc.issuer }}"
+              value: "{{ (.Values.auth.oidc.jwt).issuer | default .Values.auth.oidc.issuer }}"
               {{- end }}
             {{- end }}
             {{- if (eq "keycloak" .Values.auth.kind) }}

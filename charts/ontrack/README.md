@@ -1,6 +1,6 @@
 # yontrack-chart
 
-![Version: 5.0.30](https://img.shields.io/badge/Version-5.0.30-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 5.0.28](https://img.shields.io/badge/AppVersion-5.0.28-informational?style=flat-square)
+![Version: 5.0.31](https://img.shields.io/badge/Version-5.0.31-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 5.0.30](https://img.shields.io/badge/AppVersion-5.0.30-informational?style=flat-square)
 
 A Helm chart for Kubernetes
 

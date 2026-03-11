@@ -48,6 +48,8 @@ spec:
               value: {{ .Values.auth.oidc.name | quote }}
             - name: NEXTAUTH_ISSUER
               value: {{ .Values.auth.oidc.issuer | quote }}
+            - name: NEXTAUTH_SCOPE
+              value: {{ .Values.auth.oidc.scope | quote }}
               {{- if .Values.auth.oidc.credentials.secret.enabled }}
             - name: NEXTAUTH_CLIENT_ID
               valueFrom:
@@ -72,8 +74,6 @@ spec:
               {{- if .Values.auth.keycloak.external.enabled }}
             - name: NEXTAUTH_ISSUER
               value: {{ .Values.auth.keycloak.external.url | quote }}
-            - name: NEXTAUTH_SCOPE
-              value: {{ .Values.auth.oidc.scope | quote }}
               {{- else }}
             - name: NEXTAUTH_ISSUER
               value: {{ .Values.ontrack.url }}/{{ .Values.auth.keycloak.service.path }}/realms/{{ .Values.auth.keycloak.realm }}
