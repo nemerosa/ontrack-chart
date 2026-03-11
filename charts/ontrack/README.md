@@ -1,6 +1,6 @@
 # yontrack-chart
 
-![Version: 5.0.23](https://img.shields.io/badge/Version-5.0.23-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 5.0.22](https://img.shields.io/badge/AppVersion-5.0.22-informational?style=flat-square)
+![Version: 5.0.27](https://img.shields.io/badge/Version-5.0.27-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 5.0.26](https://img.shields.io/badge/AppVersion-5.0.26-informational?style=flat-square)
 
 A Helm chart for Kubernetes
 
@@ -208,6 +208,7 @@ A Helm chart for Kubernetes
 | ingress.annotations | object | `{}` | Annotations for the Ingress |
 | ingress.enabled | bool | `true` | Creating an Ingress for the Ontrack different services. This is required when using Keycloak. |
 | ingress.host | string | `"ontrack.local"` | Host for Ontrack |
+| ingress.ingressClassName | string | `""` | Ingress class name |
 | ingress.tls.enabled | bool | `true` | Using TLS for Ontrack |
 | ingress.tls.secretName | string | `""` | Name of the secret containing the TLS certificate If not provided, defaults to <host>-tls |
 | initContainers | object | `{"image":{"repository":"busybox","tag":"1.37.0"}}` | General configuration of the init containers |
@@ -282,7 +283,6 @@ A Helm chart for Kubernetes
 | ontrack.profiles | string | `"prod"` | Comma-separated list of active Spring profiles |
 | ontrack.resources.limits.cpu | string | `"800m"` | Ontrack resources |
 | ontrack.resources.limits.memory | string | `"2Gi"` | Ontrack resources |
-| ontrack.resources.memory | string | `"1Gi"` |  |
 | ontrack.resources.requests.cpu | string | `"800m"` | Ontrack resources |
 | ontrack.ui.config | object | `{"customSignin":true}` | UI configuration |
 | ontrack.ui.config.customSignin | bool | `true` | Using the custom signin page |

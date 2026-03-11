@@ -72,6 +72,8 @@ management:
 ingress:
   # -- Creating an Ingress for the Ontrack different services. This is required when using Keycloak.
   enabled: true
+  # -- Ingress class name
+  ingressClassName: ""
   # -- Annotations for the Ingress
   annotations: {}
   # -- Host for Ontrack
