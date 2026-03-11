@@ -1,6 +1,6 @@
 # yontrack-chart
 
-![Version: 5.0.27](https://img.shields.io/badge/Version-5.0.27-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 5.0.26](https://img.shields.io/badge/AppVersion-5.0.26-informational?style=flat-square)
+![Version: 5.0.28](https://img.shields.io/badge/Version-5.0.28-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 5.0.26](https://img.shields.io/badge/AppVersion-5.0.26-informational?style=flat-square)
 
 A Helm chart for Kubernetes
 
@@ -211,9 +211,14 @@ A Helm chart for Kubernetes
 | ingress.ingressClassName | string | `""` | Ingress class name |
 | ingress.tls.enabled | bool | `true` | Using TLS for Ontrack |
 | ingress.tls.secretName | string | `""` | Name of the secret containing the TLS certificate If not provided, defaults to <host>-tls |
-| initContainers | object | `{"image":{"repository":"busybox","tag":"1.37.0"}}` | General configuration of the init containers |
+| initContainers | object | `{"image":{"repository":"busybox","tag":"1.37.0"},"resources":{"limits":{"cpu":"100m","memory":"100m"},"requests":{"cpu":"100m","memory":"100m"}}}` | General configuration of the init containers |
 | initContainers.image | object | `{"repository":"busybox","tag":"1.37.0"}` | Configuration of the image used for the init containers |
 | initContainers.image.repository | string | `"busybox"` | Image repository (including the registry) |
+| initContainers.resources | object | `{"limits":{"cpu":"100m","memory":"100m"},"requests":{"cpu":"100m","memory":"100m"}}` | Resources for the init containers of Yontrack |
+| initContainers.resources.limits.cpu | string | `"100m"` | CPU limits for the init containers |
+| initContainers.resources.limits.memory | string | `"100m"` | Memory limits for the init containers |
+| initContainers.resources.requests.cpu | string | `"100m"` | CPU request for the init containers |
+| initContainers.resources.requests.memory | string | `"100m"` | Memory request for the init containers |
 | keycloak-postgresql | object | `{"auth":{"database":"keycloak","password":"keycloak","username":"keycloak"},"image":{"repository":"bitnamilegacy/postgresql"}}` | Local database |
 | keycloak-postgresql.auth | object | `{"database":"keycloak","password":"keycloak","username":"keycloak"}` | Authentication parameters |
 | keycloak-postgresql.auth.database | string | `"keycloak"` | Name of the database to create |

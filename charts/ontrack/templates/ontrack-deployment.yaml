@@ -33,6 +33,7 @@ spec:
                 sleep 5
               done
               echo "Elasticsearch is ready!"
+          resources: {{ toYaml .Values.initContainers.resources | nindent 12 }}
       {{- end }}
       serviceAccountName: {{ include "ontrack.serviceAccountName" . }}
       securityContext:

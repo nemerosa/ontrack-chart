@@ -107,6 +107,18 @@ initContainers:
     repository: busybox
     # Image tag
     tag: 1.37.0
+  # -- Resources for the init containers of Yontrack
+  resources:
+    limits:
+      # -- CPU limits for the init containers
+      cpu: 100m
+      # -- Memory limits for the init containers
+      memory: 100m
+    requests:
+      # -- CPU request for the init containers
+      cpu: 100m
+      # -- Memory request for the init containers
+      memory: 100m
 
 # Ontrack configuration
 ontrack:
