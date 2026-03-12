@@ -706,8 +706,6 @@ auth:
   # jwt:
     # Enabling debugging in Ontrack
     # debug: false
-    # Specific issuer URL for the JWT check
-    # issuer: ""
     # Audience
     # audience: ""
     # If the `typ` claim is different than "JWT"
