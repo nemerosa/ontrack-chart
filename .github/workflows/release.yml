@@ -98,5 +98,5 @@ jobs:
       - name: Yontrack release
         if: ${{ steps.publish.outcome != '' && steps.publish.outcome != 'skipped' }}
         run: |
-          yontrack validate --validation release --status ${{ steps.publish.outcome == 'success' && 'PASSED' || 'FAILED' }}
           yontrack build set-property release "${{ steps.release.outputs.currentRelease }}"
+          yontrack validate --validation release --status ${{ steps.publish.outcome == 'success' && 'PASSED' || 'FAILED' }}
