@@ -4,44 +4,47 @@ Ontrack Helm Chart
 This Helm chart is compatible with Helm 3 and allows the installation of Ontrack in a Kubernetes cluster.
 
 <!-- TOC -->
-
 * [Ontrack Helm Chart](#ontrack-helm-chart)
 * [Usage](#usage)
 * [References](#references)
 * [License key](#license-key)
 * [Ingress configuration](#ingress-configuration)
 * [Authentication](#authentication)
-    * [Default local Keycloak instance](#default-local-keycloak-instance)
-    * [OIDC for Okta](#oidc-for-okta)
-    * [OIDC for Auth0](#oidc-for-auth0)
-    * [LDAP](#ldap)
-        * [Using a secret for the LDAP credentials](#using-a-secret-for-the-ldap-credentials)
-        * [Keycloak LDAP configuration](#keycloak-ldap-configuration)
-    * [Management of users in Ontrack](#management-of-users-in-ontrack)
-    * [Logging authentication](#logging-authentication)
-    * [Next Auth secret](#next-auth-secret)
-    * [Configuration of groups](#configuration-of-groups)
-        * [Keycloak database](#keycloak-database)
-        * [LDAP in Keycloak](#ldap-in-keycloak)
-        * [Okta](#okta)
+  * [Default local Keycloak instance](#default-local-keycloak-instance)
+  * [OIDC for Okta](#oidc-for-okta)
+  * [OIDC for Auth0](#oidc-for-auth0)
+  * [LDAP](#ldap)
+    * [Using a secret for the LDAP credentials](#using-a-secret-for-the-ldap-credentials)
+    * [Keycloak LDAP configuration](#keycloak-ldap-configuration)
+    * [Active Directory support](#active-directory-support)
+  * [Management of users in Ontrack](#management-of-users-in-ontrack)
+  * [Logging authentication](#logging-authentication)
+  * [Next Auth secret](#next-auth-secret)
+  * [Configuration of groups](#configuration-of-groups)
+    * [Keycloak database](#keycloak-database)
+    * [LDAP in Keycloak](#ldap-in-keycloak)
+    * [Okta](#okta)
 * [Using a managed database](#using-a-managed-database)
+* [Using an external Elasticsearch instance](#using-an-external-elasticsearch-instance)
 * [Configuration as code (CasC)](#configuration-as-code-casc)
-    * [Secrets mappings](#secrets-mappings)
-        * [Using environment variables](#using-environment-variables)
-        * [Using secret files](#using-secret-files)
+  * [Secrets mappings](#secrets-mappings)
+    * [Using environment variables](#using-environment-variables)
+    * [Using secret files](#using-secret-files)
+  * [CasC directly in values](#casc-directly-in-values)
 * [Using a K8S secret for the encryption keys](#using-a-k8s-secret-for-the-encryption-keys)
-    * [Generating the secrets from scratch (new installation)](#generating-the-secrets-from-scratch-new-installation)
-    * [Copying the secrets (existing installation)](#copying-the-secrets-existing-installation)
-    * [Creating the secret in K8S](#creating-the-secret-in-k8s)
+  * [Generating the secrets from scratch (new installation)](#generating-the-secrets-from-scratch-new-installation)
+  * [Copying the secrets (existing installation)](#copying-the-secrets-existing-installation)
+  * [Creating the secret in K8S](#creating-the-secret-in-k8s)
+  * [Using an external secret for the decryption key](#using-an-external-secret-for-the-decryption-key)
+* [OpenShift support](#openshift-support)
 * [Change log](#change-log)
-    * [1.0](#10)
-    * [0.13](#013)
-    * [0.12](#012)
-    * [0.11](#011)
-    * [0.10](#010)
+  * [1.0](#10)
+  * [0.13](#013)
+  * [0.12](#012)
+  * [0.11](#011)
+  * [0.10](#010)
 * [Development](#development)
-    * [Documentation generation](#documentation-generation)
-
+  * [Documentation generation](#documentation-generation)
 <!-- TOC -->
 
 # Usage
@@ -52,7 +55,7 @@ Helm's [documentation](https://helm.sh/docs) to get started.
 The Yontrack Helm chart is available as an OCI Helm chart in Docker Hub.
 
 ```
-helm install yontrack oci://registry-1.docker.io/nemerosa/charts/yontrack
+helm install yontrack oci://registry-1.docker.io/nemerosa/yontrack-chart
 ```
 
 To uninstall the chart:
