@@ -195,10 +195,10 @@ spec:
             ########################################
             # Metrics tags
             ########################################
-            - name: MANAGEMENT_METRICS_TAGS_APPLICATION
-              value: {{ .Values.ontrack.management.metrics.tags.application | quote }}
-            - name: MANAGEMENT_METRICS_TAGS_APPLICATION_INSTANCE
-              value: {{ .Values.ontrack.management.metrics.tags.application_instance | quote }}
+            {{- range $k,$v := .Values.ontrack.management.metrics.tags }}
+            - name: MANAGEMENT_METRICS_TAGS_{{ $k | snakecase | upper }}
+              value: {{ $v | quote }}
+            {{- end }}
             ########################################
             # Casc
             ########################################
