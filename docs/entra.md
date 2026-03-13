@@ -85,7 +85,7 @@ auth:
         #  clientId: 61b85f3c-7b10-4b12-8e0d-1bb3feec1707
         #  clientSecret: myrandomsecret
         secretName: oidc-secret
-    scope: openid profile email 61b85f3c-7b10-4b12-8e0d-1bb3feec1707/.default
+    scope: openid profile email 61b85f3c-7b10-4b12-8e0d-1bb3feec1707/.default offline_access
   jwt:
     # Application ID URI as displayed in Entra
     audience: api://61b85f3c-7b10-4b12-8e0d-1bb3feec1707
