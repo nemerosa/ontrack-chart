@@ -84,7 +84,7 @@ jobs:
         id: changelog
         if: ${{ steps.publish.outcome == 'success' }}
         run: |
-          yontrack build changelog semantic --from-promotion RELEASE --emojis > changelog.md
+          yontrack build changelog semantic --from-promotion RELEASE --emojis --issues > changelog.md
 
       - name: GitHub release
         if: ${{ steps.changelog.outcome == 'success' && steps.publish.outcome == 'success' }}
