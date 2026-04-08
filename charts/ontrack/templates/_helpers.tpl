@@ -34,9 +34,11 @@ Create chart name and version as used by the chart label.
 Common labels
 */}}
 {{- define "ontrack.labels" -}}
+{{- if .Values.includeVersionLabels }}
 helm.sh/chart: {{ include "ontrack.chart" . }}
+{{- end }}
 {{ include "ontrack.selectorLabels" . }}
-{{- if .Chart.AppVersion }}
+{{- if and .Chart.AppVersion .Values.includeVersionLabels }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
@@ -46,9 +48,11 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 Common labels for mgt server
 */}}
 {{- define "ontrack.labels.mgt" -}}
+{{- if .Values.includeVersionLabels }}
 helm.sh/chart: {{ include "ontrack.chart" . }}
+{{- end }}
 {{ include "ontrack.selectorLabels.mgt" . }}
-{{- if .Chart.AppVersion }}
+{{- if and .Chart.AppVersion .Values.includeVersionLabels }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
@@ -58,9 +62,11 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 Common labels for UI
 */}}
 {{- define "ontrack.labels.ui" -}}
+{{- if .Values.includeVersionLabels }}
 helm.sh/chart: {{ include "ontrack.chart" . }}
+{{- end }}
 {{ include "ontrack.selectorLabels.ui" . }}
-{{- if .Chart.AppVersion }}
+{{- if and .Chart.AppVersion .Values.includeVersionLabels }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
@@ -70,9 +76,11 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 Common labels for Keycloak
 */}}
 {{- define "ontrack.labels.keycloak" -}}
+{{- if .Values.includeVersionLabels }}
 helm.sh/chart: {{ include "ontrack.chart" . }}
+{{- end }}
 {{ include "ontrack.selectorLabels.keycloak" . }}
-{{- if .Chart.AppVersion }}
+{{- if and .Chart.AppVersion .Values.includeVersionLabels }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
@@ -82,9 +90,11 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 Common labels for Keycloak Postgres
 */}}
 {{- define "ontrack.labels.keycloak.postgres" -}}
+{{- if .Values.includeVersionLabels }}
 helm.sh/chart: {{ include "ontrack.chart" . }}
+{{- end }}
 {{ include "ontrack.selectorLabels.keycloak.postgres" . }}
-{{- if .Chart.AppVersion }}
+{{- if and .Chart.AppVersion .Values.includeVersionLabels }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
@@ -94,9 +104,11 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 Common labels for LDAP
 */}}
 {{- define "ontrack.labels.ldap" -}}
+{{- if .Values.includeVersionLabels }}
 helm.sh/chart: {{ include "ontrack.chart" . }}
+{{- end }}
 {{ include "ontrack.selectorLabels.ldap" . }}
-{{- if .Chart.AppVersion }}
+{{- if and .Chart.AppVersion .Values.includeVersionLabels }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}

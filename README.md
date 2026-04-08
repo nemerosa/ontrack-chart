@@ -37,6 +37,7 @@ This Helm chart is compatible with Helm 3 and allows the installation of Ontrack
   * [Creating the secret in K8S](#creating-the-secret-in-k8s)
   * [Using an external secret for the decryption key](#using-an-external-secret-for-the-decryption-key)
 * [OpenShift support](#openshift-support)
+* [GitOps / rendered manifests](#gitops--rendered-manifests)
 * [Change log](#change-log)
   * [1.0](#10)
   * [0.13](#013)
@@ -661,6 +662,19 @@ When enabled:
 * init containers are also configured with security contexts.
 
 For the sub-charts (PostgreSQL, RabbitMQ, Elasticsearch), the `global.compatibility.openshift.adaptSecurityContext` is set to `auto` by default to help them run on OpenShift.
+
+# GitOps / rendered manifests
+
+When using a GitOps workflow (e.g. ArgoCD, Flux) where Helm templates are rendered and committed to a
+git repository, every chart or app version bump would normally produce a diff touching every resource,
+because `helm.sh/chart` and `app.kubernetes.io/version` are included in all resource labels by default.
+
+To suppress this churn, these two labels are **omitted by default**. Set `includeVersionLabels: true`
+to re-enable them (useful for observability tooling that relies on these labels for filtering):
+
+```yaml
+includeVersionLabels: true
+```
 
 # Change log
 

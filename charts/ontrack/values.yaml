@@ -14,6 +14,11 @@ image:
 
 # -- List of secrets used to pull images
 imagePullSecrets: [ ]
+
+# -- When false (default), omits `helm.sh/chart` and `app.kubernetes.io/version` from all resource labels.
+# Enable when you want standard Kubernetes recommended labels for observability/filtering.
+# Keeping this false avoids noisy diffs in GitOps rendered-manifest workflows.
+includeVersionLabels: false
 # -- Name to use instead of the chart name
 nameOverride: ""
 # -- If defined, uses this name for the resource names instead of the using the chart name
