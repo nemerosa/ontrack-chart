@@ -359,6 +359,25 @@ auth:
       generate: false
 ```
 
+To use an external secret:
+
+```yaml
+auth:
+  next:
+    secret:
+      name: ontrack-next-auth
+      generate: false
+      externalSecret:
+        enabled: true
+        refreshInterval: 6h
+        store:
+          name: vault-backend
+          kind: ClusterSecretStore
+          path: ontrack/next-auth
+```
+
+In this example, the Vault secret must have a `secret` entry containing the secret value.
+
 ## Configuration of groups
 
 If groups set in the IdP are passed in the `groups` claim of the JWT access token, Yontrack

@@ -702,6 +702,21 @@ auth:
       name: ontrack-next-auth
       # -- Generating the secret
       generate: true
+      # -- Using an external secret
+      externalSecret:
+        # -- Creating the external secret definition
+        enabled: false
+        # -- Refresh interval
+        refreshInterval: 6h
+        # -- Location of the secret to bind to
+        store:
+          # -- Name of the secret store
+          name: vault-backend
+          # -- Scope of the secret store
+          kind: ClusterSecretStore
+          # -- Path to the secret in the store.
+          # -- The entry is expected to have the following keys: username & password
+          path: ontrack/next-auth
   # Specific setup for parsing the JWT access tokens
   # jwt:
     # Enabling debugging in Ontrack
