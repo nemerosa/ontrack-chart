@@ -205,6 +205,8 @@ spec:
               value: "{{ .Values.ontrack.url }}/{{ .Values.auth.keycloak.service.path }}"
             - name: KC_HTTP_RELATIVE_PATH
               value: "/{{ .Values.auth.keycloak.service.path }}"
+            - name: KC_HOSTNAME_BACKCHANNEL_DYNAMIC
+              value: "true"
             - name: KC_HEALTH_ENABLED
               value: "true"
             - name: KC_LOG_LEVEL

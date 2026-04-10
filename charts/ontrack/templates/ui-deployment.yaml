@@ -77,6 +77,8 @@ spec:
               {{- else }}
             - name: NEXTAUTH_ISSUER
               value: {{ .Values.ontrack.url }}/{{ .Values.auth.keycloak.service.path }}/realms/{{ .Values.auth.keycloak.realm }}
+            - name: NEXTAUTH_ISSUER_INTERNAL
+              value: "http://{{ include "ontrack.fullname" . }}-keycloak:{{ .Values.auth.keycloak.service.port }}/{{ .Values.auth.keycloak.service.path }}/realms/{{ .Values.auth.keycloak.realm }}"
               {{- end }}
               {{- if and .Values.auth.keycloak.account.url (not .Values.auth.keycloak.ldap.enabled) }}
             - name: YONTRACK_UI_MANAGE_ACCOUNT_URL
