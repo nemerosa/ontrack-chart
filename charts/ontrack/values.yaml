@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   # -- Image to use for Ontrack (backend)
-  repository: nemerosa/ontrack
+  repository: yontrack/yontrack
   # -- Pull policy
   pullPolicy: IfNotPresent
   # -- Overrides the image tag whose default is the chart appVersion.
@@ -138,7 +138,7 @@ ontrack:
     # -- Number of replicas for the UI (experimental)
     replicas: 1
     # -- Image to use for the UI
-    image: nemerosa/ontrack-ui
+    image: yontrack/yontrack-ui
     # Service
     service:
       # -- Exposed port for the Ontrack IO
