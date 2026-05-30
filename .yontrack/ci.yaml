@@ -12,7 +12,7 @@ configuration:
             - release
       autoVersioning:
         configurations:
-          - sourceProject: ontrack
+          - sourceProject: yontrack
             sourceBranch: main
             sourcePromotion: RELEASE
             targetPath: charts/ontrack/Chart.yaml
