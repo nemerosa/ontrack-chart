@@ -8,26 +8,8 @@
 "ssoSessionIdleTimeout": {{ .Values.auth.keycloak.settings.ssoSessionIdleTimeout }},
 "accessTokenLifespan": {{ .Values.auth.keycloak.settings.accessTokenLifespan }},
 "requiredActions": [],
-{{- if .Values.auth.keycloak.settings.admin.enabled }}
-"users": [
-    {
-      "username": "${KEYCLOAK_USER_ADMIN_USERNAME}",
-      "enabled": true,
-      "email": "{{ .Values.auth.keycloak.settings.admin.email | default .Values.auth.admin.email }}",
-      "firstName": "{{ .Values.auth.keycloak.settings.admin.firstName }}",
-      "lastName": "{{ .Values.auth.keycloak.settings.admin.lastName }}",
-      "emailVerified": true,
-      "credentials": [
-        {
-          "type": "password",
-          "value": "${KEYCLOAK_USER_ADMIN_PASSWORD}"
-        }
-      ]
-    }
-],
-{{- else }}
-"users": [],
-{{- end }}
+"groups": {{ include "ontrack.keycloak.groups" . }},
+"users": {{ include "ontrack.keycloak.users" (dict "root" . "admin" true) }},
 "clients": [
     {
       "name": {{ .Values.auth.keycloak.clientName | quote }},

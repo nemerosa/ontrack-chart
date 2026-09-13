@@ -56,22 +56,27 @@ global:
       adaptSecurityContext: auto
 
 service:
-  # -- Service type for the Yontrack service
+  # -- Service type for the Yontrack service.
+  # Must be ClusterIP unless `management.service.specific` is true, since the management port must never be exposed outside the cluster.
   type: ClusterIP
   # -- Exposed port for the Yontrack service
   port: 8080
   # -- Annotations for the Yontrack service
   annotations: { }
 
+# The management port (8800) serves unauthenticated endpoints (health, metrics): the chart never routes it
+# through the Ingress and fails to render any Service exposing it outside the cluster (checked by scripts/test-templates.sh).
 management:
   service:
-    # -- Exposed port for the Yontrack management service
+    # -- Exposed port for the Yontrack management service. Must be different from `service.port`.
     port: 8800
-    # -- Set to true to have the management port exposed by another Service. By default, using the same service and two different named ports
+    # -- Set to true to have the management port exposed by another Service. By default, using the same service and two different named ports.
+    # Required to use a `service.type` other than ClusterIP, since the management port must never be exposed outside the cluster.
     specific: false
     # -- Annotations for the management service. Only used when specific == true
     annotations: { }
-    # -- Service type for the management. Only used when specific == true
+    # -- Service type for the management. Only used when specific == true.
+    # Must be ClusterIP: the management port must never be exposed outside the cluster.
     type: ClusterIP
 
 ingress:
@@ -456,6 +461,16 @@ auth:
       ssoSessionIdleTimeout: 3600
       # -- Access Token Lifespan (in seconds)
       accessTokenLifespan: 3600
+      # -- Names of the groups to create in the realm, carried in the `groups` claim.
+      # Not compatible with `auth.keycloak.ldap`. See `users` for existing installations.
+      groups: []
+      # -- Users to create in the realm, next to the `admin` user. Not compatible with `auth.keycloak.ldap`.
+      # Each user needs a `username`, an `email`, a `firstName`, a `lastName`, the `groups` it belongs to (declared in `groups`)
+      # and a `passwordSecret` (`name` & `key` of an existing secret containing its password, which must not contain `"` nor `\`).
+      # Passwords are never in the values nor in the rendered realm.
+      # On an existing installation, a post-install/post-upgrade job adds the missing groups & users to the realm:
+      # existing groups & users are left untouched (their passwords & groups are not updated).
+      users: []
       # -- Initial Yontrack user to create
       admin:
         # -- Enabling the provisioning of the admin user

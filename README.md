@@ -45,6 +45,7 @@ This Helm chart is compatible with Helm 3 and allows the installation of Yontrac
   * [0.11](#011)
   * [0.10](#010)
 * [Development](#development)
+  * [Template tests](#template-tests)
   * [Documentation generation](#documentation-generation)
 <!-- TOC -->
 
@@ -125,6 +126,10 @@ The following URLs are available:
 * `<host>` - the main Yontrack URL to access its UI
 * `<host>/graphql` - access to the Yontrack GraphQL API
 * `<host>/keycloak` - if the default Keycloak setup is enabled, access to the admin console of Keycloak
+
+> The Yontrack management port (8800) serves unauthenticated endpoints and is never routed.
+> The Service exposing it must be of type `ClusterIP`: to expose the Yontrack service with another type,
+> set `management.service.specific: true` so that the management port gets its own `ClusterIP` service.
 
 # Authentication
 
@@ -394,7 +399,37 @@ The way to setup the groups depend on the IdP you are using.
 
 ### Keycloak database
 
-You just need to configure the users and the groups directly in Keycloak.
+You can configure the users and the groups directly in Keycloak, or declare them in the values
+(not compatible with the [LDAP in Keycloak](#ldap-in-keycloak)):
+
+```yaml
+auth:
+  keycloak:
+    settings:
+      groups:
+        - scanners
+      users:
+        - username: scanner
+          email: scanner@example.com
+          firstName: Security
+          lastName: Scanner
+          groups:
+            - scanners
+          passwordSecret:
+            name: yontrack-scanner
+            key: password
+```
+
+* all the fields are required; `groups` must be declared in `auth.keycloak.settings.groups`
+* the password of each user is read from an existing secret: it is never in the values nor in the rendered realm,
+  and must not contain `"` nor `\`
+* these users are created next to the `auth.keycloak.settings.admin` user
+
+Keycloak imports the realm only when it does not exist yet. For an existing installation,
+a post-install/post-upgrade job (`<release>-keycloak-users`) adds the missing groups & users to the realm,
+using the Keycloak bootstrap administrator credentials (see [Keycloak authentication](docs/keycloak.md)).
+Groups & users which already exist in the realm are left untouched: changing the password or the groups of an
+existing user in the values has no effect, and removing a user from the values does not delete it.
 
 > The `groups` claim is automatically configured to be injected into the JWT access token.
 
@@ -774,6 +809,15 @@ ingress:
 ```
 
 # Development
+
+## Template tests
+
+Assertions on the rendered templates (Keycloak users & groups, management port never routed)
+are run by the CI and can be run locally (requires `helm`, `jq` and `yq`):
+
+```bash
+./scripts/test-templates.sh
+```
 
 ## Documentation generation
 

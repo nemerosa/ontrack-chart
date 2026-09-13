@@ -193,3 +193,164 @@ Usage:
   {{- randAlphaNum 32 }}
 {{- end }}
 {{- end }}
+
+{{/*
+Environment variables for the Keycloak bootstrap administrator (master realm)
+*/}}
+{{- define "ontrack.keycloak.bootstrapAdminEnv" -}}
+{{- if .Values.auth.keycloak.bootstrap.bootstrapSecret.enabled }}
+- name: KC_BOOTSTRAP_ADMIN_USERNAME
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.auth.keycloak.bootstrap.bootstrapSecret.secretName | quote }}
+      key: {{ .Values.auth.keycloak.bootstrap.bootstrapSecret.usernameKey | quote }}
+      optional: false
+- name: KC_BOOTSTRAP_ADMIN_PASSWORD
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.auth.keycloak.bootstrap.bootstrapSecret.secretName | quote }}
+      key: {{ .Values.auth.keycloak.bootstrap.bootstrapSecret.passwordKey | quote }}
+      optional: false
+{{- else }}
+- name: KC_BOOTSTRAP_ADMIN_USERNAME
+  value: {{ .Values.auth.keycloak.bootstrap.username | quote }}
+- name: KC_BOOTSTRAP_ADMIN_PASSWORD
+  value: {{ .Values.auth.keycloak.bootstrap.password | quote }}
+{{- end }}
+{{- end }}
+
+{{/*
+Validation of the groups & users declared in auth.keycloak.settings
+*/}}
+{{- define "ontrack.keycloak.validateUsers" -}}
+{{- $settings := .Values.auth.keycloak.settings }}
+{{- if or $settings.users $settings.groups }}
+  {{- if .Values.auth.keycloak.ldap.enabled }}
+    {{- fail "For Keycloak, auth.keycloak.settings.users and groups cannot be declared when the LDAP is enabled." }}
+  {{- end }}
+  {{- if not $settings.enabled }}
+    {{- fail "For Keycloak, auth.keycloak.settings.users and groups require auth.keycloak.settings.enabled." }}
+  {{- end }}
+{{- end }}
+{{- $groups := list }}
+{{- range $settings.groups }}
+  {{- $group := toString . }}
+  {{- if or (not .) (contains "/" $group) }}
+    {{- fail (printf "Keycloak group %s: a group name must not be blank nor contain /" $group) }}
+  {{- end }}
+  {{- $groups = append $groups $group }}
+{{- end }}
+{{- $usernames := list }}
+{{- range $index, $user := $settings.users }}
+  {{- range $field := list "username" "email" "firstName" "lastName" }}
+    {{- if not (index $user $field) }}
+      {{- fail (printf "Keycloak user #%d: %s is required" $index $field) }}
+    {{- end }}
+  {{- end }}
+  {{- if has $user.username $usernames }}
+    {{- fail (printf "Keycloak user %s is declared more than once" $user.username) }}
+  {{- end }}
+  {{- $usernames = append $usernames $user.username }}
+  {{- $passwordSecret := $user.passwordSecret | default dict }}
+  {{- range $field := list "name" "key" }}
+    {{- if not (index $passwordSecret $field) }}
+      {{- fail (printf "Keycloak user %s: passwordSecret.%s is required" $user.username $field) }}
+    {{- end }}
+  {{- end }}
+  {{- range $user.groups }}
+    {{- if not (has (toString .) $groups) }}
+      {{- fail (printf "Keycloak user %s: group %s is not declared in auth.keycloak.settings.groups" $user.username (toString .)) }}
+    {{- end }}
+  {{- end }}
+{{- end }}
+{{- end }}
+
+{{/*
+Name of the environment variable holding the password of the user at the given index in auth.keycloak.settings.users
+*/}}
+{{- define "ontrack.keycloak.userPasswordEnvName" -}}
+{{- printf "KEYCLOAK_USER_%d_PASSWORD" . }}
+{{- end }}
+
+{{/*
+Environment variables for the passwords of the users declared in auth.keycloak.settings.users
+*/}}
+{{- define "ontrack.keycloak.usersPasswordEnv" -}}
+{{- range $index, $user := .Values.auth.keycloak.settings.users }}
+- name: {{ include "ontrack.keycloak.userPasswordEnvName" $index }}
+  valueFrom:
+    secretKeyRef:
+      name: {{ $user.passwordSecret.name | quote }}
+      key: {{ $user.passwordSecret.key | quote }}
+      optional: false
+{{- end }}
+{{- end }}
+
+{{/*
+JSON array of the Keycloak groups declared in auth.keycloak.settings.groups
+*/}}
+{{- define "ontrack.keycloak.groups" -}}
+{{- $groups := list }}
+{{- range .Values.auth.keycloak.settings.groups }}
+  {{- $groups = append $groups (dict "name" (toString .) "path" (printf "/%s" .)) }}
+{{- end }}
+{{- $groups | toJson }}
+{{- end }}
+
+{{/*
+JSON array of the Keycloak users declared in auth.keycloak.settings.users.
+Passwords are never rendered, only ${KEYCLOAK_USER_<index>_PASSWORD} placeholders.
+
+Parameters:
+  - root: (object, required) The root context
+  - admin: (bool, required) Including the admin user from auth.keycloak.settings.admin (if enabled)
+*/}}
+{{- define "ontrack.keycloak.users" -}}
+{{- $settings := .root.Values.auth.keycloak.settings }}
+{{- $users := list }}
+{{- if and .admin $settings.admin.enabled }}
+  {{- $users = append $users (dict
+      "username" "${KEYCLOAK_USER_ADMIN_USERNAME}"
+      "enabled" true
+      "email" ($settings.admin.email | default .root.Values.auth.admin.email)
+      "firstName" $settings.admin.firstName
+      "lastName" $settings.admin.lastName
+      "emailVerified" true
+      "credentials" (list (dict "type" "password" "value" "${KEYCLOAK_USER_ADMIN_PASSWORD}"))
+  ) }}
+{{- end }}
+{{- range $index, $user := $settings.users }}
+  {{- $groups := list }}
+  {{- range $user.groups }}
+    {{- $groups = append $groups (printf "/%s" .) }}
+  {{- end }}
+  {{- $users = append $users (dict
+      "username" $user.username
+      "enabled" true
+      "email" $user.email
+      "firstName" $user.firstName
+      "lastName" $user.lastName
+      "emailVerified" true
+      "groups" $groups
+      "credentials" (list (dict "type" "password" "value" (printf "${%s}" (include "ontrack.keycloak.userPasswordEnvName" $index))))
+  ) }}
+{{- end }}
+{{- $users | toJson }}
+{{- end }}
+
+{{/*
+Guarantees that the management port is never routed outside the cluster.
+The management port (8800) serves unauthenticated endpoints.
+*/}}
+{{- define "ontrack.management.validate" -}}
+{{- if and (not .Values.management.service.specific) (eq (int .Values.management.service.port) (int .Values.service.port)) }}
+  {{- fail "management.service.port must be different from service.port: the Ingress routes to the service port, which must never lead to the management port." }}
+{{- end }}
+{{- if .Values.management.service.specific }}
+  {{- if ne .Values.management.service.type "ClusterIP" }}
+    {{- fail (printf "The management port must never be exposed outside the cluster: management.service.type must be ClusterIP, not %s." .Values.management.service.type) }}
+  {{- end }}
+{{- else if ne .Values.service.type "ClusterIP" }}
+  {{- fail (printf "The management port must never be exposed outside the cluster: it shares the Yontrack service, whose type must then be ClusterIP, not %s. Set management.service.specific to true to use another service type." .Values.service.type) }}
+{{- end }}
+{{- end }}

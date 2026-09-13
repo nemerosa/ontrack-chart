@@ -17,6 +17,9 @@ helm lint charts/yontrack
 # Render templates locally (for inspection)
 helm template ontrack charts/yontrack -f values.yaml > template.yaml
 
+# Run the template assertions (requires jq and yq)
+./scripts/test-templates.sh
+
 # Validate Docker images referenced in the chart are reachable
 ./scripts/check-images.sh
 
