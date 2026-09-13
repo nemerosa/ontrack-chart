@@ -445,7 +445,7 @@ postgresql:
 Then, run the installation using this values file:
 
 ```bash
-helm install -f values.yaml my-ontrack-release ontrack/ontrack
+helm install -f values.yaml yontrack oci://registry-1.docker.io/yontrack/yontrack-chart
 ```
 
 The setup of the Postgres service will be skipped and Yontrack will be configured to use the remote database.
