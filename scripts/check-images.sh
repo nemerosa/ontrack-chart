@@ -4,7 +4,7 @@ set -e
 echo "Checking Docker images referenced in the Helm chart..."
 
 # Extract images from Helm template
-IMAGES=$(helm template charts/ontrack | grep "image:" | sed 's/.*image: //;s/"//g;s/^ //g' | sort | uniq)
+IMAGES=$(helm template charts/yontrack | grep "image:" | sed 's/.*image: //;s/"//g;s/^ //g' | sort | uniq)
 
 FAILED=0
 

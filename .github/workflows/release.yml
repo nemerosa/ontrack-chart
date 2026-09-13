@@ -30,7 +30,7 @@ jobs:
 
       - name: Preparing theme
         run: |
-          cd charts/ontrack/files/themes
+          cd charts/yontrack/files/themes
           tar vczf yontrack.tar.gz yontrack
 
       - name: Install Helm
@@ -43,7 +43,7 @@ jobs:
 
       - name: Linting
         run: |
-          helm lint charts/ontrack
+          helm lint charts/yontrack
 
       - name: Image check
         run: |
@@ -53,7 +53,7 @@ jobs:
       - name: Packaging
         id: packaging
         run: |
-          helm package charts/ontrack
+          helm package charts/yontrack
 
       - name: Yontrack build
         if: ${{ steps.packaging.outcome != '' }}
@@ -66,7 +66,7 @@ jobs:
         run: |
           LAST_RELEASE=$(yontrack build search --with-promotion RELEASE --count 1 --output json --accept-not-found | jq -r .DisplayName)
           echo "Last release: $LAST_RELEASE"
-          CURRENT_RELEASE=$(cat charts/ontrack/Chart.yaml | yq -r .version)
+          CURRENT_RELEASE=$(cat charts/yontrack/Chart.yaml | yq -r .version)
           echo "Current release: $CURRENT_RELEASE"
           echo "lastRelease=$LAST_RELEASE" >> "$GITHUB_OUTPUT"
           echo "currentRelease=$CURRENT_RELEASE" >> "$GITHUB_OUTPUT"

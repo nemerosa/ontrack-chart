@@ -82,7 +82,7 @@ and its own database and two additional services are installed:
 
 # References
 
-See [`charts/ontrack/README.md`](charts/ontrack/README.md) for
+See [`charts/yontrack/README.md`](charts/yontrack/README.md) for
 the list of all values.
 
 # License key
@@ -220,7 +220,7 @@ auth:
       bindCredential: admin
 ```
 
-There are other [options](charts/ontrack/values.yaml) to configure the mapping of the user fields
+There are other [options](charts/yontrack/values.yaml) to configure the mapping of the user fields
 in the LDAP to the ones that Keycloak expects. The default mappings are suitable for OpenLDAP.
 
 Ontrack uses Keycloak as a relay to the LDAP, so attention must be given to the settings of
@@ -288,7 +288,7 @@ auth:
       # Your config here
 ```
 
-> See the [values](charts/ontrack/values.yaml) for more information.
+> See the [values](charts/yontrack/values.yaml) for more information.
 
 
 ### Active Directory support
@@ -783,9 +783,9 @@ To generate the documentation, just run:
 helm-docs
 ```
 
-The [`charts/ontrack/README.md`](charts/ontrack/README.md) is generated
+The [`charts/yontrack/README.md`](charts/yontrack/README.md) is generated
 and referred to from the main `README`.
 
-In the [`charts/ontrack/values.yaml`](charts/ontrack/values.yaml) file,
+In the [`charts/yontrack/values.yaml`](charts/yontrack/values.yaml) file,
 documentation of the values must be introduced using comments
 prefixed by `# --`.
