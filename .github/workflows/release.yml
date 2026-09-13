@@ -78,7 +78,11 @@ jobs:
           helm registry login registry-1.docker.io \
             --username "${{ secrets.DOCKER_HUB_USERNAME }}" \
             --password "${{ secrets.DOCKER_HUB_TOKEN }}"
-          helm push "$(ls yontrack-*.tgz)" oci://registry-1.docker.io/nemerosa
+          CHART_PACKAGE="$(ls yontrack-*.tgz)"
+          # Canonical namespace first
+          helm push "$CHART_PACKAGE" oci://registry-1.docker.io/yontrack
+          # Legacy namespace, published through 5.x, removed in 6.0
+          helm push "$CHART_PACKAGE" oci://registry-1.docker.io/nemerosa
 
       - name: Changelog since last release
         id: changelog
