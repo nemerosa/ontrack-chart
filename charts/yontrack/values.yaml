@@ -632,7 +632,7 @@ auth:
           # -- Domain name
           domain:
             extension: com
-            name: nemerosa
+            name: yontrack
           # -- Admin user
           admin:
             # -- SSHA admin password
