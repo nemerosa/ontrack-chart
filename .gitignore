@@ -7,3 +7,4 @@ local/
 /template.yaml
 /net*
 /changelog.md
+.DS_Store
