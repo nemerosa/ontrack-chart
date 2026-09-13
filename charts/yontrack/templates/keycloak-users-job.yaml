@@ -79,8 +79,10 @@ spec:
             # Partial import as JSON, itself encoded as a JSON string to be a valid YAML scalar
             - name: KEYCLOAK_IMPORT
               value: {{ dict "ifResourceExists" "SKIP" "groups" (include "ontrack.keycloak.groups" . | fromJsonArray) "users" (include "ontrack.keycloak.users" (dict "root" . "admin" false) | fromJsonArray) | toJson | toJson }}
-            {{- include "ontrack.keycloak.bootstrapAdminEnv" . | nindent 12 }}
-            {{- include "ontrack.keycloak.usersPasswordEnv" . | nindent 12 }}
+            {{- include "ontrack.keycloak.bootstrapAdminEnv" . | trim | nindent 12 }}
+            {{- with include "ontrack.keycloak.usersPasswordEnv" . | trim }}
+            {{- . | nindent 12 }}
+            {{- end }}
           volumeMounts:
             - name: tmp
               mountPath: /tmp

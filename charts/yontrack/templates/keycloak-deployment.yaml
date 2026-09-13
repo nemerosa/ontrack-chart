@@ -153,7 +153,7 @@ spec:
             - name: KC_DB_PASSWORD
               value: {{ .Values.auth.keycloak.persistence.connection.password | quote }}
             {{- end }}
-            {{- include "ontrack.keycloak.bootstrapAdminEnv" . | nindent 12 }}
+            {{- include "ontrack.keycloak.bootstrapAdminEnv" . | trim | nindent 12 }}
             {{/* Initial admin user for Yontrack */}}
             {{- if and .Values.auth.keycloak.settings.enabled .Values.auth.keycloak.settings.admin.enabled }}
             {{- if .Values.auth.keycloak.settings.admin.secret.enabled }}
@@ -176,9 +176,9 @@ spec:
               value: {{ .Values.auth.keycloak.settings.admin.password | quote }}
             {{- end }}
             {{- end }}
-            {{/* Passwords of the declared users, substituted by Keycloak in the realm import */}}
+            {{- /* Passwords of the declared users, substituted by Keycloak in the realm import */}}
             {{- if and .Values.auth.keycloak.settings.enabled .Values.auth.keycloak.settings.users }}
-            {{- include "ontrack.keycloak.usersPasswordEnv" . | nindent 12 }}
+            {{- include "ontrack.keycloak.usersPasswordEnv" . | trim | nindent 12 }}
             {{- end }}
             {{- if .Values.auth.keycloak.secret.enabled }}
             - name: KEYCLOAK_CLIENT_SECRET
