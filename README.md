@@ -431,6 +431,9 @@ using the Keycloak bootstrap administrator credentials (see [Keycloak authentica
 Groups & users which already exist in the realm are left untouched: changing the password or the groups of an
 existing user in the values has no effect, and removing a user from the values does not delete it.
 
+> The job needs the Keycloak bootstrap administrator credentials to still be valid: if this account has been
+> deleted or its password changed in Keycloak only, the job fails, and so does the `helm install/upgrade`.
+
 > The `groups` claim is automatically configured to be injected into the JWT access token.
 
 ### LDAP in Keycloak
