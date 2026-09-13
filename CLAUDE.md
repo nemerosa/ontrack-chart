@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-This is a Helm 3 chart repository that deploys **Ontrack** (a CI/CD tracking platform) to Kubernetes. The chart is published to Docker Hub as an OCI artifact at `oci://registry-1.docker.io/nemerosa/yontrack-chart`.
+This is a Helm 3 chart repository that deploys **Ontrack** (a CI/CD tracking platform) to Kubernetes. The chart is published to Docker Hub as an OCI artifact at `oci://registry-1.docker.io/yontrack/yontrack-chart` (also dual-published to the legacy `nemerosa/yontrack-chart` through 5.x).
 
 The chart bundles three sub-charts: PostgreSQL 17, RabbitMQ 4, and Elasticsearch 9 (Bitnami).
 
