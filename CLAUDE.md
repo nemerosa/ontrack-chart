@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-This is a Helm 3 chart repository that deploys **Ontrack** (a CI/CD tracking platform) to Kubernetes. The chart is published to Docker Hub as an OCI artifact at `oci://registry-1.docker.io/yontrack/yontrack-chart` (also dual-published to the legacy `nemerosa/yontrack-chart` through 5.x).
+This is a Helm 3 chart repository that deploys **Yontrack** (a CI/CD tracking platform) to Kubernetes. The chart is published to Docker Hub as an OCI artifact at `oci://registry-1.docker.io/yontrack/yontrack-chart` (also dual-published to the legacy `nemerosa/yontrack-chart` through 5.x).
 
 The chart bundles three sub-charts: PostgreSQL 17, RabbitMQ 4, and Elasticsearch 9 (Bitnami).
 
@@ -36,7 +36,7 @@ tar -czf charts/yontrack/files/themes/yontrack.tar.gz -C charts/yontrack/files/t
 
 The main chart lives in `charts/yontrack/`. Key files:
 
-- `Chart.yaml` — chart metadata; `appVersion` is auto-updated by Ontrack's auto-versioning system via PRs
+- `Chart.yaml` — chart metadata; `appVersion` is auto-updated by Yontrack's auto-versioning system via PRs
 - `values.yaml` — all configurable defaults (825 lines); all values are documented inline for `helm-docs`
 - `templates/_helpers.tpl` — shared template helpers (naming, labels, secret generation)
 - `files/themes/` — custom Keycloak login theme (packaged as `yontrack.tar.gz`)
@@ -48,9 +48,9 @@ The root-level `values.yaml` is a local override file (gitignored) used for loca
 
 | Component | Template prefix | Notes |
 |-----------|----------------|-------|
-| Ontrack backend | `ontrack-*` | StatefulSet with PVC for data |
+| Yontrack backend | `ontrack-*` | StatefulSet with PVC for data |
 | Next.js UI | `ui-*` | Frontend, uses NextAuth |
-| PostgreSQL | sub-chart | Ontrack's main database |
+| PostgreSQL | sub-chart | Yontrack's main database |
 | RabbitMQ | sub-chart | Messaging |
 | Elasticsearch | sub-chart | Search indexing |
 | Keycloak | `keycloak-*` | Optional; has its own PostgreSQL StatefulSet |
@@ -76,7 +76,7 @@ Templates exist in pairs for many secrets: a plain Kubernetes secret (`*-secret.
 4. Detects whether `chart.version` changed since the previous run
 5. If new version: pushes OCI artifact to Docker Hub and creates a GitHub release with a generated changelog
 
-`.yontrack/ci.yaml` configures Ontrack's auto-versioning: when a new Ontrack release is promoted upstream, a PR is automatically opened updating `appVersion` in `Chart.yaml`.
+`.yontrack/ci.yaml` configures Yontrack's auto-versioning: when a new Yontrack release is promoted upstream, a PR is automatically opened updating `appVersion` in `Chart.yaml`.
 
 ### Documentation Generation
 
