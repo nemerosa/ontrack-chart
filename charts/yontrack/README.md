@@ -1,6 +1,6 @@
 # yontrack-chart
 
-![Version: 5.0.33](https://img.shields.io/badge/Version-5.0.33-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 5.0.38](https://img.shields.io/badge/AppVersion-5.0.38-informational?style=flat-square)
+![Version: 5.2.0](https://img.shields.io/badge/Version-5.2.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 5.3.1](https://img.shields.io/badge/AppVersion-5.3.1-informational?style=flat-square)
 
 A Helm chart for Kubernetes
 
@@ -210,7 +210,7 @@ A Helm chart for Kubernetes
 | global.compatibility | object | `{"openshift":{"adaptSecurityContext":"auto"}}` | Configuration for OpenShift |
 | global.compatibility.openshift.adaptSecurityContext | string | `"auto"` | Whether to adapt the security context for OpenShift |
 | image.pullPolicy | string | `"IfNotPresent"` | Pull policy |
-| image.repository | string | `"nemerosa/ontrack"` | Image to use for Ontrack (backend) |
+| image.repository | string | `"yontrack/yontrack"` | Image to use for Ontrack (backend) |
 | image.tag | string | `""` | Overrides the image tag whose default is the chart appVersion. |
 | imagePullSecrets | list | `[]` | List of secrets used to pull images |
 | includeVersionLabels | bool | `false` | When false (default), omits `helm.sh/chart` and `app.kubernetes.io/version` from all resource labels. Enable when you want standard Kubernetes recommended labels for observability/filtering. Keeping this false avoids noisy diffs in GitOps rendered-manifest workflows. |
@@ -299,7 +299,7 @@ A Helm chart for Kubernetes
 | ontrack.resources.requests.cpu | string | `"800m"` | Ontrack resources |
 | ontrack.ui.config | object | `{"customSignin":true}` | UI configuration |
 | ontrack.ui.config.customSignin | bool | `true` | Using the custom signin page |
-| ontrack.ui.image | string | `"nemerosa/ontrack-ui"` | Image to use for the UI |
+| ontrack.ui.image | string | `"yontrack/yontrack-ui"` | Image to use for the UI |
 | ontrack.ui.podAnnotations | object | `{}` | Annotations for the Yontrack UI pod |
 | ontrack.ui.replicas | int | `1` | Number of replicas for the UI (experimental) |
 | ontrack.ui.resources | object | `{"limits":{"cpu":"800m","memory":"1Gi"},"requests":{"cpu":"800m","memory":"1Gi"}}` | Next UI resources |
