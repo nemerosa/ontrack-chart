@@ -18,8 +18,8 @@ jobs:
         id: yontrack-config
         uses: nemerosa/ontrack-github-actions-cli-config@v1.0.3
         env:
-          YONTRACK_URL: ${{ vars.ONTRACK_URL }}
-          YONTRACK_TOKEN: ${{ secrets.ONTRACK_TOKEN }}
+          YONTRACK_URL: ${{ vars.YONTRACK_URL }}
+          YONTRACK_TOKEN: ${{ secrets.YONTRACK_TOKEN }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
