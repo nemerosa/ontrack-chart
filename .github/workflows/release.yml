@@ -45,6 +45,11 @@ jobs:
         run: |
           helm lint charts/yontrack
 
+      - name: Template tests
+        run: |
+          chmod +x scripts/test-templates.sh
+          ./scripts/test-templates.sh
+
       - name: Image check
         run: |
           chmod +x scripts/check-images.sh

@@ -1,0 +1,100 @@
+{{- $settings := .Values.auth.keycloak.settings }}
+{{- if and (eq "keycloak" .Values.auth.kind) (not .Values.auth.keycloak.external.enabled) $settings.enabled (or $settings.groups $settings.users) }}
+{{- include "ontrack.keycloak.validateUsers" . }}
+{{- /*
+--import-realm skips a realm which already exists: the groups & users added to the values of an
+existing installation would never show up. This job adds the missing ones to the realm through a
+partial import. Existing groups & users are left untouched.
+*/}}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "ontrack.fullname" . }}-keycloak-users
+  labels:
+    {{- include "ontrack.labels" . | nindent 4 }}
+  annotations:
+    helm.sh/hook: post-install,post-upgrade
+    helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+spec:
+  backoffLimit: 2
+  template:
+    # No labels, so that the pod is never selected by the Yontrack or Keycloak services
+    spec:
+      restartPolicy: Never
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "ontrack.serviceAccountName" . }}
+      {{- if not (and .Values.openshift.enabled (or (eq .Values.global.compatibility.openshift.adaptSecurityContext "force") (eq .Values.global.compatibility.openshift.adaptSecurityContext "auto"))) }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}-keycloak-users
+          {{- if not (and .Values.openshift.enabled (or (eq .Values.global.compatibility.openshift.adaptSecurityContext "force") (eq .Values.global.compatibility.openshift.adaptSecurityContext "auto"))) }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          {{- end }}
+          image: "{{ .Values.auth.keycloak.image }}:{{ .Values.auth.keycloak.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: [ "/bin/bash", "-c" ]
+          args:
+            - |
+              set -euo pipefail
+              kcadm() {
+                /opt/keycloak/bin/kcadm.sh "$@" --no-config --server "$KEYCLOAK_URL" --realm master \
+                  --user "$KC_BOOTSTRAP_ADMIN_USERNAME" --password "$KC_BOOTSTRAP_ADMIN_PASSWORD"
+              }
+              echo "Waiting for the $KEYCLOAK_REALM realm..."
+              attempt=0
+              until kcadm get "realms/$KEYCLOAK_REALM" --fields realm > /dev/null 2>&1; do
+                if (( ++attempt >= 60 )); then
+                  echo "Keycloak or the $KEYCLOAK_REALM realm is not available." >&2
+                  exit 1
+                fi
+                sleep 10
+              done
+              # Injecting the passwords, JSON-escaped, in place of their placeholders
+              import="$KEYCLOAK_IMPORT"
+              set_password() {
+                local value="$2"
+                value="${value//\\/\\\\}"
+                value="${value//\"/\\\"}"
+                import="${import//"$1"/"$value"}"
+              }
+              {{- range $index, $user := $settings.users }}
+              {{- $name := include "ontrack.keycloak.userPasswordEnvName" $index }}
+              set_password {{ printf "'${%s}' \"$%s\"" $name $name }}
+              {{- end }}
+              trap 'rm -f /tmp/import.json' EXIT
+              printf '%s' "$import" > /tmp/import.json
+              echo "Adding the missing groups & users to the $KEYCLOAK_REALM realm..."
+              kcadm create partialImport -r "$KEYCLOAK_REALM" -f /tmp/import.json -o
+          env:
+            - name: KEYCLOAK_URL
+              value: "http://{{ include "ontrack.fullname" . }}-keycloak:{{ .Values.auth.keycloak.service.port }}/{{ .Values.auth.keycloak.service.path }}"
+            - name: KEYCLOAK_REALM
+              value: {{ .Values.auth.keycloak.realm | quote }}
+            # Partial import as JSON, itself encoded as a JSON string to be a valid YAML scalar
+            - name: KEYCLOAK_IMPORT
+              value: {{ dict "ifResourceExists" "SKIP" "groups" (include "ontrack.keycloak.groups" . | fromJsonArray) "users" (include "ontrack.keycloak.users" (dict "root" . "admin" false) | fromJsonArray) | toJson | toJson }}
+            {{- include "ontrack.keycloak.bootstrapAdminEnv" . | trim | nindent 12 }}
+            {{- with include "ontrack.keycloak.usersPasswordEnv" . | trim }}
+            {{- . | nindent 12 }}
+            {{- end }}
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        - name: tmp
+          emptyDir: {}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if .Values.tolerations }}
+      tolerations:
+        {{- toYaml .Values.tolerations | nindent 8 }}
+      {{- end }}
+{{- end }}

@@ -2,6 +2,7 @@
 {{- if and .Values.auth.keycloak.settings.admin.enabled .Values.auth.keycloak.ldap.enabled -}}
 {{- fail "For Keycloak, either the admin settings or the LDAP must be enabled, not both." -}}
 {{- end }}
+{{- include "ontrack.keycloak.validateUsers" . }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -152,25 +153,7 @@ spec:
             - name: KC_DB_PASSWORD
               value: {{ .Values.auth.keycloak.persistence.connection.password | quote }}
             {{- end }}
-            {{- if .Values.auth.keycloak.bootstrap.bootstrapSecret.enabled }}
-            - name: KC_BOOTSTRAP_ADMIN_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.auth.keycloak.bootstrap.bootstrapSecret.secretName | quote }}
-                  key: {{ .Values.auth.keycloak.bootstrap.bootstrapSecret.usernameKey | quote }}
-                  optional: false
-            - name: KC_BOOTSTRAP_ADMIN_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.auth.keycloak.bootstrap.bootstrapSecret.secretName | quote }}
-                  key: {{ .Values.auth.keycloak.bootstrap.bootstrapSecret.passwordKey | quote }}
-                  optional: false
-            {{- else }}
-            - name: KC_BOOTSTRAP_ADMIN_USERNAME
-              value: {{ .Values.auth.keycloak.bootstrap.username | quote }}
-            - name: KC_BOOTSTRAP_ADMIN_PASSWORD
-              value: {{ .Values.auth.keycloak.bootstrap.password | quote }}
-            {{- end }}
+            {{- include "ontrack.keycloak.bootstrapAdminEnv" . | trim | nindent 12 }}
             {{/* Initial admin user for Yontrack */}}
             {{- if and .Values.auth.keycloak.settings.enabled .Values.auth.keycloak.settings.admin.enabled }}
             {{- if .Values.auth.keycloak.settings.admin.secret.enabled }}
@@ -192,6 +175,10 @@ spec:
             - name: KEYCLOAK_USER_ADMIN_PASSWORD
               value: {{ .Values.auth.keycloak.settings.admin.password | quote }}
             {{- end }}
+            {{- end }}
+            {{- /* Passwords of the declared users, substituted by Keycloak in the realm import */}}
+            {{- if and .Values.auth.keycloak.settings.enabled .Values.auth.keycloak.settings.users }}
+            {{- include "ontrack.keycloak.usersPasswordEnv" . | trim | nindent 12 }}
             {{- end }}
             {{- if .Values.auth.keycloak.secret.enabled }}
             - name: KEYCLOAK_CLIENT_SECRET
