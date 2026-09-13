@@ -1,7 +1,7 @@
 OIDC for Auth0
 ==============
 
-Using Auth0 as an OIDC provider in Ontrack involves some specific setup.
+Using Auth0 as an OIDC provider in Yontrack involves some specific setup.
 
 # Auth0 setup
 
@@ -26,7 +26,7 @@ is fine. You'll need it later.
 
 ```yaml
 ontrack:
-  # Ontrack root URL
+  # Yontrack root URL
   url: https://****
 auth:
   # Key used for the generation of cookies by the Next Auth frontend
@@ -52,7 +52,7 @@ auth:
         # Depending on your setup, you can also just create an external secret
         # definition, pointing to the actual secret in a secret provided like
         # Vault or your cloud secret manager
-        # If not using an external secret, Ontrack expects you to create the 
+        # If not using an external secret, Yontrack expects you to create the 
         # secret manually.
         # externalSecret:
           # Enabling the creation of the external secret 

@@ -1,4 +1,4 @@
-1. Get the Ontrack URL by running these commands:
+1. Get the Yontrack URL by running these commands:
 {{- if .Values.ingress.enabled }}
 {{- range $host := .Values.ingress.hosts }}
   {{- range .paths }}

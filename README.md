@@ -1,10 +1,10 @@
-Ontrack Helm Chart
+Yontrack Helm Chart
 ==================
 
-This Helm chart is compatible with Helm 3 and allows the installation of Ontrack in a Kubernetes cluster.
+This Helm chart is compatible with Helm 3 and allows the installation of Yontrack in a Kubernetes cluster.
 
 <!-- TOC -->
-* [Ontrack Helm Chart](#ontrack-helm-chart)
+* [Yontrack Helm Chart](#yontrack-helm-chart)
 * [Usage](#usage)
 * [References](#references)
 * [License key](#license-key)
@@ -17,7 +17,7 @@ This Helm chart is compatible with Helm 3 and allows the installation of Ontrack
     * [Using a secret for the LDAP credentials](#using-a-secret-for-the-ldap-credentials)
     * [Keycloak LDAP configuration](#keycloak-ldap-configuration)
     * [Active Directory support](#active-directory-support)
-  * [Management of users in Ontrack](#management-of-users-in-ontrack)
+  * [Management of users in Yontrack](#management-of-users-in-yontrack)
   * [Logging authentication](#logging-authentication)
   * [Next Auth secret](#next-auth-secret)
   * [Configuration of groups](#configuration-of-groups)
@@ -72,7 +72,7 @@ helm delete yontrack
 
 This installs the following services:
 
-* Ontrack itself
+* Yontrack itself
 * a Postgres 17 database
 * an Elasticsearch 9 single node
 * a RabbitMQ message broker
@@ -122,13 +122,13 @@ ingress:
 
 The following URLs are available:
 
-* `<host>` - the main Ontrack URL to access its UI
-* `<host>/graphql` - access to the Ontrack GraphQL API
+* `<host>` - the main Yontrack URL to access its UI
+* `<host>/graphql` - access to the Yontrack GraphQL API
 * `<host>/keycloak` - if the default Keycloak setup is enabled, access to the admin console of Keycloak
 
 # Authentication
 
-By default, the Ontrack Helm chart sets up an instance of Keycloak, configured to store users for Ontrack.
+By default, the Yontrack Helm chart sets up an instance of Keycloak, configured to store users for Yontrack.
 
 ## Default local Keycloak instance
 
@@ -136,7 +136,7 @@ By default, the Ontrack Helm chart sets up an instance of Keycloak, configured t
 
 ## OIDC for Okta
 
-Ontrack can bypass the Keycloak component altogether and use your own OIDC IdP.
+Yontrack can bypass the Keycloak component altogether and use your own OIDC IdP.
 
 The configuration below works for Okta, but a setup of [Auth0](#oidc-for-auth0) is provided after.
 
@@ -144,7 +144,7 @@ The following values are needed:
 
 ```yaml
 ontrack:
-  # Ontrack root URL
+  # Yontrack root URL
   url: https://****
 auth:
   # Enabling OIDC authentication
@@ -167,7 +167,7 @@ auth:
         # -- Depending on your setup, you can also just create an external secret
         # definition, pointing to the actual secret in a secret provided like
         # Vault or your cloud secret manager
-        # If not using an external secret, Ontrack expects you to create the
+        # If not using an external secret, Yontrack expects you to create the
         # secret manually.
         externalSecret:
           # -- Enabling the creation of the external secret
@@ -204,7 +204,7 @@ See the dedicated documentation at [`auth0`](docs/auth0.md).
 
 ## LDAP
 
-The local Keycloak instance can be configured to use an external LDAP for the management of the Ontrack users:
+The local Keycloak instance can be configured to use an external LDAP for the management of the Yontrack users:
 
 * Keycloak acts as a proxy
 * Keycloak is in read-only mode for the target LDAP (users can be accessed and used for authentication, but not updated)
@@ -228,7 +228,7 @@ auth:
 There are other [options](charts/yontrack/values.yaml) to configure the mapping of the user fields
 in the LDAP to the ones that Keycloak expects. The default mappings are suitable for OpenLDAP.
 
-Ontrack uses Keycloak as a relay to the LDAP, so attention must be given to the settings of
+Yontrack uses Keycloak as a relay to the LDAP, so attention must be given to the settings of
 Keycloak as well, in terms of security.
 
 ### Using a secret for the LDAP credentials
@@ -311,18 +311,18 @@ auth:
       userObjectClasses: ["person", "organizationalPerson", "user"]
 ```
 
-## Management of users in Ontrack
+## Management of users in Yontrack
 
-For any user connecting to Ontrack through any authentication provider, upon login,
-an account is created in Ontrack to hold their authorizations and relationships
-to objects in Ontrack. Are stored:
+For any user connecting to Yontrack through any authentication provider, upon login,
+an account is created in Yontrack to hold their authorizations and relationships
+to objects in Yontrack. Are stored:
 
 * their username
 * their email
 * their full name (if available, defaults to the email)
 
 If the `auth.provisioning` is set to `true` (that's the default), a default group
-is created with the name "Administrators", with all the rights to administrate Ontrack.
+is created with the name "Administrators", with all the rights to administrate Yontrack.
 
 For any user logging with the email defined at `auth.admin.email` (defaults to `admin@ontrack.local`
 but should be changed), the account created for this user will be linked automatically
@@ -448,7 +448,7 @@ Then, run the installation using this values file:
 helm install -f values.yaml my-ontrack-release ontrack/ontrack
 ```
 
-The setup of the Postgres service will be skipped and Ontrack will be configured to use the remote database.
+The setup of the Postgres service will be skipped and Yontrack will be configured to use the remote database.
 
 Alternatively, if your connection parameters are in environment variables, you can skip this configuration altogether:
 
@@ -542,7 +542,7 @@ ontrack:
 
 ### Using secret files
 
-Instead of using environment variables, you can also map secrets to files and tell Ontrack to refer to the secrets in
+Instead of using environment variables, you can also map secrets to files and tell Yontrack to refer to the secrets in
 the files.
 
 Given the example above:
@@ -555,7 +555,7 @@ ontrack:
         token: {{ secret.github.token }}
 ```
 
-You can map the `ontrack-github` K8S secret onto a volume and tell Ontrack to use this volume:
+You can map the `ontrack-github` K8S secret onto a volume and tell Yontrack to use this volume:
 
 ```yaml
 ontrack:
@@ -583,14 +583,14 @@ casc:
 
 # Using a K8S secret for the encryption keys
 
-Ontrack encrypts the credentials used to connect to external systems, using an AES256 key.
+Yontrack encrypts the credentials used to connect to external systems, using an AES256 key.
 
 This key is by default stored into the database itself, which is OK to get started, but this has two issues:
 
 * it's not very secure since the key used to encrypts credentials in the database is stored in the database
-* when migrating an Ontrack installation from a file store, it's not easy to migrate
+* when migrating an Yontrack installation from a file store, it's not easy to migrate
 
-When using the Ontrack Helm chart, you can use a K8S secret to store this encryption key.
+When using the Yontrack Helm chart, you can use a K8S secret to store this encryption key.
 
 There are two scenarios.
 
@@ -602,7 +602,7 @@ openssl rand 256 > net.nemerosa.ontrack.security.EncryptionServiceImpl.encryptio
 
 ## Copying the secrets (existing installation)
 
-To get the existing key from Ontrack, use:
+To get the existing key from Yontrack, use:
 
 ```bash
 # For Ontrack V4
@@ -617,13 +617,13 @@ accepted.
 ## Creating the secret in K8S
 
 Given the `net.nemerosa.ontrack.security.EncryptionServiceImpl.encryption` file, generate a secret in the same namespace
-as Ontrack:
+as Yontrack:
 
 ```bash
 kubectl create secret generic ontrack-key-store --from-file=net.nemerosa.ontrack.security.EncryptionServiceImpl.encryption
 ```
 
-Configure the Ontrack values to use this secret:
+Configure the Yontrack values to use this secret:
 
 ```yaml
 ontrack:
@@ -683,7 +683,7 @@ includeVersionLabels: true
 
 # Change log
 
-| Version        | Postgres | Elasticsearch | Rabbit MQ | Kubernetes | Minimal Ontrack version |
+| Version        | Postgres | Elasticsearch | Rabbit MQ | Kubernetes | Minimal Yontrack version |
 |----------------|----------|---------------|-----------|------------|-------------------------|
 | [5.0.x](#10)   | 17       | 9             | 4         | 1.24       | 5.0.0                   |
 | [0.13.x](#013) | 15       | 7             | 3         | 1.24       | 4.12.3                  |

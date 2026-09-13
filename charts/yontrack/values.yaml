@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  # -- Image to use for Ontrack (backend)
+  # -- Image to use for Yontrack (backend)
   repository: yontrack/yontrack
   # -- Pull policy
   pullPolicy: IfNotPresent
@@ -56,16 +56,16 @@ global:
       adaptSecurityContext: auto
 
 service:
-  # -- Service type for the Ontrack service
+  # -- Service type for the Yontrack service
   type: ClusterIP
-  # -- Exposed port for the Ontrack service
+  # -- Exposed port for the Yontrack service
   port: 8080
-  # -- Annotations for the Ontrack service
+  # -- Annotations for the Yontrack service
   annotations: { }
 
 management:
   service:
-    # -- Exposed port for the Ontrack management service
+    # -- Exposed port for the Yontrack management service
     port: 8800
     # -- Set to true to have the management port exposed by another Service. By default, using the same service and two different named ports
     specific: false
@@ -75,28 +75,28 @@ management:
     type: ClusterIP
 
 ingress:
-  # -- Creating an Ingress for the Ontrack different services. This is required when using Keycloak.
+  # -- Creating an Ingress for the Yontrack different services. This is required when using Keycloak.
   enabled: true
   # -- Ingress class name
   ingressClassName: ""
   # -- Annotations for the Ingress
   annotations: {}
-  # -- Host for Ontrack
+  # -- Host for Yontrack
   host: "ontrack.local"
   tls:
-    # -- Using TLS for Ontrack
+    # -- Using TLS for Yontrack
     enabled: true
     # -- Name of the secret containing the TLS certificate
     # If not provided, defaults to <host>-tls
     secretName: ""
 
-# -- Node selectors for the Ontrack resources
+# -- Node selectors for the Yontrack resources
 nodeSelector: {}
 
-# -- Node tolerations for the Ontrack resources
+# -- Node tolerations for the Yontrack resources
 tolerations: []
 
-# -- Node affinity for the Ontrack resources
+# -- Node affinity for the Yontrack resources
 affinity: {}
 
 # -- Configuration for OpenShift
@@ -125,9 +125,9 @@ initContainers:
       # -- Memory request for the init containers
       memory: 50Mi
 
-# Ontrack configuration
+# Yontrack configuration
 ontrack:
-  # -- Ontrack root URL - must point to the UI service
+  # -- Yontrack root URL - must point to the UI service
   url: "http://localhost:3000"
   # -- Comma-separated list of active Spring profiles
   profiles: prod
@@ -141,7 +141,7 @@ ontrack:
     image: yontrack/yontrack-ui
     # Service
     service:
-      # -- Exposed port for the Ontrack IO
+      # -- Exposed port for the Yontrack IO
       port: 3000
     # -- Next UI resources
     resources:
@@ -164,12 +164,12 @@ ontrack:
   ## Adjust these values to your needs, but make sure that the memory limit is never under 4 GB
   resources:
     limits:
-      # -- Ontrack resources
+      # -- Yontrack resources
       cpu: 800m
-      # -- Ontrack resources
+      # -- Yontrack resources
       memory: 2Gi
     requests:
-      # -- Ontrack resources
+      # -- Yontrack resources
       cpu: 800m
   # -- Probes configuration
   probes:
@@ -199,7 +199,7 @@ ontrack:
     #   set, choosing the default provisioner.  (gp2 on AWS, standard on
     #   GKE, AWS & OpenStack)
     storageClass:
-  # Ontrack configuration properties
+  # Yontrack configuration properties
   config:
     # -- Using the database to store the key by default
     key_store: jdbc
@@ -352,7 +352,7 @@ auth:
         # -- Depending on your setup, you can also just create an external secret
         # definition, pointing to the actual secret in a secret provided like
         # Vault or your cloud secret manager
-        # If not using an external secret, Ontrack expects you to create the
+        # If not using an external secret, Yontrack expects you to create the
         # secret manually.
         externalSecret:
           # -- Enabling the creation of the external secret
@@ -436,13 +436,13 @@ auth:
     service:
       # -- Port of the service for the local Keycloak instance
       port: 8080
-      # -- Relative path for the local Keycloak instance (relatively to the Ontrack main URL)
+      # -- Relative path for the local Keycloak instance (relatively to the Yontrack main URL)
       path: keycloak
       # -- Enabling Keycloak in the Ingress
       ingressEnabled: true
     # -- Resources to allocate to the local Keycloak instance
     resources: {}
-    # -- Name of the realm to create in Keycloak to serve the Ontrack users
+    # -- Name of the realm to create in Keycloak to serve the Yontrack users
     realm: ontrack
     # -- Provisioning settings
     settings:
@@ -456,7 +456,7 @@ auth:
       ssoSessionIdleTimeout: 3600
       # -- Access Token Lifespan (in seconds)
       accessTokenLifespan: 3600
-      # -- Initial Ontrack user to create
+      # -- Initial Yontrack user to create
       admin:
         # -- Enabling the provisioning of the admin user
         enabled: true
@@ -525,7 +525,7 @@ auth:
       id: yontrack-client
       # -- Value of the client secret - should not be used in production
       secret: yontrack-client-secret
-    # -- Account management from Ontrack
+    # -- Account management from Yontrack
     account:
       # -- If set to not blank, URL to allow users to manage their own account
       url: http://localhost:8008/realms/ontrack/account
@@ -628,7 +628,7 @@ auth:
           # -- Is it enabled?
           enabled: true
           # -- Organization name
-          organisation: Ontrack
+          organisation: Yontrack
           # -- Domain name
           domain:
             extension: com
@@ -698,7 +698,7 @@ auth:
       service:
         # -- Service type
         type: ClusterIP
-  # -- Unique secret used by Next Auth in Ontrack to create session cookies
+  # -- Unique secret used by Next Auth in Yontrack to create session cookies
   next:
     # -- Secret definition
     secret:
@@ -724,7 +724,7 @@ auth:
           path: ontrack/next-auth
   # Specific setup for parsing the JWT access tokens
   # jwt:
-    # Enabling debugging in Ontrack
+    # Enabling debugging in Yontrack
     # debug: false
     # Audience
     # audience: ""
@@ -820,7 +820,7 @@ emptyDir: { }
   # medium: Memory
 # sizeLimit: 16Mi
 
-# -- Array of extra containers to run alongside the Ontrack container
+# -- Array of extra containers to run alongside the Yontrack container
 #
 # Example:
 # - name: myapp-container

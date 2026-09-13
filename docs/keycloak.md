@@ -87,7 +87,7 @@ auth:
 ```
 
 The client secret is automatically generated and used by the
-Ontrack UI client.
+Yontrack UI client.
 
 If needs be, its value can be accessed by reading the secret.
 
