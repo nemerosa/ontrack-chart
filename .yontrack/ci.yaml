@@ -15,7 +15,7 @@ configuration:
           - sourceProject: yontrack
             sourceBranch: main
             sourcePromotion: RELEASE
-            targetPath: charts/ontrack/Chart.yaml
+            targetPath: charts/yontrack/Chart.yaml
             targetRegex: '^appVersion: "(.*)"$'
             validationStamp: auto
             prTitleTemplate: "chore: Using Yontrack ${VERSION}"

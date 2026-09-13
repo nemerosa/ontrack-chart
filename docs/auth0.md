@@ -5,7 +5,7 @@ Using Auth0 as an OIDC provider in Ontrack involves some specific setup.
 
 # Auth0 setup
 
-You'll need to create an API (for example: `https://nemerosa.com/ontrack`)
+You'll need to create an API (for example: `https://yontrack.com/ontrack`)
 and link it to your Auth0 application. No specific permission or role
 is needed.
 
@@ -19,7 +19,7 @@ look like:
 ![Auth0 action post login](auth0-action-post-login.png)
 
 This action is configured using a `NAMESPACE` value; you can set
-it for example to `https://nemerosa.com/oauth2/claim` but any other value 
+it for example to `https://yontrack.com/oauth2/claim` but any other value 
 is fine. You'll need it later.
 
 # Helm chart values
@@ -81,6 +81,6 @@ auth:
     audience: <the API identifier>
     # The email in the access token is contained in the `sub` claim
     claims:
-      # For example: https://nemerosa.com/oauth2/claim/email
+      # For example: https://yontrack.com/oauth2/claim/email
       email: NAMESPACE/email
 ```
